@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ProjectsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/projects', ProjectController::class);
-Route::apiResource('/categories', CategoryController::class);
+Route::apiResource('/projects', ProjectsController::class);
+Route::apiResource('/categories', CategoriesController::class);
