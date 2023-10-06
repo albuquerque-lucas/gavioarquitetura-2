@@ -7,31 +7,36 @@ use App\Repositories\CategoriesRepository;
 
 class CategoriesController extends Controller
 {
+    private CategoriesRepository $repository;
+    public function __construct()
+    {
+        $this->repository = new CategoriesRepository();
+    }
     public function index()
     {
-        $result = CategoriesRepository::getAll();
-        return response()->json($result, 200);
+        $res = $this->repository->getAll();
+        return response()->json($res->data(), $res->status());
     }
     public function store(Request $request)
     {
         $data = $request->all();
-        $result = CategoriesRepository::create($data);
-        return response()->json($result, 201);
+        $res = $this->repository->create($data);
+        return response()->json($res, 201);
     }
     public function show(int $id)
     {
-        $result = CategoriesRepository::getById($id);
-        return response()->json($result, 200);
+        $res = $this->repository->getById($id);
+        return response()->json($res->data(), $res->status());
     }
     public function update(Request $request, int $id)
     {
         $data = $request->all();
-        $result = CategoriesRepository::update($id, $data);
-        return response()->json($result, 200);
+        $res = $this->repository->update($id, $data);
+        return response()->json($res, 200);
     }
     public function destroy(int $id)
     {
-        $result = CategoriesRepository::delete($id);
-        return response()->json($result, 200);
+        $res = $this->repository->delete($id);
+        return response()->json($res, 200);
     }
 }

@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Interfaces;
-use Illuminate\Database\Eloquent\Collection;
-
+use App\Models\ServiceResponse;
 interface IReadAndWrite
 {
-    public static function getAll():Collection;
-    public static function getById(int $id):object;
-    public static function create(array $data):object;
-    public static function update(int $id, array $data):object;
-    public static function delete(int $id):bool;
+    public function getAll():ServiceResponse;
+    public function getById(int $id):ServiceResponse;
+    public function create(array $data):object;
+    public function update(int $id, array $data):object;
+    public function delete(int $id):bool;
 }

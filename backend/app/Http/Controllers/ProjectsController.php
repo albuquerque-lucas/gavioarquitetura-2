@@ -7,34 +7,39 @@ use App\Repositories\ProjectRepository;
 
 class ProjectsController extends Controller
 {
+    private ProjectRepository $repository;
+    public function __construct()
+    {
+        $this->repository = new ProjectRepository();
+    }
     public function index()
     {
-        $result = ProjectRepository::getAll();
-        return response()->json($result, 200);
+        $res = $this->repository->getAll();
+        return response()->json($res, 200);
     }
     public function store(ProjectRequest $request)
     {
         $data = $request->all();
-        $result = ProjectRepository::create($data);
-        return response()->json($result, 201);
+        $res = $this->repository->create($data);
+        return response()->json($res, 201);
     }
 
     public function show(int $id)
     {
-        $result = ProjectRepository::getById($id);
-        return response()->json($result, 200);
+        $res = $this->repository->getById($id);
+        return response()->json($res->data(), $res->status());
     }
 
     public function update(ProjectRequest $request, int $id)
     {
         $data = $request->all();
-        $result = ProjectRepository::update($id, $data);
-        return response()->json($result, 200);
+        $res = $this->repository->update($id, $data);
+        return response()->json($res, 200);
     }
 
     public function destroy(int $id)
     {
-        $result = ProjectRepository::delete($id);
-        return response()->json($result, 200);
+        $res = $this->repository->delete($id);
+        return response()->json($res, 200);
     }
 }
