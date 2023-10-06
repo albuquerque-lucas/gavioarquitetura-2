@@ -16,40 +16,65 @@ class CategoriesRepository implements IReadAndWrite
     public function getAll():ServiceResponse
     {
         $list = Category::all();
-        if ($list === null) {
+        if ($list->isEmpty()) {
             $this->response->setAttributes(404, (object)[
                 'message' => 'Categories not found'
             ]);
-        } else {
-            $this->response->setAttributes(200, $list);
+            return $this->response;
         }
+        $this->response->setAttributes(200, $list);
         return $this->response;
     }
-    public function getById(int $id):object
+    public function getById(int $id):ServiceResponse
     {
         $category = Category::find($id);
-        if ($category === null) {
+        if (!$category) {
             $this->response->setAttributes(404, (object)[
                 'message' => 'Category not found'
             ]);
-        } else {
-            $this->response->setAttributes(200, $category);
+            return $this->response;
         }
+        $this->response->setAttributes(200, $category);
         return $this->response;
     }
-    public function create(array $data):object
+    public function create(array $data):ServiceResponse
     {
-        return Category::create($data);
+        $category = Category::create($data);
+        if (!$category) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'Error creating category'
+            ]);
+            return $this->response;
+        }
+        $this->response->setAttributes(201, $category);
+        return $this->response;
     }
-    public function update(int $id, array $data):object
+    public function update(int $id, array $data):ServiceResponse
     {
-        $category = Category::findOrFail($id);
+        $category = Category::find($id);
+        if (!$category) {
+            $this->response->setAttributes(404, (object)[
+                'message' => 'Category not found'
+            ]);
+            return $this->response;
+        }
         $category->update($data);
-        return $category;
+        $this->response->setAttributes(200, $category);
+        return $this->response;
     }
-    public function delete(int $id):bool
+    public function delete(int $id):ServiceResponse
     {
-        $category = Category::findOrFail($id);
-        return $category->delete();
+        $category = Category::find($id);
+        $isDeleted = $category->delete();
+        if (!$isDeleted) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'Error deleting category'
+            ]);
+        } else {
+            $this->response->setAttributes(200, (object)[
+                'message' => 'Category deleted successfully'
+            ]);
+        }
+        return $this->response;
     }
 }

@@ -21,7 +21,7 @@ class CategoriesController extends Controller
     {
         $data = $request->all();
         $res = $this->repository->create($data);
-        return response()->json($res, 201);
+        return response()->json($res->data(), $res->status());
     }
     public function show(int $id)
     {
@@ -32,11 +32,11 @@ class CategoriesController extends Controller
     {
         $data = $request->all();
         $res = $this->repository->update($id, $data);
-        return response()->json($res, 200);
+        return response()->json($res->data(), $res->status());
     }
     public function destroy(int $id)
     {
         $res = $this->repository->delete($id);
-        return response()->json($res, 200);
+        return response()->json($res->data(), $res->status());
     }
 }
