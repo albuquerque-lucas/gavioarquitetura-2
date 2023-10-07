@@ -45,9 +45,9 @@ class ProjectsSeeder extends Seeder
             'image_url' => 'no-image.jpg',
         ]);
 
-        $project1->images()->create(['image_url' => 'no-image.jpg']);
-        $project1->images()->create(['image_url' => 'no-image.jpg']);
-        $project2->images()->create(['image_url' => 'no-image.jpg']);
-        $project2->images()->create(['image_url' => 'no-image.jpg']);
+        // $project1->images()->create(['image_url' => 'no-image.jpg']);
+        // $project1->images()->create(['image_url' => 'no-image.jpg']);
+        // $project2->images()->create(['image_url' => 'no-image.jpg']);
+        // $project2->images()->create(['image_url' => 'no-image.jpg']);
     }
 }

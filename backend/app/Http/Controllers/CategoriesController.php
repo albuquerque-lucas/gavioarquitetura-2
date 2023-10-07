@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 use App\Repositories\CategoriesRepository;
 
 class CategoriesController extends Controller
@@ -17,7 +17,7 @@ class CategoriesController extends Controller
         $res = $this->repository->getAll();
         return response()->json($res->data(), $res->status());
     }
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $data = $request->all();
         $res = $this->repository->create($data);
@@ -28,7 +28,7 @@ class CategoriesController extends Controller
         $res = $this->repository->getById($id);
         return response()->json($res->data(), $res->status());
     }
-    public function update(Request $request, int $id)
+    public function update(CategoryRequest $request, int $id)
     {
         $data = $request->all();
         $res = $this->repository->update($id, $data);

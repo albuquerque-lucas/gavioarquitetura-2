@@ -32,7 +32,7 @@ class ProjectRepository implements IReadAndWrite
 
     public function getById(int $id): ServiceResponse
     {
-        $project = Project::find($id);
+        $project = Project::with('category', 'images')->find($id);
         if (!$project) {
             $this->response->setAttributes(404, (object)[
                 'message' => 'Project not found'
