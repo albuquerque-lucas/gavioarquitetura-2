@@ -3,10 +3,10 @@
 namespace App\Repositories;
 
 use App\Interfaces\IReadAndWrite;
-use App\Models\Project;
+use App\Models\User;
 use App\Models\ServiceResponse;
 
-class ProjectRepository implements IReadAndWrite
+class UserRepository implements IReadAndWrite
 {
     private ServiceResponse $response;
 
@@ -17,10 +17,10 @@ class ProjectRepository implements IReadAndWrite
 
     public function getAll(): ServiceResponse
     {
-        $list = Project::all();
+        $list = User::all();
         if ($list->isEmpty()) {
             $this->response->setAttributes(404, (object)[
-                'message' => 'Projects not found'
+                'message' => 'Users not found'
             ]);
             return $this->response;
         }
@@ -31,67 +31,72 @@ class ProjectRepository implements IReadAndWrite
 
     public function getById(int $id): ServiceResponse
     {
-        $project = Project::with('category', 'images')->find($id);
-        if (!$project) {
+        $user = User::find($id);
+        if (!$user) {
             $this->response->setAttributes(404, (object)[
-                'message' => 'Project not found'
+                'message' => 'User not found'
             ]);
             return $this->response;
         }
 
-        $this->response->setAttributes(200, $project);
+        $this->response->setAttributes(200, $user);
         return $this->response;
     }
 
     public function create(array $data): ServiceResponse
     {
-        $project = Project::create($data);
-        if (!$project) {
+        $user = User::create($data);
+        if (!$user) {
             $this->response->setAttributes(500, (object)[
-                'message' => 'Error creating project'
+                'message' => 'Error creating user'
             ]);
             return $this->response;
         }
-        $this->response->setAttributes(201, $project);
+        $this->response->setAttributes(201, $user);
         return $this->response;
     }
 
     public function update(int $id, array $data): ServiceResponse
     {
-        $project = Project::find($id);
-        if (!$project) {
+        $user = User::find($id);
+        if (!$user) {
             $this->response->setAttributes(404, (object)[
-                'message' => 'Project not found'
+                'message' => 'User not found'
             ]);
             return $this->response;
         }
 
-        $project->update($data);
-        $this->response->setAttributes(200, $project);
+        $user->update($data);
+        $this->response->setAttributes(200, $user);
         return $this->response;
     }
 
     public function delete(int $id): ServiceResponse
     {
-        $project = Project::find($id);
-        if (!$project) {
+        $user = User::find($id);
+        if (!$user) {
             $this->response->setAttributes(404, (object)[
-                'message' => 'Project not found'
+                'message' => 'User not found'
             ]);
             return $this->response;
         }
 
-        $isDeleted = $project->delete();
+        $isDeleted = $user->delete();
         if (!$isDeleted) {
             $this->response->setAttributes(500, (object)[
-                'message' => 'Error deleting project'
+                'message' => 'Error deleting user'
             ]);
         } else {
             $this->response->setAttributes(200, (object)[
-                'message' => 'Project deleted successfully'
+                'message' => 'User deleted successfully'
             ]);
         }
 
         return $this->response;
+    }
+
+    public function login()
+    {
+        
     }
 }

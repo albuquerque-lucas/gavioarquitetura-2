@@ -17,8 +17,8 @@ class ProjectsSeeder extends Seeder
             'active_carousel' => true,
             'name' => 'Projeto 1',
             'description' => 'Descrição do Projeto 1',
-            'area' => 'Área do Projeto 1',
-            'year' => '2022',
+            'area' => 100,
+            'year' => 2022,
             'address' => 'Endereço do Projeto 1',
             'image_url' => 'no-image.jpg',
         ]);
@@ -28,8 +28,8 @@ class ProjectsSeeder extends Seeder
             'active_carousel' => true,
             'name' => 'Projeto 2',
             'description' => 'Descrição do Projeto 2',
-            'area' => 'Área do Projeto 2',
-            'year' => '2023',
+            'area' => 300,
+            'year' => 2023,
             'address' => 'Endereço do Projeto 2',
             'image_url' => 'no-image.jpg',
         ]);
@@ -39,15 +39,10 @@ class ProjectsSeeder extends Seeder
             'active_carousel' => false,
             'name' => 'Projeto 3',
             'description' => 'Descrição do Projeto 3',
-            'area' => 'Área do Projeto 3',
-            'year' => '2024',
+            'area' => 200,
+            'year' => 2024,
             'address' => 'Endereço do Projeto 3',
             'image_url' => 'no-image.jpg',
         ]);
-
-        // $project1->images()->create(['image_url' => 'no-image.jpg']);
-        // $project1->images()->create(['image_url' => 'no-image.jpg']);
-        // $project2->images()->create(['image_url' => 'no-image.jpg']);
-        // $project2->images()->create(['image_url' => 'no-image.jpg']);
     }
 }

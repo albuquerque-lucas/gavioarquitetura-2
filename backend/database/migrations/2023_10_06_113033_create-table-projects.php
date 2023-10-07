@@ -18,8 +18,8 @@ return new class extends Migration
             $table->boolean('active_carousel')->notNullable();
             $table->string('name');
             $table->text('description');
-            $table->string('area');
-            $table->string('year');
+            $table->integer('area');
+            $table->integer('year');
             $table->string('address');
             $table->string('image_url')->nullable();
             $table->timestamps();

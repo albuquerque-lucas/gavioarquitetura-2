@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/projects', ProjectsController::class);
 Route::apiResource('/categories', CategoriesController::class);
+Route::apiResource('/admin/users', UserController::class);
+Route::post('/admin/login', [UserController::class, 'login']);

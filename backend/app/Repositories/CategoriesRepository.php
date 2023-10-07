@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Interfaces\IReadAndWrite;
 use App\Models\Category;
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\ServiceResponse;
 class CategoriesRepository implements IReadAndWrite
 {

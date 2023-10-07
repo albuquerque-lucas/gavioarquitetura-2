@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CategoriesSeeder::class,
             ProjectsSeeder::class,
             ProjectImagesSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
