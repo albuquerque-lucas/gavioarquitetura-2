@@ -7,6 +7,7 @@ import Projects from './components/admin/Projects';
 import Home from './components/admin/HomePage';
 import Layout from './components/admin/Layout';
 import Categories from './components/admin/Categories';
+import ProjectShow from './components/admin/ProjectShow';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectShow />} />
             <Route path="/categories" element={<Categories />} />
           </Routes>
         </Body>
