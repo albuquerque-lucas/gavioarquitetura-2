@@ -3,19 +3,24 @@ import { useMemo, useState } from "react";
 import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
-  const [projectList, setProjectList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [projectList, setProjectList] = useState([]);
+  const [projectDetails, setProjectDetails] = useState({});
 
   const context = useMemo(() => ({
     isLoading,
     setIsLoading,
     projectList,
     setProjectList,
+    projectDetails,
+    setProjectDetails,
   }), [
     projectList,
     setProjectList,
     isLoading,
     setIsLoading,
+    projectDetails,
+    setProjectDetails,
   ]);
 
   return (
