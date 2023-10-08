@@ -1,3 +1,5 @@
+import ManageableCard from "../cards/ManageableCard";
+
 function Home() {
   return (
     <div>
@@ -6,6 +8,7 @@ function Home() {
     </div>
     <div className="container">
       <ul className="manageable-list list-unstyled">
+        <li><ManageableCard /></li>
         <li>Projetos</li>
         <li>Categorias</li>
       </ul>
