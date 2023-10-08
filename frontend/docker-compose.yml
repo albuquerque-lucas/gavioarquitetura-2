@@ -1,0 +1,10 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./    # Defina o contexto para o Docker build
+      dockerfile: Dockerfile  # Caminho para o Dockerfile dentro de ./frontend
+    volumes:
+      - ".:/usr/src/app"
+    ports:
+      - "3000:3000"
