@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import Header from './components/admin/Header';
 import Body from './components/admin/Body';
 import Projects from './components/admin/Projects';
-import Home from './components/admin/Home';
+import Home from './components/admin/HomePage';
 import Layout from './components/admin/Layout';
 import Categories from './components/admin/Categories';
 
