@@ -1,5 +1,5 @@
 import React from 'react';
-import ProjectTable from './project-table';
+import ProjectsTable from '../tables/ProjectsTable';
 import './styles/style.css';
 
 export default function Projects() {
@@ -17,7 +17,7 @@ export default function Projects() {
 
       </div>
       <div className="project-list-container d-flex flex-column align-items-center">
-        <ProjectTable />
+        <ProjectsTable />
       </div>
     </>
   );
