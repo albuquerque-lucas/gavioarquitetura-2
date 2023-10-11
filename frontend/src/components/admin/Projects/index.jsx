@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Importe o Link
 import ProjectsTable from '../tables/ProjectsTable';
 import './styles/style.css';
 
@@ -9,12 +10,11 @@ export default function Projects() {
         <h1>Project List</h1>
       </div>
       <div className="d-flex justify-content-center">
-      <div className="project-list-menu bg-dark w-75">
-        <button className="btn btn-dark">
-          Novo projeto
-        </button>
-      </div>
-
+        <div className="project-list-menu bg-dark w-75">
+          <Link to="/projects/new-project" className="btn btn-dark">
+            Novo projeto
+          </Link>
+        </div>
       </div>
       <div className="project-list-container d-flex flex-column align-items-center">
         <ProjectsTable />

@@ -1,10 +1,9 @@
 .pst-head-cell {
-  /* background-color: red!important; */
-  min-width: 10rem;
+  width: 15rem;
 }
 
 .pst-body-cell {
   display: flex;
   justify-content: space-between;
-  /* background-color: lightcoral!important; */
+  width: 20rem;
 }

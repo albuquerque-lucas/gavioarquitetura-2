@@ -1,40 +1,54 @@
 import PropTypes from 'prop-types';
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [editMode, setEditMode] = useState({
+    image_url: false,
+    active_carousel: false,
+    name: false,
+    category: false,
+    area: false,
+    address: false,
+    description: false,
+  });
   const [projectList, setProjectList] = useState([]);
   const [projectDetails, setProjectDetails] = useState({});
   const [editedDetails, setEditedDetails] = useState({});
 
-  const handleChange = (field, value) => {
-    setEditedDetails({
-      ...editedDetails,
-      [field]: value,
-    });
-  };
+  const context = useMemo(() => {
+    const handleChange = (field, value) => {
+      setEditedDetails({
+        ...editedDetails,
+        [field]: value,
+      });
+    };
 
-  const context = useMemo(() => ({
-    isLoading,
-    setIsLoading,
+    return {
+      isLoading,
+      setIsLoading,
+      projectList,
+      setProjectList,
+      projectDetails,
+      setProjectDetails,
+      editedDetails,
+      setEditedDetails,
+      handleChange,
+      editMode,
+      setEditMode,
+    };
+  }, [
     projectList,
     setProjectList,
+    isLoading,
+    setIsLoading,
     projectDetails,
     setProjectDetails,
     editedDetails,
     setEditedDetails,
-    handleChange,
-  }), [
-    projectList,
-    setProjectList,
-    isLoading,
-    setIsLoading,
-    projectDetails,
-    setProjectDetails,
-    editedDetails,
-    setEditedDetails,
-    handleChange,
+    editMode,
+    setEditMode,
   ]);
 
   return (
@@ -46,4 +60,4 @@ export default function ProjectsProvider({ children }) {
 
 ProjectsProvider.propTypes = {
   children: PropTypes.node.isRequired,
-}
+};
