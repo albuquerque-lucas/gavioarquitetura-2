@@ -3,24 +3,61 @@ import { useMemo, useState } from "react";
 import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [editMode, setEditMode] = useState({
+    image_url: false,
+    active_carousel: false,
+    name: false,
+    category: false,
+    area: false,
+    address: false,
+    description: false,
+  });
+  const [projectFormData, setProjectFormData] = useState({
+    image_url: "",
+    active_carousel: false,
+    name: "",
+    category_id: "0",
+    area: "",
+    date: "",
+    address: "",
+    description: "",
+  });
   const [projectList, setProjectList] = useState([]);
   const [projectDetails, setProjectDetails] = useState({});
+  const [editedDetails, setEditedDetails] = useState({});
 
-  const context = useMemo(() => ({
-    isLoading,
-    setIsLoading,
+  const context = useMemo(() => {
+    const handleChange = (field, value) => {
+      setEditedDetails({
+        ...editedDetails,
+        [field]: value,
+      });
+    };
+
+    return {
+      projectList,
+      setProjectList,
+      projectDetails,
+      setProjectDetails,
+      editedDetails,
+      setEditedDetails,
+      handleChange,
+      editMode,
+      setEditMode,
+      projectFormData,
+      setProjectFormData,
+    };
+  }, [
     projectList,
     setProjectList,
     projectDetails,
     setProjectDetails,
-  }), [
-    projectList,
-    setProjectList,
-    isLoading,
-    setIsLoading,
-    projectDetails,
-    setProjectDetails,
+    editedDetails,
+    setEditedDetails,
+    editMode,
+    setEditMode,
+    projectFormData,
+    setProjectFormData,
   ]);
 
   return (
@@ -32,4 +69,4 @@ export default function ProjectsProvider({ children }) {
 
 ProjectsProvider.propTypes = {
   children: PropTypes.node.isRequired,
-}
+};

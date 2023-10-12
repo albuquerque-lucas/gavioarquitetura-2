@@ -1,0 +1,9 @@
+.pst-head-cell {
+  width: 15rem;
+}
+
+.pst-body-cell {
+  display: flex;
+  justify-content: space-between;
+  width: 20rem;
+}

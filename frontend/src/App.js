@@ -8,6 +8,7 @@ import Home from './components/admin/HomePage';
 import Layout from './components/admin/Layout';
 import Categories from './components/admin/Categories';
 import ProjectShow from './components/admin/ProjectShow';
+import NewProject from './components/admin/NewProject';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/projects/:id" element={<ProjectShow />} />
+            <Route path="/projects/new-project" element={<NewProject />} />
             <Route path="/categories" element={<Categories />} />
           </Routes>
         </Body>

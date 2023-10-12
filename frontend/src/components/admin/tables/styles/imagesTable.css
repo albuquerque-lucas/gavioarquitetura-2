@@ -1,0 +1,25 @@
+.table-images-container {
+  display: flex;
+}
+
+.table-images-container table td {
+  min-width: 10rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-images-container table img{
+  max-height: 8rem;
+}
+
+.images-id-cell {
+  width: 5rem;
+}
+
+.images-btn-cell {
+  width: 7rem;
+}
+
+.images-btn-cell button {
+  margin: 0 0.25rem;
+}

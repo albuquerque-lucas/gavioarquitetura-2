@@ -38,7 +38,6 @@ class ProjectRepository implements IReadAndWrite
             ]);
             return $this->response;
         }
-
         $this->response->setAttributes(200, $project);
         return $this->response;
     }
@@ -80,15 +79,18 @@ class ProjectRepository implements IReadAndWrite
             ]);
             return $this->response;
         }
-
+        
         $isDeleted = $project->delete();
         if (!$isDeleted) {
             $this->response->setAttributes(500, (object)[
-                'message' => 'Error deleting project'
+                'message' => 'Error deleting project',
+                'projects' => []
             ]);
         } else {
+            $list = Project::all();
             $this->response->setAttributes(200, (object)[
-                'message' => 'Project deleted successfully'
+                'message' => 'Project deleted successfully',
+                'projects' => $list
             ]);
         }
 
