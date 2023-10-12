@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState } from "react";
 import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
-  const [isLoading, setIsLoading] = useState(false);
   const [editMode, setEditMode] = useState({
     image_url: false,
     active_carousel: false,
@@ -12,6 +11,16 @@ export default function ProjectsProvider({ children }) {
     area: false,
     address: false,
     description: false,
+  });
+  const [projectFormData, setProjectFormData] = useState({
+    image_url: "",
+    active_carousel: false,
+    name: "",
+    category_id: "0",
+    area: "",
+    date: "",
+    address: "",
+    description: "",
   });
   const [projectList, setProjectList] = useState([]);
   const [projectDetails, setProjectDetails] = useState({});
@@ -26,8 +35,6 @@ export default function ProjectsProvider({ children }) {
     };
 
     return {
-      isLoading,
-      setIsLoading,
       projectList,
       setProjectList,
       projectDetails,
@@ -37,18 +44,20 @@ export default function ProjectsProvider({ children }) {
       handleChange,
       editMode,
       setEditMode,
+      projectFormData,
+      setProjectFormData,
     };
   }, [
     projectList,
     setProjectList,
-    isLoading,
-    setIsLoading,
     projectDetails,
     setProjectDetails,
     editedDetails,
     setEditedDetails,
     editMode,
     setEditMode,
+    projectFormData,
+    setProjectFormData,
   ]);
 
   return (

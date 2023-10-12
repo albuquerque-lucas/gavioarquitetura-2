@@ -1,48 +1,158 @@
+import React, { useContext, useEffect } from "react";
+import { fetchCategoriesList } from "../../../utils/CategoriesFetch";
+import CategoriesContext from "../../../context/CategoriesContext/CategoriesContext";
+import ProjectsContext from "../../../context/ProjectsContext/ProjectsContext";
+
 export default function ProjectForm() {
+  const { categoriesList, setCategoriesList } = useContext(CategoriesContext);
+  const { projectFormData, setProjectFormData } = useContext(ProjectsContext);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setProjectFormData({
+      ...projectFormData,
+      [name]: value,
+    });
+  };
+
+  const handleFileChange = (e) => {
+    const { files } = e.target;
+    setProjectFormData({
+      ...projectFormData,
+      image_url: files[0].name,
+    });
+  }
+
+  const handleCheckboxChange = (e) => {
+    const { checked } = e.target;
+
+    setProjectFormData({
+      ...projectFormData,
+      active_carousel: checked,
+    });
+  };
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    console.log(projectFormData);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchCategoriesList();
+        setCategoriesList(data);
+      } catch (error) {
+        console.error('Erro ao buscar categorias:', error);
+        setCategoriesList([]);
+      }
+    };
+    fetchData();
+  }, [setCategoriesList]);
   return (
-<form className="p-5 w-50 rounded mb-5 border border-dark d-flex flex-column">
-  <select class="form-select mb-1" aria-label="Default select example">
-    <option selected>Selecione uma categoria</option>
-    <option value="1">Residencial</option>
-    <option value="2">Interiores</option>
-    <option value="3">Comercial</option>
-  </select>
-  <div class="mb-1">
-    <label for="input-project-name" class="form-label">Nome do projeto</label>
-    <input type="text" class="form-control" id="input-project-name"/>
-  </div>
-  <div className="mb-1">
-    <label for="input-project-address" class="form-label">Localização</label>
-    <input type="text" class="form-control" id="input-project-address" />
-  </div>
-  <div class="mb-1 d-flex">
-    <div className="area-container mx-1 w-50">
-      <label for="input-project-area" class="form-label">Area</label>
-      <input type="text" class="form-control" id="input-project-area" />
-    </div>
-    <div className="date-container mx-1 w-50">
-      <label for="input-project-date" class="form-label">Data</label>
-      <input type="text" class="form-control" id="input-project-date" />
-    </div>
-  </div>
-  <div class="mb-1">
-    <label for="input-project-description" class="form-label">Descrição</label>
-    <input type="text" class="form-control" id="input-project-description" />
-  </div>
-  <div class="mb-1 form-check">
-    <label class="form-check-label" for="exampleCheck1">Exibir na pagina principal</label>
-    <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-  </div>
-  <div class="mb-3">
-    <label for="formFile" class="form-label">Escolher arquivo de capa</label>
-    <input class="form-control" type="file" id="formFile" />
-  </div>
-  <button
-  type="submit"
-  class="btn btn-dark mt-3 align-self-center w-50"
-  >
-    Submit
-    </button>
-</form>
+    <form
+    className="p-5 w-50 rounded mb-5 border border-dark d-flex flex-column"
+    onSubmit={(e) => submitForm(e)}
+    >
+      <select
+        className="form-select mb-3"
+        name="category_id"
+        value={ projectFormData.category_id }
+        onChange={(e) => handleChange(e)}
+      >
+          <option defaultValue>Selecione uma categoria</option>
+        {
+          categoriesList.map((category) => (
+            <option key={category.id} value={category.id}>{category.name}</option>
+          )
+          )
+        }
+      </select>
+      <div className="mb-1">
+        <label htmlFor="input-project-name" className="form-label">Nome do projeto</label>
+        <input
+          type="text"
+          className="form-control"
+          id="input-project-name"
+          name="name"
+          value={ projectFormData.name }
+          onChange={(e) => handleChange(e)}
+        />
+      </div>
+      <div className="mb-1">
+        <label htmlFor="input-project-address" className="form-label">Localização</label>
+        <input
+          type="text"
+          className="form-control"
+          id="input-project-address"
+          name="address"
+          value={ projectFormData.address }
+          onChange={(e) => handleChange(e)}
+        />
+      </div>
+      <div className="mb-1 d-flex">
+        <div className="area-container mx-1 w-50">
+          <label htmlFor="input-project-area" className="form-label">Área</label>
+          <input
+            type="text"
+            className="form-control"
+            id="input-project-area"
+            name="area"
+            value={ projectFormData.area }
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div className="date-container mx-1 w-50">
+          <label htmlFor="input-project-date" className="form-label">Data</label>
+          <input
+            type="text"
+            className="form-control"
+            id="input-project-date"
+            name="date"
+            value={ projectFormData.date }
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+      </div>
+      <div className="mb-1">
+        <label htmlFor="input-project-description" className="form-label">Descrição</label>
+        <input
+          type="text"
+          className="form-control"
+          id="input-project-description"
+          name="description"
+          value={ projectFormData.description }
+          onChange={(e) => handleChange(e)}
+        />
+      </div>
+      <div className="mb-1 form-check">
+        <label className="form-check-label fw-bold" htmlFor="input-project-active-carousel">Exibir na página principal</label>
+        <input
+          type="checkbox"
+          className="form-check-input border border-dark"
+          id="input-project-active-carousel"
+          checked={projectFormData.active_carousel}
+          onChange={handleCheckboxChange}
+        />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="formFile" className="form-label">Escolher arquivo de capa</label>
+        <input
+          className="form-control"
+          type="file"
+          id="formFile"
+          name="image_url"
+          files={ projectFormData.image_url }
+          onChange={(e) => handleFileChange(e)}
+        />
+      </div>
+      <button
+        type="submit"
+        className="btn btn-dark mt-3 align-self-center w-50"
+      >
+        Submit
+      </button>
+    </form>
   );
 }

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useContext } from 'react';
 import './styles/style.css';
 import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../context/ProjectsContext/ProjectsContext';
+import GeneralDataContext from '../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProject } from '../../../utils/ProjectsFetch';
 import Loading from '../cards/Loading';
 import noImage from '../../../images/projects/no-image.jpg';
@@ -10,7 +11,8 @@ import ProjectShowTable from '../tables/ProjectShowTable';
 
 export default function ProjectShow() {
   const { id } = useParams();
-  const { setProjectDetails, isLoading, setIsLoading } = useContext(ProjectsContext);
+  const { setProjectDetails } = useContext(ProjectsContext);
+  const { isLoading, setIsLoading } = useContext(GeneralDataContext);
 
   const fetchProjectDetails = useCallback(async () => {
     try {
