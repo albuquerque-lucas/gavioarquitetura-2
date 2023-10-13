@@ -22,9 +22,20 @@ class ProjectsController extends Controller
 
     public function store(ProjectRequest $request)
     {
-        $data = $request->all();
+        $requestData = $request->all();
+        $data = [
+            'name' => $requestData['name'],
+            'description' => $requestData['description'],
+            'area' => $requestData['area'],
+            'year' => $requestData['year'],
+            'address' => $requestData['address'],
+            'image_url' => $request->file('image_url')->store('projects/cover', 'public'),
+            'category_id' => $requestData['category_id'],
+            'active_carousel' => $requestData['active_carousel'],
+        ];
         $res = $this->repository->create($data);
         return response()->json($res->data(), $res->status());
+        // return response()->json($data);
     }
 
     public function show(int $id)
