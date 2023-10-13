@@ -10,7 +10,7 @@ const updateSVG = <FontAwesomeIcon icon={ faPenToSquare } />;
 
 export default function ProjectItem(props) {
   const { project } = props;
-  const { id, name, area } = project;
+  const { id, name, area, image_url } = project;
   const { setProjectList } = useContext(ProjectsContext);
 
   const handleDelete = async (id) => {
@@ -26,18 +26,21 @@ export default function ProjectItem(props) {
 
   return (
     <tr className='table-cell'>
-    <td>{ id }</td>
-    <td>{ name }</td>
-    <td>{ area }</td>
-    <td className='table-img-container'>
-      <img src={ noImage } alt="" />
-    </td>
-    <td className='table-btn-container'>
-      <Link to={`/projects/${ project.id }`}>
-        <button className="btn btn-dark">{ updateSVG }</button>
-      </Link>
-      <button className="btn btn-dark" onClick={() => handleDelete(project.id)}>{ deleteSVG }</button>
-    </td>
-  </tr>
-  )
+      <td>{ id }</td>
+      <td>{ name }</td>
+      <td>{ area }</td>
+      <td className='table-img-container'>
+        <img
+          src={image_url !== null ? `http://localhost/storage/${image_url}` : noImage}
+          alt=""
+        />
+      </td>
+      <td className='table-btn-container'>
+        <Link to={`/projects/${ project.id }`}>
+          <button className="btn btn-dark">{ updateSVG }</button>
+        </Link>
+        <button className="btn btn-dark" onClick={() => handleDelete(project.id)}>{ deleteSVG }</button>
+      </td>
+    </tr>
+  );
 }

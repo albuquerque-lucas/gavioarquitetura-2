@@ -20,7 +20,6 @@ class ProjectsSeeder extends Seeder
             'area' => 100,
             'year' => 2022,
             'address' => 'Endereço do Projeto 1',
-            'image_url' => 'no-image.jpg',
         ]);
 
         $project2 = Project::create([
@@ -31,7 +30,6 @@ class ProjectsSeeder extends Seeder
             'area' => 300,
             'year' => 2023,
             'address' => 'Endereço do Projeto 2',
-            'image_url' => 'no-image.jpg',
         ]);
 
         $project3 = Project::create([
@@ -42,7 +40,6 @@ class ProjectsSeeder extends Seeder
             'area' => 200,
             'year' => 2024,
             'address' => 'Endereço do Projeto 3',
-            'image_url' => 'no-image.jpg',
         ]);
     }
 }
