@@ -52,8 +52,9 @@ export default function ProjectForm() {
   }, [setCategoriesList]);
   return (
     <form
-    className="p-5 w-50 rounded mb-5 border border-dark d-flex flex-column"
-    onSubmit={(e) => submitForm(e)}
+      className="p-5 w-50 rounded mb-5 border border-dark d-flex flex-column"
+      onSubmit={(e) => submitForm(e)}
+      enctype='multipart/form-data'
     >
       <select
         className="form-select mb-3"
