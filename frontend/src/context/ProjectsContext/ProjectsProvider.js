@@ -13,14 +13,14 @@ export default function ProjectsProvider({ children }) {
     description: false,
   });
   const [projectFormData, setProjectFormData] = useState({
-    image_url: "",
-    active_carousel: false,
     name: "",
-    category_id: "0",
-    area: "",
-    date: "",
-    address: "",
     description: "",
+    area: "",
+    year: "",
+    address: "",
+    image_url: "",
+    category_id: "0",
+    active_carousel: false,
   });
   const [projectList, setProjectList] = useState([]);
   const [projectDetails, setProjectDetails] = useState({});

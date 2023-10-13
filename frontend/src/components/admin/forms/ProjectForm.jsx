@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from "react";
+import axios from "axios";
 import { fetchCategoriesList } from "../../../utils/CategoriesFetch";
+import { fetchNewProject } from "../../../utils/ProjectsFetch";
 import CategoriesContext from "../../../context/CategoriesContext/CategoriesContext";
 import ProjectsContext from "../../../context/ProjectsContext/ProjectsContext";
 
@@ -18,9 +20,10 @@ export default function ProjectForm() {
 
   const handleFileChange = (e) => {
     const { files } = e.target;
+    console.log(files);
     setProjectFormData({
       ...projectFormData,
-      image_url: files[0].name,
+      image_url: files[0],
     });
   }
 
@@ -33,9 +36,16 @@ export default function ProjectForm() {
     });
   };
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
-    console.log(projectFormData);
+    try {
+      const data = await fetchNewProject(projectFormData);
+
+      console.log('Projeto enviado com sucesso!');
+      console.log(data);
+    } catch (error) {
+      console.error('Erro ao enviar o projeto:', error);
+    }
   };
 
   useEffect(() => {
@@ -54,7 +64,8 @@ export default function ProjectForm() {
     <form
       className="p-5 w-50 rounded mb-5 border border-dark d-flex flex-column"
       onSubmit={(e) => submitForm(e)}
-      enctype='multipart/form-data'
+      encType='multipart/form-data'
+      method="POST"
     >
       <select
         className="form-select mb-3"
@@ -109,9 +120,9 @@ export default function ProjectForm() {
           <input
             type="text"
             className="form-control"
-            id="input-project-date"
-            name="date"
-            value={ projectFormData.date }
+            id="input-project-year"
+            name="year"
+            value={ projectFormData.year }
             onChange={(e) => handleChange(e)}
           />
         </div>
