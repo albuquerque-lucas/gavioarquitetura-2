@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\IReadAndWrite;
 use App\Models\Project;
 use App\Models\ServiceResponse;
+use Storage;
 
 class ProjectRepository implements IReadAndWrite
 {
@@ -64,9 +65,19 @@ class ProjectRepository implements IReadAndWrite
             ]);
             return $this->response;
         }
-
-        $project->update($data);
-        $this->response->setAttributes(200, $project);
+    
+        $project->fill($data);
+    
+        if ($project->isDirty()) {
+            $project->save();
+            $this->response->setAttributes(200, $project);
+        } else {
+            $this->response->setAttributes(200, (object)[
+                'message' => 'No changes to apply',
+                'project' => $project
+            ]);
+        }
+    
         return $this->response;
     }
 
@@ -75,22 +86,23 @@ class ProjectRepository implements IReadAndWrite
         $project = Project::find($id);
         if (!$project) {
             $this->response->setAttributes(404, (object)[
-                'message' => 'Project not found'
+                'message' => 'Project not found',
+                'deleted' => null,
             ]);
             return $this->response;
         }
         
+        Storage::disk('public')->delete($project->image_url);
         $isDeleted = $project->delete();
         if (!$isDeleted) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'Error deleting project',
-                'projects' => []
+                'deleted' => $isDeleted,
             ]);
         } else {
-            $list = Project::all();
             $this->response->setAttributes(200, (object)[
                 'message' => 'Project deleted successfully',
-                'projects' => $list
+                'deleted' => $isDeleted,
             ]);
         }
 

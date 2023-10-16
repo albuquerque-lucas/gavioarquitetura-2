@@ -5,5 +5,5 @@
 .pst-body-cell {
   display: flex;
   justify-content: space-between;
-  width: 20rem;
+  max-width: 20rem;
 }

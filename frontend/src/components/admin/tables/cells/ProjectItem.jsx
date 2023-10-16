@@ -3,6 +3,7 @@ import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons"
+import { deleteProject } from '../../../../utils/ProjectsFetch';
 import noImage from '../../../../images/projects/no-image.jpg';
 
 const deleteSVG = <FontAwesomeIcon icon={ faTrash } />;
@@ -14,14 +15,14 @@ export default function ProjectItem(props) {
   const { setProjectList } = useContext(ProjectsContext);
 
   const handleDelete = async (id) => {
-    const response = await fetch(`http://127.0.0.1/api/projects/${id}`, {
-      method: 'DELETE',
-    });
-    const data = await response.json();
-    if (data.projects) {
-      setProjectList(data.projects);
+    try {
+      const data = await deleteProject(id);
+      if (data.deleted) {
+        setProjectList((prevState) => prevState.filter((project) => project.id !== id));
+      }
+    } catch (error) {
+      console.error('Erro ao deletar o projeto:', error);
     }
-    console.log(data.message, id);
   };
 
   return (

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\ProjectRepository;
 use App\Http\Requests\ProjectRequest;
+use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
@@ -35,7 +36,6 @@ class ProjectsController extends Controller
         ];
         $res = $this->repository->create($data);
         return response()->json($res->data(), $res->status());
-        // return response()->json($data);
     }
 
     public function show(int $id)
@@ -44,7 +44,7 @@ class ProjectsController extends Controller
         return response()->json($res->data(), $res->status());
     }
 
-    public function update(ProjectRequest $request, int $id)
+    public function update(Request $request, int $id)
     {
         $data = $request->all();
         $res = $this->repository->update($id, $data);

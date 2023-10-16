@@ -5,6 +5,13 @@
   width: 13rem;
 }
 
+.manageable-card:hover {
+  border: 3px solid black;
+  border-radius: 15px;
+  height: 8rem;
+  width: 13rem;
+}
+
 .manageable-card-image-container {
   align-items: center;
   height: 60%;

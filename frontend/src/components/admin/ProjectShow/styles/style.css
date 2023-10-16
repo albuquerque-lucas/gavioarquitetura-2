@@ -8,9 +8,21 @@
   margin: 1rem 0;
 }
 
+.project-image-container img {
+  max-height: 20rem;
+}
+
 .project-details-cell {
   align-items: center;
   display: flex;
   justify-content: space-evenly;
 }
 
+.project-pictures-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 5rem;
+  min-width: 50%;
+  max-width: 75%;
+}

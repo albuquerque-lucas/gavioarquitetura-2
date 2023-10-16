@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import ProjectsContext from '../../../context/ProjectsContext/ProjectsContext';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPenToSquare, faCheck } from "@fortawesome/free-solid-svg-icons"
+import { saveProject } from '../../../utils/ProjectsFetch';
 import './styles/projectShowTable.css';
 
 const cancelSVG = <FontAwesomeIcon icon={ faXmark } />;
@@ -11,6 +12,7 @@ const checkSVG = <FontAwesomeIcon icon={ faCheck } />;
 export default function ProjectShowTable() {
   const {
     projectDetails,
+    setProjectDetails,
     editedDetails,
     setEditedDetails,
     handleChange,
@@ -26,6 +28,23 @@ export default function ProjectShowTable() {
     });
     console.log(field, editMode[field]);
   }
+
+  const handleUpdate = async (event, field) => {
+    event.preventDefault();
+    try {
+      const updatedProject = await saveProject(editedDetails, projectDetails.id);
+      setProjectDetails(updatedProject);
+      console.log('Projeto atualizado com sucesso:', updatedProject);
+    } catch (error) {
+      console.error('Erro ao atualizar projeto:', error);
+    }
+  }
+
+  // const handleUpdate = (event, field) => {
+  //   event.preventDefault();
+  //   const data = await saveProject()
+  //   console.log('clicado!', field);
+  // }
 
   useEffect(() => {
     setEditedDetails(projectDetails);
@@ -53,13 +72,23 @@ export default function ProjectShowTable() {
                 <input
                   type="text"
                   placeholder="Image URL"
-                  value={editedDetails.image_url}
+                  value={editedDetails.image_url || ''}
                   onChange={(e) => handleChange('image_url', e.target.value)}
                 />
             </td>
             <td className='p-2'>
-              <button className='btn btn-sm btn-dark mx-1'>{checkSVG}</button>
-              <button className='btn btn-sm btn-dark mx-1'>{cancelSVG}</button>
+              <button
+              className='btn btn-sm btn-dark mx-1'
+              onClick={(e) => handleUpdate(e, 'image_url')}
+              >
+                { checkSVG }
+              </button>
+              <button
+              className='btn btn-sm btn-dark mx-1'
+              onClick={(event) => handleEditMode(event, 'image_url')}
+              >
+                { cancelSVG }
+              </button>
             </td>
             </>
           )}
@@ -72,7 +101,7 @@ export default function ProjectShowTable() {
                 className='btn btn-sm btn-dark mx-1'
                 onClick={(event) => handleEditMode(event, 'active_carousel')}
               >
-                {updateSVG}
+                { updateSVG }
               </button>
             </td>
             {editMode.active_carousel && (
@@ -81,14 +110,24 @@ export default function ProjectShowTable() {
                   <input
                     type="text"
                     placeholder="Active Carousel"
-                    value={editedDetails.active_carousel}
+                    value={ editedDetails.active_carousel }
                     onChange={(e) => handleChange('active_carousel', e.target.value)}
                   />
 
                 </td>
                 <td>
-                  <button className='btn btn-sm btn-dark mx-1'>{checkSVG}</button>
-                  <button className='btn btn-sm btn-dark mx-1'>{cancelSVG}</button>
+                  <button
+                  className='btn btn-sm btn-dark mx-1'
+                  onClick={(e) => handleUpdate(e, 'active_carousel')}
+                  >
+                    { checkSVG }
+                  </button>
+                  <button
+                  className='btn btn-sm btn-dark mx-1'
+                  onClick={(event) => handleEditMode(event, 'active_carousel')}
+                  >
+                    { cancelSVG }
+                  </button>
                 </td>
               </>
               )}
@@ -101,7 +140,7 @@ export default function ProjectShowTable() {
                 className='btn btn-sm btn-dark mx-1'
                 onClick={(event) => handleEditMode(event, 'name')}
               >
-                {updateSVG}
+                { updateSVG }
               </button>
             </td>
             {editMode.name && (
@@ -110,13 +149,23 @@ export default function ProjectShowTable() {
                   <input
                     type="text"
                     placeholder="Name"
-                    value={editedDetails.name}
+                    value={ editedDetails.name }
                     onChange={(e) => handleChange('name', e.target.value)}
                   />
                 </td>
             <td>
-              <button className='btn btn-sm btn-dark mx-1'>{checkSVG}</button>
-              <button className='btn btn-sm btn-dark mx-1'>{cancelSVG}</button>
+              <button
+              className='btn btn-sm btn-dark mx-1'
+              onClick={(e) => handleUpdate(e, 'name')}
+              >
+                { checkSVG }
+              </button>
+              <button
+              className='btn btn-sm btn-dark mx-1'
+              onClick={(event) => handleEditMode(event, 'name')}
+              >
+                { cancelSVG }
+              </button>
             </td>
               </>
             )}
@@ -143,8 +192,18 @@ export default function ProjectShowTable() {
                   />
                 </td>
                 <td>
-                  <button className='btn btn-sm btn-dark mx-1'>{checkSVG}</button>
-                  <button className='btn btn-sm btn-dark mx-1'>{cancelSVG}</button>
+                  <button
+                  className='btn btn-sm btn-dark mx-1'
+                  onClick={(e) => handleUpdate(e, 'category')}
+                  >
+                    {checkSVG}
+                  </button>
+                  <button
+                  className='btn btn-sm btn-dark mx-1'
+                  onClick={(event) => handleEditMode(event, 'category')}
+                  >
+                    {cancelSVG}
+                  </button>
                 </td>
               </>
             )}
@@ -172,8 +231,18 @@ export default function ProjectShowTable() {
                   />
                 </td>
                 <td>
-                  <button className='btn btn-sm btn-dark mx-1'>{checkSVG}</button>
-                  <button className='btn btn-sm btn-dark mx-1'>{cancelSVG}</button>
+                  <button
+                  className='btn btn-sm btn-dark mx-1'
+                  onClick={(e) => handleUpdate(e, 'area')}
+                  >
+                    {checkSVG}
+                  </button>
+                  <button
+                  className='btn btn-sm btn-dark mx-1'
+                  onClick={(event) => handleEditMode(event, 'area')}
+                  >
+                    {cancelSVG}
+                  </button>
                 </td>
               </>
             )}
@@ -202,8 +271,18 @@ export default function ProjectShowTable() {
                     />
                   </td>
                   <td>
-                    <button className='btn btn-sm btn-dark mx-1'>{checkSVG}</button>
-                    <button className='btn btn-sm btn-dark mx-1'>{cancelSVG}</button>
+                    <button
+                    className='btn btn-sm btn-dark mx-1'
+                    onClick={(e) => handleUpdate(e, 'address')}
+                    >
+                      {checkSVG}
+                    </button>
+                    <button
+                    className='btn btn-sm btn-dark mx-1'
+                    onClick={(event) => handleEditMode(event, 'address')}
+                    >
+                      {cancelSVG}
+                    </button>
                   </td>
                 </>
               )}
@@ -232,8 +311,18 @@ export default function ProjectShowTable() {
                   />
                 </td>
                 <td>
-                  <button className='btn btn-sm btn-dark mx-1'>{checkSVG}</button>
-                  <button className='btn btn-sm btn-dark mx-1'>{cancelSVG}</button>
+                  <button
+                  className='btn btn-sm btn-dark mx-1'
+                  onClick={(e) => handleUpdate(e, 'description')}
+                  >
+                    {checkSVG}
+                  </button>
+                  <button
+                  className='btn btn-sm btn-dark mx-1'
+                  onClick={(event) => handleEditMode(event, 'description')}
+                  >
+                    {cancelSVG}
+                  </button>
                 </td>
               </>
               )}
