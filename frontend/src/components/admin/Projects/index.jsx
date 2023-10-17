@@ -7,7 +7,7 @@ export default function Projects() {
   return (
     <>
       <div className="text-center my-5">
-        <h1>Project List</h1>
+        <h1>Projetos</h1>
       </div>
       <div className="d-flex justify-content-center">
         <div className="project-list-menu bg-dark w-75">

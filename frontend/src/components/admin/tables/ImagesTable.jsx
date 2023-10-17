@@ -21,7 +21,7 @@ export default function ImagesTable({ images }) {
           </tr>
         </thead>
         <tbody>
-          { images.map((image, index) => (
+          { images && images.map((image, index) => (
             <tr key={ index }>
               <td className="images-id-cell">{ image.id }</td>
               <td>

@@ -9,6 +9,7 @@ import noImage from '../../../images/projects/no-image.jpg';
 import ImagesTable from '../tables/ImagesTable';
 import ProjectShowTable from '../tables/ProjectShowTable';
 import ProjectPicturesForm from '../forms/ProjectPicturesForm';
+import { Link } from 'react-router-dom';
 
 export default function ProjectShow() {
   const { id } = useParams();
@@ -30,16 +31,27 @@ export default function ProjectShow() {
   useEffect(() => {
     fetchProjectDetails();
   }, [fetchProjectDetails]);
-
+  console.log(projectDetails.images);
+  const isImagesEmpty = Array.isArray(projectDetails.images) && projectDetails.images.length === 0;
   return (
+    
     <div className="project-show-container">
+      <div className="d-flex justify-content-center w-100">
+        <div className="project-list-menu bg-dark w-75">
+          <Link to="/projects" className="btn btn-dark">
+            Voltar
+          </Link>
+        </div>
+      </div>
       {isLoading && <Loading />}
       
       {!isLoading && (
         <div className="container-div text-center my-5">
-          <h1>Project Show</h1>
+          <h1>{ projectDetails.name }</h1>
         </div>
       )}
+
+
 
       {!isLoading && (
         <>
@@ -56,10 +68,10 @@ export default function ProjectShow() {
           </div>
 
           <div className="project-pictures-container">
-            { projectDetails.images ? (
+            { !isImagesEmpty ? (
               <ImagesTable images={ projectDetails.images } />
             ) : (
-              <h1>Nenhuma imagem cadastrada</h1>
+              <h1 className='text-center my-3'>Nenhuma imagem cadastrada</h1>
             )}
           </div>
         </>

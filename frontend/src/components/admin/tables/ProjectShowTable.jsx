@@ -34,6 +34,10 @@ export default function ProjectShowTable() {
     try {
       const updatedProject = await saveProject(editedDetails, projectDetails.id);
       setProjectDetails(updatedProject);
+      setEditMode({
+        ...editMode,
+        [field]: !editMode[field],
+      });
       console.log('Projeto atualizado com sucesso:', updatedProject);
     } catch (error) {
       console.error('Erro ao atualizar projeto:', error);

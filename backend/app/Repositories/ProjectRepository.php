@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\IReadAndWrite;
 use App\Models\Project;
 use App\Models\ServiceResponse;
+use DB;
 use Storage;
 
 class ProjectRepository implements IReadAndWrite
@@ -32,15 +33,18 @@ class ProjectRepository implements IReadAndWrite
 
     public function getById(int $id): ServiceResponse
     {
-        $project = Project::with('category', 'images')->find($id);
-        if (!$project) {
-            $this->response->setAttributes(404, (object)[
-                'message' => 'Project not found'
-            ]);
+        return DB::transaction(function () use ($id) {
+            $project = Project::with('category', 'images')->find($id);
+            if (!$project) {
+                $this->response->setAttributes(404, (object)[
+                    'message' => 'Project not found'
+                ]);
+                return $this->response;
+            }
+    
+            $this->response->setAttributes(200, $project);
             return $this->response;
-        }
-        $this->response->setAttributes(200, $project);
-        return $this->response;
+        });
     }
 
     public function create(array $data): ServiceResponse
@@ -91,8 +95,11 @@ class ProjectRepository implements IReadAndWrite
             ]);
             return $this->response;
         }
+
+        if ($project->image_url) {
+            Storage::disk('public')->delete($project->image_url);
+        }
         
-        Storage::disk('public')->delete($project->image_url);
         $isDeleted = $project->delete();
         if (!$isDeleted) {
             $this->response->setAttributes(500, (object)[
