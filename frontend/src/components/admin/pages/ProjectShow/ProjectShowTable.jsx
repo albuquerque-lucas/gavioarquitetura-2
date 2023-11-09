@@ -48,7 +48,7 @@ export default function ProjectShowTable() {
     setEditedDetails(projectDetails);
   }, [projectDetails]);
 
-  const renderField = (label, value, field, placeholder) => (
+  const renderField = (label, value, field, placeholder, type='text') => (
     <div className="row">
       <div className="col-6 p-3 d-flex align-items-center info-edit-col">
         <span className='col-3'>
@@ -68,7 +68,7 @@ export default function ProjectShowTable() {
       <div className="col p-2 input-edit-col">
         <div className="p-2 d-flex justify-content-center">
           <input
-            type="text"
+            type={type}
             placeholder={placeholder}
             value={editedDetails[field] || ''}
             onChange={(e) => handleChange(field, e.target.value)}
@@ -95,14 +95,13 @@ export default function ProjectShowTable() {
     <form action="" id='edit-project-form'>
       <div className="container">
         {renderField('Nome', projectDetails.name, 'name', 'Name')}
-        {renderField('Imagem', projectDetails.name, 'image_url', 'Image URL')}
+        {renderField('Imagem', projectDetails.name, 'image_url', 'Image URL', 'file')}
         {renderField('Area', projectDetails.area, 'area', 'Area')}
         {renderField('Data', projectDetails.year, 'year', 'Data')}
-        {renderField('Categoria', projectDetails.category.name, 'category.name', 'Categoria')}
+        {/* {renderField('Categoria', projectDetails.category.name, 'category.name', 'Categoria')} */}
         {renderField('Localizacao', projectDetails.address, 'address', 'Localizacao')}
         {renderField('Descricao', projectDetails.description, 'description', 'Descricao')}
         {renderField('Exibir na pagina inicial', projectDetails.active_carousel, 'active_carousel', 'Active Carousel')}
-        {/* Adicione mais campos conforme necessário */}
       </div>
     </form>
   );

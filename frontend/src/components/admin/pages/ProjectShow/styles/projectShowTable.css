@@ -1,14 +1,14 @@
 #edit-project-form {
-  border: 2px solid black;
+  padding: 1rem;
+  border: 2px solid rgb(214, 214, 214);
+  border-radius: 25px;
   min-height: 30rem;
 }
 
 .info-edit-col {
-  border: 2px solid black;
 }
 
 .input-edit-col {
-  border: 2px solid black;
   width: 100%;
 }
 
