@@ -1,4 +1,18 @@
-.pst-head-cell {
+#edit-project-form {
+  border: 2px solid black;
+  min-height: 30rem;
+}
+
+.info-edit-col {
+  border: 2px solid black;
+}
+
+.input-edit-col {
+  border: 2px solid black;
+  width: 100%;
+}
+
+/* .pst-head-cell {
   width: 15rem;
 }
 
@@ -6,4 +20,4 @@
   display: flex;
   justify-content: space-between;
   width: 20rem;
-}
+} */
