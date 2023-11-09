@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useContext } from 'react';
 import './styles/style.css';
 import { useParams } from 'react-router-dom';
-import ProjectsContext from '../../../context/ProjectsContext/ProjectsContext';
-import GeneralDataContext from '../../../context/GeneralDataContext/GeneralDataContext';
-import { fetchProject } from '../../../utils/ProjectsFetch';
-import Loading from '../cards/Loading';
-import noImage from '../../../images/projects/no-image.jpg';
-import ImagesTable from '../tables/ImagesTable';
-import ProjectShowTable from '../tables/ProjectShowTable';
-import ProjectPicturesForm from '../forms/ProjectPicturesForm';
+import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
+import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
+import { fetchProject } from '../../../../utils/ProjectsFetch';
+import Loading from '../../cards/Loading';
+import noImage from '../../../../images/projects/no-image.jpg';
+import ImagesTable from './ImagesTable';
+import ProjectShowTable from './ProjectShowTable';
+import ProjectPicturesForm from './ProjectPicturesForm';
 import { Link } from 'react-router-dom';
 
 export default function ProjectShow() {

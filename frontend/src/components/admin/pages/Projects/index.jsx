@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Importe o Link
-import ProjectsTable from '../tables/ProjectsTable';
+import ProjectsTable from './ProjectsTable';
 import './styles/style.css';
 
 export default function Projects() {

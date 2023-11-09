@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
-import './style/style.css';
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
+import './styles/ManageableCard.css';
 
-const projectSVG = <FontAwesomeIcon icon={faBriefcase} />
+// const projectSVG = <FontAwesomeIcon icon={faBriefcase} />
 
 export default function ManageableCard(props) {
   return (

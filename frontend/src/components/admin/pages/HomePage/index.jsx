@@ -1,4 +1,4 @@
-import ManageableCard from "../cards/ManageableCard/ManageableCard";
+import ManageableCard from "./ManageableCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBriefcase, faChartBar } from "@fortawesome/free-solid-svg-icons";
 import './styles/style.css';

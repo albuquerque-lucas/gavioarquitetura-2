@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import ProjectsContext from '../../../context/ProjectsContext/ProjectsContext';
+import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPenToSquare, faCheck } from "@fortawesome/free-solid-svg-icons"
-import { saveProject } from '../../../utils/ProjectsFetch';
+import { saveProject } from '../../../../utils/ProjectsFetch';
 import './styles/projectShowTable.css';
 
 const cancelSVG = <FontAwesomeIcon icon={ faXmark } />;

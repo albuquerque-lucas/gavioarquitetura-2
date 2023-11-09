@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenSquare } from '@fortawesome/free-solid-svg-icons';
-import noImage from '../../../images/projects/no-image.jpg';
+import noImage from '../../../../images/projects/no-image.jpg';
 import './styles/imagesTable.css';
 
 const deleteSVG = <FontAwesomeIcon icon={faTrash} />;

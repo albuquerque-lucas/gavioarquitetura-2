@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ProjectForm from "../forms/ProjectForm";
+import ProjectForm from "./ProjectForm";
 
 export default function NewProject() {
   return (

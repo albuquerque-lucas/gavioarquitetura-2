@@ -1,13 +1,14 @@
 import React, { useContext, useEffect } from "react";
-import axios from "axios";
-import { fetchCategoriesList } from "../../../utils/CategoriesFetch";
-import { saveProject } from "../../../utils/ProjectsFetch";
-import CategoriesContext from "../../../context/CategoriesContext/CategoriesContext";
-import ProjectsContext from "../../../context/ProjectsContext/ProjectsContext";
+import { useNavigate } from "react-router-dom";
+import { fetchCategoriesList } from "../../../../utils/CategoriesFetch";
+import { saveProject } from "../../../../utils/ProjectsFetch";
+import CategoriesContext from "../../../../context/CategoriesContext/CategoriesContext";
+import ProjectsContext from "../../../../context/ProjectsContext/ProjectsContext";
 
 export default function ProjectForm() {
   const { categoriesList, setCategoriesList } = useContext(CategoriesContext);
   const { projectFormData, setProjectFormData } = useContext(ProjectsContext);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,11 +39,13 @@ export default function ProjectForm() {
 
   const submitForm = async (e) => {
     e.preventDefault();
+    console.log(projectFormData);
     try {
       const data = await saveProject(projectFormData);
 
       console.log('Projeto enviado com sucesso!');
       console.log(data);
+      navigate('/projects');
     } catch (error) {
       console.error('Erro ao enviar o projeto:', error);
     }
