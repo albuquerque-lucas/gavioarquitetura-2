@@ -4,11 +4,11 @@ import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProject } from '../../../../utils/ProjectsFetch';
-import Loading from '../../assets/Loading';
-import noImage from '../../../../images/projects/no-image.jpg';
-import ImagesTable from './ImagesTable';
-import ProjectShowTable from './ProjectShowTable';
-import ProjectPicturesForm from './ProjectPicturesForm';
+// import Loading from '../../assets/Loading';
+// import noImage from '../../../../images/projects/no-image.jpg';
+// import ImagesTable from './ImagesTable';
+// import ProjectShowTable from './ProjectShowTable';
+// import ProjectPicturesForm from './ProjectPicturesForm';
 import MessageCard from '../../assets/MessageCard';
 import { Link } from 'react-router-dom';
 
