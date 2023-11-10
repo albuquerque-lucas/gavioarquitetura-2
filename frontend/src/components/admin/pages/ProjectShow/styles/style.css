@@ -4,25 +4,17 @@
   align-items: center;
 }
 
-.container-div {
-  margin: 1rem 0;
-}
-
-.project-image-container img {
-  max-height: 20rem;
-}
-
-.project-details-cell {
-  align-items: center;
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.project-pictures-form-container {
+#image-container {
+  border: 2px solid black;
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 5rem;
-  min-width: 50%;
-  max-width: 75%;
+  min-width: 75vw;
+  min-height: 40vh;
+  padding: 0.8rem;
+}
+
+
+
+#image-container img{
+  max-width: 450px;
 }

@@ -19,6 +19,10 @@ export default function ProjectShowTable() {
     editMode,
     setEditMode,
   } = useContext(ProjectsContext);
+  
+  useEffect(() => {
+    setEditedDetails(projectDetails);
+  }, [projectDetails]);
 
   const handleEditMode = (event, field) => {
     event.preventDefault();
@@ -26,11 +30,12 @@ export default function ProjectShowTable() {
       ...editMode,
       [field]: !editMode[field],
     });
-    console.log(field, editMode[field]);
   }
 
   const handleUpdate = async (event, field) => {
     event.preventDefault();
+    console.log('field:', field);
+    console.log('editedDetails:', editedDetails);
     try {
       const updatedProject = await saveProject(editedDetails, projectDetails.id);
       setProjectDetails(updatedProject);
@@ -44,9 +49,73 @@ export default function ProjectShowTable() {
     }
   }
 
-  useEffect(() => {
-    setEditedDetails(projectDetails);
-  }, [projectDetails]);
+  const getOptions = (field) => {
+    switch (field) {
+      case 'category':
+        return [
+          { value: '1', label: 'Residencial' },
+          { value: '2', label: 'Comercial' },
+          { value: '3', label: 'Interiores' },
+        ];
+      case 'active_carousel':
+        return [
+          { value: true, label: 'Ativo' },
+          { value: false, label: 'Inativo' },
+        ];
+      default:
+        return [];
+    }
+  };
+
+  const renderSelectField = (label, value, field) => {
+    const options = getOptions(field);
+    return (
+      <div className="row">
+      <div className="col-6 p-3 d-flex align-items-center info-edit-col">
+        <span className='col-3'>
+          {label}:&nbsp;
+        </span>
+        <span className='col-7 text-center'>
+          {value}
+        </span>
+        <button
+          className='btn btn-sm btn-dark mx-1 col-2'
+          onClick={(event) => handleEditMode(event, field)}
+        >
+          {updateSVG}
+        </button>
+      </div>
+      {editMode[field] ? (
+      <div className="col p-2 input-edit-col">
+        <div className="p-2 d-flex justify-content-center">
+          <select
+            value={editedDetails[field] ? editedDetails[field] : ''}
+            onChange={(e) => handleChange(field, e.target.value)}
+          >
+            {options.map((option, index) => (
+              <option key={index} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <button
+            className='btn btn-sm btn-dark mx-1'
+            onClick={(e) => handleUpdate(e, field)}
+          >
+            {checkSVG}
+          </button>
+          <button
+            className='btn btn-sm btn-dark mx-1'
+            onClick={(event) => handleEditMode(event, field)}
+          >
+            {cancelSVG}
+          </button>
+        </div>
+      </div>
+    ) : null}
+    </div>
+    )
+  };
 
   const renderField = (label, value, field, placeholder, type='text') => (
     <div className="row">
@@ -90,7 +159,7 @@ export default function ProjectShowTable() {
     ) : null}
     </div>
   );
-    console.log(projectDetails);
+
   return (
     <form action="" id='edit-project-form'>
       <div className="container">
@@ -98,10 +167,10 @@ export default function ProjectShowTable() {
         {renderField('Imagem', projectDetails.name, 'image_url', 'Image URL', 'file')}
         {renderField('Area', projectDetails.area, 'area', 'Area')}
         {renderField('Data', projectDetails.year, 'year', 'Data')}
-        {/* {renderField('Categoria', projectDetails.category.name, 'category.name', 'Categoria')} */}
+        {renderSelectField('Categoria', projectDetails.category ? projectDetails.category.name : 'Categoria nao encontrada', 'category', 'Categoria')}
         {renderField('Localizacao', projectDetails.address, 'address', 'Localizacao')}
         {renderField('Descricao', projectDetails.description, 'description', 'Descricao')}
-        {renderField('Exibir na pagina inicial', projectDetails.active_carousel, 'active_carousel', 'Active Carousel')}
+        {renderSelectField('Exibir na pagina inicial', projectDetails.active_carousel, 'active_carousel', 'Active Carousel')}
       </div>
     </form>
   );

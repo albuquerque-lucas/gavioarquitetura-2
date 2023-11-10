@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import ProjectItem from "./ProjectItem";
-import Loading from '../../cards/Loading';
+import Loading from '../../assets/Loading';
 import { fetchProjectsList } from '../../../../utils/ProjectsFetch';
 import './styles/projectsTable.css';
 

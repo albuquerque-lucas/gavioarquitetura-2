@@ -1,3 +1,5 @@
+import './styles/style.css';
+
 export default function Layout({ children }) {
   return (
     <div className="admin-layout">

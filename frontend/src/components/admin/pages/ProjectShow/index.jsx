@@ -4,11 +4,12 @@ import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProject } from '../../../../utils/ProjectsFetch';
-import Loading from '../../cards/Loading';
+import Loading from '../../assets/Loading';
 import noImage from '../../../../images/projects/no-image.jpg';
 import ImagesTable from './ImagesTable';
 import ProjectShowTable from './ProjectShowTable';
 import ProjectPicturesForm from './ProjectPicturesForm';
+import MessageCard from '../../assets/MessageCard';
 import { Link } from 'react-router-dom';
 
 export default function ProjectShow() {
@@ -31,11 +32,9 @@ export default function ProjectShow() {
   useEffect(() => {
     fetchProjectDetails();
   }, [fetchProjectDetails]);
-  console.log(projectDetails.images);
-  const isImagesEmpty = Array.isArray(projectDetails.images) && projectDetails.images.length === 0;
   return (
     
-    <div className="project-show-container">
+    <div id="project-show-container">
       <div className="d-flex justify-content-center w-100">
         <div className="project-list-menu bg-dark w-75">
           <Link to="/projects" className="btn btn-dark">
@@ -43,39 +42,15 @@ export default function ProjectShow() {
           </Link>
         </div>
       </div>
-      {isLoading && <Loading />}
-      
-      {!isLoading && (
-        <div className="container-div text-center my-5">
-          <h1>{ projectDetails.name }</h1>
+      <div className="message-container">
+        <MessageCard />
+      </div>
+      <div className="project-show-container">
+        <div id="image-container">
+          <img src="https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg" alt="" />
         </div>
-      )}
-
-
-
-      {!isLoading && (
-        <>
-          <div className="container-div project-image-container">
-            <img src={projectDetails.image_url !== null ? `http://localhost/storage/${projectDetails.image_url}` : noImage} alt="" />
-          </div>
-
-          <div className="container-div pd-update project-details-form w-50">
-            <ProjectShowTable />
-          </div>
-
-          <div className="project-pictures-form-container">
-            <ProjectPicturesForm />
-          </div>
-
-          <div className="project-pictures-container">
-            { !isImagesEmpty ? (
-              <ImagesTable images={ projectDetails.images } />
-            ) : (
-              <h1 className='text-center my-3'>Nenhuma imagem cadastrada</h1>
-            )}
-          </div>
-        </>
-      )}
+      </div>
     </div>
+
   );
 }

@@ -23,7 +23,16 @@ export default function ProjectsProvider({ children }) {
     active_carousel: false,
   });
   const [projectList, setProjectList] = useState([]);
-  const [projectDetails, setProjectDetails] = useState({});
+  const [projectDetails, setProjectDetails] = useState({
+    name: "",
+    description: "",
+    area: "",
+    year: "",
+    address: "",
+    image_url: "",
+    category_id: "0",
+    active_carousel: false,
+  });
   const [editedDetails, setEditedDetails] = useState({});
 
   const context = useMemo(() => {

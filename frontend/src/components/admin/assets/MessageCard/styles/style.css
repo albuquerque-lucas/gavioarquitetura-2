@@ -1,0 +1,18 @@
+#message-card {
+  background-color: #a6d96a;
+  border-radius: 25px;
+  height: 5rem;
+  width: 75vw;
+}
+
+#message-card .message-content {
+  font-size: 1.3rem;
+  color: #212529;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.message-icon {
+  font-size: 2.5rem!important;
+}
