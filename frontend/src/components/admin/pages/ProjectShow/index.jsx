@@ -4,12 +4,9 @@ import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProject } from '../../../../utils/ProjectsFetch';
-// import Loading from '../../assets/Loading';
-// import noImage from '../../../../images/projects/no-image.jpg';
-// import ImagesTable from './ImagesTable';
-// import ProjectShowTable from './ProjectShowTable';
-// import ProjectPicturesForm from './ProjectPicturesForm';
+import noImage from '../../../../images/projects/no-image.jpg';
 import MessageCard from '../../assets/MessageCard';
+import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import { Link } from 'react-router-dom';
 
 export default function ProjectShow() {
@@ -32,25 +29,51 @@ export default function ProjectShow() {
   useEffect(() => {
     fetchProjectDetails();
   }, [fetchProjectDetails]);
+
   return (
-    
     <div id="project-show-container">
-      <div className="d-flex justify-content-center w-100">
-        <div className="project-list-menu bg-dark w-75">
-          <Link to="/projects" className="btn btn-dark">
-            Voltar
-          </Link>
-        </div>
+      <div className="text-center my-5">
+        <h1>{projectDetails.name}</h1>
       </div>
       <div className="message-container">
         <MessageCard />
       </div>
+      <div className="d-flex justify-content-center w-100">
+        <InnerOptionsNavbar>
+          <Link to="/projects" className="btn btn-dark">
+            Voltar
+          </Link>
+        </InnerOptionsNavbar>
+      </div>
       <div className="project-show-container">
         <div id="image-container">
-          <img src="https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg" alt="" />
+          <img
+            src={projectDetails.image_url !== null ? `http://localhost/storage/${projectDetails.image_url}` : noImage}
+            alt="Imagem do projeto"
+          />
+        </div>
+      </div>
+      <div id="project-show-edit-container">
+        <div
+        id="project-show-info"
+        className='project-show-edit-box'
+        >
+          <div className="project-show-info-item">
+            <h6>Nome:&nbsp;</h6>
+            <span>{projectDetails.name}</span>
+          </div>
+          <div className="project-show-info-item">
+            <h6>Descricao:&nbsp;</h6>
+            <span>{projectDetails.description}</span>
+          </div>
+        </div>
+        <div
+        id="project-show-form"
+        className="project-show-edit-box"
+        >
+          Teste
         </div>
       </div>
     </div>
-
   );
 }

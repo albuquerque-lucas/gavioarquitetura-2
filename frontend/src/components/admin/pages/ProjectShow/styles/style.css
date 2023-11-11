@@ -1,4 +1,4 @@
-.project-show-container {
+#project-show-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,10 +11,32 @@
   min-width: 75vw;
   min-height: 40vh;
   padding: 0.8rem;
+  margin-bottom: 3rem;
 }
-
-
 
 #image-container img{
   max-width: 450px;
+}
+
+#project-show-edit-container {
+  border: 2px solid black;
+  display: flex;
+  min-width: 75vw;
+  min-height: 40vh;
+  padding: 1rem;
+}
+
+.project-show-edit-box {
+  border: 2px solid black;
+  padding: 1rem;
+  width: 50%;
+}
+
+#project-show-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-show-info-item h6{
+  display: inline;
 }
