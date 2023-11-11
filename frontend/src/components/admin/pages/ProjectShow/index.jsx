@@ -2,17 +2,24 @@ import React, { useCallback, useEffect, useContext } from 'react';
 import './styles/style.css';
 import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
+import CategoriesContext from '../../../../context/CategoriesContext/CategoriesContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProject } from '../../../../utils/ProjectsFetch';
 import noImage from '../../../../images/projects/no-image.jpg';
 import MessageCard from '../../assets/MessageCard';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { renderProjectInfoItem, renderInputField } from './functions';
+
 
 export default function ProjectShow() {
   const { id } = useParams();
   const { setProjectDetails, projectDetails } = useContext(ProjectsContext);
   const { isLoading, setIsLoading } = useContext(GeneralDataContext);
+  const { categoriesList } = useContext(CategoriesContext);
+
 
   const fetchProjectDetails = useCallback(async () => {
     try {
@@ -29,7 +36,7 @@ export default function ProjectShow() {
   useEffect(() => {
     fetchProjectDetails();
   }, [fetchProjectDetails]);
-
+  console.log(categoriesList);
   return (
     <div id="project-show-container">
       <div className="text-center my-5">
@@ -58,20 +65,27 @@ export default function ProjectShow() {
         id="project-show-info"
         className='project-show-edit-box'
         >
-          <div className="project-show-info-item">
-            <h6>Nome:&nbsp;</h6>
-            <span>{projectDetails.name}</span>
-          </div>
-          <div className="project-show-info-item">
-            <h6>Descricao:&nbsp;</h6>
-            <span>{projectDetails.description}</span>
-          </div>
+          {renderProjectInfoItem('Imagem', projectDetails.image_url)}
+          {renderProjectInfoItem('Nome', projectDetails.name)}
+          {renderProjectInfoItem('Categoria', projectDetails.category ? projectDetails.category.name : 'Categoria nao encontrada')}
+          {renderProjectInfoItem('Area', projectDetails.area)}
+          {renderProjectInfoItem('Localizacao', projectDetails.address)}
+          {renderProjectInfoItem('Descricao', projectDetails.description)}
+          {renderProjectInfoItem('Data', projectDetails.year)}
+          {renderProjectInfoItem('Exibir na pagina inicial', projectDetails.active_carousel)}
         </div>
         <div
         id="project-show-form"
         className="project-show-edit-box"
         >
-          Teste
+          {renderInputField('file', 'image_url', projectDetails.image_url)}
+          {renderInputField('text', 'name', projectDetails.name)}
+          {renderInputField('select', 'category', projectDetails.category ? projectDetails.category.name : 'Categoria nao encontrada', categoriesList)}
+          {renderInputField('text', 'area', projectDetails.area)}
+          {renderInputField('text', 'address', projectDetails.address)}
+          {renderInputField('text', 'description', projectDetails.description)}
+          {renderInputField('text', 'year', projectDetails.year)}
+          {renderInputField('select', 'active_carousel', projectDetails.active_carousel)}
         </div>
       </div>
     </div>

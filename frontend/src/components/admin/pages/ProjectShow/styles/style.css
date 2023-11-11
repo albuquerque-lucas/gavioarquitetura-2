@@ -37,6 +37,47 @@
   flex-direction: column;
 }
 
-.project-show-info-item h6{
-  display: inline;
+.project-show-info-item {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  height: 3rem;
+  padding: 0.5rem;
+}
+
+.project-show-info-input {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 3fr 0.25fr 0.25fr;
+  gap: 0.5rem;
+  height: 3rem;
+  padding: 0.5rem;
+}
+
+.project-show-info-item a,
+.project-show-info-input button {
+  background-color: transparent;
+  border: none;
+  border-radius: 15px;
+  color: #212529;
+  font-size: 1.2rem;
+  padding: 0.1rem;
+  text-align: center;
+  transition: all 0.1s ease-in-out;
+  width: 3rem;
+}
+
+.project-show-info-item a:hover {
+  background-color: #212529;
+  color: white;
+}
+
+.project-show-info-input .cancel-edit-btn:hover{
+  background-color: #e35b68;
+  color: white;
+}
+
+.project-show-info-input .confirm-edit-btn:hover{
+  background-color: #51a47e;
+  color: white;
 }
