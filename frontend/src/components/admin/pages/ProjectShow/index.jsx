@@ -11,16 +11,20 @@ import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { renderProjectInfoItem, renderInputField } from './functions';
 
 
 export default function ProjectShow() {
   const { id } = useParams();
-  const { setProjectDetails, projectDetails } = useContext(ProjectsContext);
+  const { setProjectDetails, projectDetails, setEditedDetails, editedDetails } = useContext(ProjectsContext);
   const { isLoading, setIsLoading } = useContext(GeneralDataContext);
   const { categoriesList } = useContext(CategoriesContext);
+  
+  const editSVG = <FontAwesomeIcon icon={ faPenToSquare } />;
+  const cancelSVG = <FontAwesomeIcon icon={ faXmark } />;
+  const confirmSVG = <FontAwesomeIcon icon={ faCheck } />;
 
 
+  
   const fetchProjectDetails = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -36,7 +40,73 @@ export default function ProjectShow() {
   useEffect(() => {
     fetchProjectDetails();
   }, [fetchProjectDetails]);
-  console.log(categoriesList);
+
+  const handleChange = (field, value) => {
+    setEditedDetails({
+      ...editedDetails,
+      [field]: value,
+    });
+  };
+
+  const renderProjectInfoItem = (label, value) => {
+    return (
+      <div className="project-show-info-item">
+        <span>{ label }:&nbsp;</span>
+        <span className='info-item-value'>{ value }</span>
+        <Link>
+          { editSVG }
+        </Link>
+      </div>
+    );
+    
+  }
+  
+  const renderInputField = (type, name, value, data = []) => {
+    let inputField;
+  
+    switch (type) {
+      case 'file':
+        inputField = <input
+        value={ editedDetails[name]  }
+        type="file"
+        name={ name }
+        id={ name }
+        onChange={(e) => handleChange(name, e.target.value)}
+        />;
+        break;
+      case 'select':
+        inputField = (
+          <select
+          value={editedDetails[name] ? editedDetails[name] : ''}
+          name={name}
+          id={name}
+          onChange={(event) => handleChange(name, event.target.value)}
+          >
+            { data.map((item) => {
+              return <option key={ item.id } value={ item.id }>{ item.name }</option>
+            }) }
+          </select>
+        );
+        break;
+      default:
+        inputField = <input
+        type="text"
+        name={name}
+        id={name}
+        value={editedDetails[name]}
+        onChange={(e) => handleChange(name, e.target.value)}
+        />;
+    }
+  
+    return (
+      <div className="project-show-info-input">
+        {inputField}
+        <button className='confirm-edit-btn'>{confirmSVG}</button>
+        <button className='cancel-edit-btn'>{cancelSVG}</button>
+      </div>
+    );
+  }
+
   return (
     <div id="project-show-container">
       <div className="text-center my-5">
@@ -85,7 +155,7 @@ export default function ProjectShow() {
           {renderInputField('text', 'address', projectDetails.address)}
           {renderInputField('text', 'description', projectDetails.description)}
           {renderInputField('text', 'year', projectDetails.year)}
-          {renderInputField('select', 'active_carousel', projectDetails.active_carousel)}
+          {renderInputField('select', 'active_carousel', projectDetails.active_carousel, [{id: 1, name: 'Sim'}, {id: 0, name: 'Nao'}])}
         </div>
       </div>
     </div>
