@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import CategoriesContext from '../../../../context/CategoriesContext/CategoriesContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
-import { fetchProject } from '../../../../utils/ProjectsFetch';
+import { fetchProject, saveProject } from '../../../../utils/ProjectsFetch';
 import noImage from '../../../../images/projects/no-image.jpg';
 import MessageCard from '../../assets/MessageCard';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
@@ -15,7 +15,7 @@ import { faPenToSquare, faXmark, faCheck } from '@fortawesome/free-solid-svg-ico
 
 export default function ProjectShow() {
   const { id } = useParams();
-  const { setProjectDetails, projectDetails, setEditedDetails, editedDetails } = useContext(ProjectsContext);
+  const { setProjectDetails, projectDetails, setEditedDetails, editedDetails, editMode, setEditMode } = useContext(ProjectsContext);
   const { isLoading, setIsLoading } = useContext(GeneralDataContext);
   const { categoriesList } = useContext(CategoriesContext);
   
@@ -23,7 +23,13 @@ export default function ProjectShow() {
   const cancelSVG = <FontAwesomeIcon icon={ faXmark } />;
   const confirmSVG = <FontAwesomeIcon icon={ faCheck } />;
 
-
+  
+  const handleChange = (field, value) => {
+    setEditedDetails({
+      ...editedDetails,
+      [field]: value,
+    });
+  };
   
   const fetchProjectDetails = useCallback(async () => {
     try {
@@ -36,74 +42,44 @@ export default function ProjectShow() {
       setIsLoading(false);
     }
   }, [setProjectDetails, id, setIsLoading]);
-
+  
   useEffect(() => {
     fetchProjectDetails();
   }, [fetchProjectDetails]);
-
-  const handleChange = (field, value) => {
-    setEditedDetails({
-      ...editedDetails,
-      [field]: value,
-    });
+  
+  const handleUpdate = async (event, field) => {
+    event.preventDefault();
+    console.log('field:', field);
+    console.log('editedDetails:', editedDetails);
+    try {
+      const updatedProject = await saveProject(editedDetails, projectDetails.id);
+      setProjectDetails(updatedProject);
+      setEditMode({
+        ...editMode,
+        [field]: !editMode[field],
+      });
+      console.log('Projeto atualizado com sucesso:', updatedProject);
+    } catch (error) {
+      console.error('Erro ao atualizar projeto:', error);
+    }
   };
 
-  const renderProjectInfoItem = (label, value) => {
+  const renderDefaultEditCell = (name, field) => {
     return (
-      <div className="project-show-info-item">
-        <span>{ label }:&nbsp;</span>
-        <span className='info-item-value'>{ value }</span>
-        <Link>
-          { editSVG }
-        </Link>
-      </div>
-    );
-    
-  }
-  
-  const renderInputField = (type, name, value, data = []) => {
-    let inputField;
-  
-    switch (type) {
-      case 'file':
-        inputField = <input
-        value={ editedDetails[name]  }
-        type="file"
-        name={ name }
-        id={ name }
-        onChange={(e) => handleChange(name, e.target.value)}
-        />;
-        break;
-      case 'select':
-        inputField = (
-          <select
-          value={editedDetails[name] ? editedDetails[name] : ''}
-          name={name}
-          id={name}
-          onChange={(event) => handleChange(name, event.target.value)}
-          >
-            { data.map((item) => {
-              return <option key={ item.id } value={ item.id }>{ item.name }</option>
-            }) }
-          </select>
-        );
-        break;
-      default:
-        inputField = <input
-        type="text"
-        name={name}
-        id={name}
-        value={editedDetails[name]}
-        onChange={(e) => handleChange(name, e.target.value)}
-        />;
-    }
-  
-    return (
-      <div className="project-show-info-input">
-        {inputField}
-        <button className='confirm-edit-btn'>{confirmSVG}</button>
-        <button className='cancel-edit-btn'>{cancelSVG}</button>
-      </div>
+    <div className="edition-item">
+          <span>{ name }: </span>
+          <span>{ projectDetails[field] }</span>
+          <button className='btn btn-sm edit-btn'>
+            {editSVG}
+          </button>
+          <input type="text" placeholder={projectDetails[field]} />
+          <button className='btn btn-sm confirm-btn'>
+            { confirmSVG }
+          </button>
+          <button className='btn btn-sm cancel-btn'>
+            { cancelSVG }
+          </button>
+        </div>
     );
   }
 
@@ -130,33 +106,12 @@ export default function ProjectShow() {
           />
         </div>
       </div>
-      <div id="project-show-edit-container">
-        <div
-        id="project-show-info"
-        className='project-show-edit-box'
-        >
-          {renderProjectInfoItem('Imagem', projectDetails.image_url)}
-          {renderProjectInfoItem('Nome', projectDetails.name)}
-          {renderProjectInfoItem('Categoria', projectDetails.category ? projectDetails.category.name : 'Categoria nao encontrada')}
-          {renderProjectInfoItem('Area', projectDetails.area)}
-          {renderProjectInfoItem('Localizacao', projectDetails.address)}
-          {renderProjectInfoItem('Descricao', projectDetails.description)}
-          {renderProjectInfoItem('Data', projectDetails.year)}
-          {renderProjectInfoItem('Exibir na pagina inicial', projectDetails.active_carousel)}
-        </div>
-        <div
-        id="project-show-form"
-        className="project-show-edit-box"
-        >
-          {renderInputField('file', 'image_url', projectDetails.image_url)}
-          {renderInputField('text', 'name', projectDetails.name)}
-          {renderInputField('select', 'category', projectDetails.category ? projectDetails.category.name : 'Categoria nao encontrada', categoriesList)}
-          {renderInputField('text', 'area', projectDetails.area)}
-          {renderInputField('text', 'address', projectDetails.address)}
-          {renderInputField('text', 'description', projectDetails.description)}
-          {renderInputField('text', 'year', projectDetails.year)}
-          {renderInputField('select', 'active_carousel', projectDetails.active_carousel, [{id: 1, name: 'Sim'}, {id: 0, name: 'Nao'}])}
-        </div>
+      <div id="project-show-edit-container" >
+        <h4>Ficha tecnica:</h4>
+        { renderDefaultEditCell('Nome', 'name') }
+        { renderDefaultEditCell('Localizacao', 'address') }
+        { renderDefaultEditCell('Data', 'year') }
+        { renderDefaultEditCell('Descricao', 'description') }
       </div>
     </div>
   );

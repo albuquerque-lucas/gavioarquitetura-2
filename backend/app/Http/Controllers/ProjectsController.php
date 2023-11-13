@@ -24,13 +24,19 @@ class ProjectsController extends Controller
     public function store(ProjectRequest $request)
     {
         $requestData = $request->all();
+
+        if ($request->hasFile('image_url')) {
+            $imagePath = $request->file('image_url')->store('projects/cover', 'public');
+        } else {
+            $imagePath = null;
+        }
         $data = [
             'name' => $requestData['name'],
             'description' => $requestData['description'],
             'area' => $requestData['area'],
             'year' => $requestData['year'],
             'address' => $requestData['address'],
-            'image_url' => $request->file('image_url')->store('projects/cover', 'public'),
+            'image_url' => $imagePath,
             'category_id' => $requestData['category_id'],
             'active_carousel' => $requestData['active_carousel'],
         ];
