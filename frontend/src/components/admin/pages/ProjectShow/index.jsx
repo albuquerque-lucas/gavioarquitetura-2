@@ -36,6 +36,7 @@ export default function ProjectShow() {
       setIsLoading(true);
       const data = await fetchProject(id);
       setProjectDetails(data);
+      setEditedDetails(data);
     } catch (error) {
       console.error('Erro ao buscar projeto:', error);
     } finally {
@@ -49,15 +50,15 @@ export default function ProjectShow() {
   
   const handleUpdate = async (event, field) => {
     event.preventDefault();
-    console.log('field:', field);
-    console.log('editedDetails:', editedDetails);
+    console.log(editedDetails[field]);
     try {
-      const updatedProject = await saveProject(editedDetails, projectDetails.id);
+      await saveProject(editedDetails, projectDetails.id);
+      const updatedProject = await fetchProject(id);
       setProjectDetails(updatedProject);
-      setEditMode({
-        ...editMode,
-        [field]: !editMode[field],
-      });
+      // setEditMode({
+      //   ...editMode,
+      //   [field]: !editMode[field],
+      // });
       console.log('Projeto atualizado com sucesso:', updatedProject);
     } catch (error) {
       console.error('Erro ao atualizar projeto:', error);
@@ -65,6 +66,7 @@ export default function ProjectShow() {
   };
 
   const renderDefaultEditCell = (name, field) => {
+
     return (
     <div className="edition-item">
           <span>{ name }: </span>
@@ -72,8 +74,17 @@ export default function ProjectShow() {
           <button className='btn btn-sm edit-btn'>
             {editSVG}
           </button>
-          <input type="text" placeholder={projectDetails[field]} />
-          <button className='btn btn-sm confirm-btn'>
+          <input
+          type="text"
+          placeholder={projectDetails[field]}
+          value={editedDetails[field]}
+          onChange={(event) => handleChange(field, event.target.value)}
+          name={field}
+          />
+          <button
+            className='btn btn-sm confirm-btn'
+            onClick={ (event) => handleUpdate(event, field) }
+          >
             { confirmSVG }
           </button>
           <button className='btn btn-sm cancel-btn'>
@@ -82,6 +93,73 @@ export default function ProjectShow() {
         </div>
     );
   }
+
+  const renderCategoryEditCell = (name, field) => {
+    
+    return (
+      <div className="edition-item">
+      <span>{ name }: </span>
+      <span>{ projectDetails.category ? projectDetails.category.name : 'Categoria nao encontrada' }</span>
+      <button className='btn btn-sm edit-btn'>
+        {editSVG}
+      </button>
+      <select
+        name="categpry"
+        value={editedDetails[field] || ''}
+        onChange={(e) => handleChange(field, e.target.value)}
+      >
+        { categoriesList.map((category, index) => (
+          <option
+          key={ index }
+          value={category.id}
+          >
+            {category.name}
+            </option>
+        ))}
+      </select>
+      <button
+      className='btn btn-sm confirm-btn'
+      onClick={ (event) => handleUpdate(event, field) }
+      >
+        { confirmSVG }
+      </button>
+      <button className='btn btn-sm cancel-btn'>
+        { cancelSVG }
+      </button>
+    </div>
+    );
+  }
+
+  const renderTextCell = (name, field) => {
+    return (
+      <div className="edition-item text-item">
+      <span>{ name }: </span>
+      <span class='text-edit-content'>{ projectDetails[field] }</span>
+      <button className='btn btn-sm edit-btn'>
+        {editSVG}
+      </button>
+      <textarea
+      placeholder={projectDetails[field]}
+      value={editedDetails[field]}
+      onChange={(event) => handleChange(field, event.target.value)}
+      name={field}
+      >
+      </textarea>
+      <button
+        className='btn btn-sm confirm-btn'
+        onClick={ (event) => handleUpdate(event, field) }
+      >
+        { confirmSVG }
+      </button>
+      <button className='btn btn-sm cancel-btn'>
+        { cancelSVG }
+      </button>
+    </div>
+    );
+  }
+
+  console.log('Detalhes do Projeto: ', projectDetails);
+  console.log('Detalhes Editados: ', editedDetails);
 
   return (
     <div id="project-show-container">
@@ -101,17 +179,19 @@ export default function ProjectShow() {
       <div className="project-show-container">
         <div id="image-container">
           <img
-            src={projectDetails.image_url !== null ? `http://localhost/storage/${projectDetails.image_url}` : noImage}
+            src={ projectDetails.image_url !== null ? `http://localhost/storage/${projectDetails.image_url}` : noImage }
             alt="Imagem do projeto"
           />
         </div>
       </div>
       <div id="project-show-edit-container" >
         <h4>Ficha tecnica:</h4>
+        { renderCategoryEditCell('Categoria', 'category_id') }
         { renderDefaultEditCell('Nome', 'name') }
+        { renderDefaultEditCell('Area', 'area') }
         { renderDefaultEditCell('Localizacao', 'address') }
         { renderDefaultEditCell('Data', 'year') }
-        { renderDefaultEditCell('Descricao', 'description') }
+        { renderTextCell('Descricao', 'description') }
       </div>
     </div>
   );

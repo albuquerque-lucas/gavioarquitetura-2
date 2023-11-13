@@ -69,12 +69,41 @@
   color: white;
 }
 
-.edition-item input {
+.edition-item input,
+.edition-item select {
+  background-color: white;
   border: 1px solid grey;
   border-radius: 25px;
   padding: 0.5rem;
   outline: none;
   transition: 0.1s;
+}
+
+
+.edition-item option {
+  border-radius: 25px;
+}
+.text-item {
+  grid-template-rows: 5rem;
+}
+
+.text-edit-content {
+  padding: 0.5rem;
+}
+
+.text-item textarea {
+  border: 1px solid grey;
+  border-radius: 25px;
+  min-height: 3rem;
+  outline: none;
+  padding: 0.5rem;
+  resize: none;
+  transition: 0.1s;
+}
+
+.text-item textarea:focus {
+  resize: none;
+  min-height: 8rem;
 }
 
 /* Restante do seu CSS */

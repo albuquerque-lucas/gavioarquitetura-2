@@ -7,7 +7,7 @@ export default function ProjectsProvider({ children }) {
     image_url: false,
     active_carousel: false,
     name: false,
-    category: false,
+    category_id: false,
     area: false,
     address: false,
     description: false,
@@ -33,7 +33,16 @@ export default function ProjectsProvider({ children }) {
     category_id: "0",
     active_carousel: false,
   });
-  const [editedDetails, setEditedDetails] = useState({});
+  const [editedDetails, setEditedDetails] = useState({
+    name: "",
+    description: "",
+    area: "",
+    year: "",
+    address: "",
+    image_url: "",
+    category_id: "0",
+    active_carousel: false,
+  });
 
   const context = useMemo(() => {
     const handleChange = (field, value) => {
