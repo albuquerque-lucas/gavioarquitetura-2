@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -7,7 +7,8 @@ import noImage from '../../../../images/projects/no-image.jpg';
 const checkSVG = <FontAwesomeIcon icon={ faPenToSquare } />;
 const trashSVG = <FontAwesomeIcon icon={ faTrash } />;
 
-export default function ProjectRow({ project }) {
+export default function ProjectRow({ project, deleteFunction }) {
+
   return (
     <tr key={project.id}>
       <td>{project.id}</td>
@@ -18,15 +19,15 @@ export default function ProjectRow({ project }) {
           alt="Imagem da lista de projetos"
         />
       </td>
-      <td>{project.date}</td>
+      <td>{project.year}</td>
       <td>
-        <Link to={`/projects/${project.id}`}>
+        <Link to={ `/projects/${project.id}` } className='edit-project-btn'>
           {checkSVG}
         </Link>
         -
-        <Link to={`/projects/delete/${project.id}`}>
+        <button className='delete-project-btn' onClick={() => deleteFunction(project.id)} >
           {trashSVG}
-        </Link>
+        </button>
       </td>
     </tr>
   );

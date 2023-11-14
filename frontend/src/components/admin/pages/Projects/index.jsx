@@ -5,7 +5,7 @@ import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import ProjectRow from './ProjectRow';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
-import { fetchProjectsList } from '../../../../utils/ProjectsFetch';
+import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
 import './styles/style.css';
 
 export default function Projects() {
@@ -30,8 +30,18 @@ export default function Projects() {
     fetchData();
   }, [setProjectList, setIsLoading]);
 
-  console.log('Lista de projetos: ', projectList);
-  console.log('Tamanho da lista de projetos: ', projectList.length);
+  const handleDelete = async (id) => {
+    try {
+      setIsLoading(true);
+      await deleteProject(id);
+      const data = await fetchProjectsList();
+      setProjectList(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Erro ao deletar projeto:', error);
+      setIsLoading(false);
+    }
+  }
 
   return (
     <div id='project-list-container'>
@@ -60,13 +70,19 @@ export default function Projects() {
             </tr>
           </thead>
           <tbody>
-          {projectList.length > 0 ? projectList.map((project) => (
-              <ProjectRow key={project.id} project={project} />
+          {isLoading ? (
+            <tr>
+              <td colSpan={5}>Carregando...</td>
+            </tr>
+          ) : (
+            projectList.length > 0 ? projectList.map((project) => (
+              <ProjectRow key={project.id} project={project} deleteFunction={handleDelete} />
             )) : (
               <tr>
                 <td colSpan={5}>Nenhum projeto encontrado</td>
               </tr>
-            )}
+            )
+          )}
 </tbody>
         </table>
       </div>
