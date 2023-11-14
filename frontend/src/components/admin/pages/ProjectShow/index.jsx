@@ -193,6 +193,14 @@ export default function ProjectShow() {
         { renderDefaultEditCell('Data', 'year') }
         { renderTextCell('Descricao', 'description') }
       </div>
+      <div className="project-show-images-list">
+        <div className="images-input-container">
+          <input type="file" name="images" id="images" />
+        </div>
+        <div className="images-container">
+          
+        </div>
+      </div>
     </div>
   );
 }

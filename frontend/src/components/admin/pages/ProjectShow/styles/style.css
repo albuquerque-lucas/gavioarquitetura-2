@@ -106,4 +106,21 @@
   min-height: 8rem;
 }
 
+.project-show-images-list {
+  border: 2px solid #212529;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem 0;
+  height: 5rem;
+  width: 75%;
+}
+
+.images-input-container {
+  height: 4.5rem;
+  padding: 1rem;
+  text-align: center;
+  width: 50%;
+}
+
 /* Restante do seu CSS */
