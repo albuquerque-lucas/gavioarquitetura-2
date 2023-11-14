@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import MessageCard from '../../assets/MessageCard';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import ProjectRow from './ProjectRow';
+import Loading from '../../assets/Loading';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
@@ -48,43 +49,50 @@ export default function Projects() {
       <div className="text-center my-5">
         <h1>Projetos</h1>
       </div>
-        <div className="message-container">
-          {respondeMessage && <MessageCard />}
-        </div>
-        <div className="inner-options-container">
-          <InnerOptionsNavbar>
-            <Link to="/projects/new-project" className="btn btn-dark">
-              Novo projeto
-            </Link>
-          </InnerOptionsNavbar>
-        </div>
+      <div className="message-container">
+        {respondeMessage && <MessageCard />}
+      </div>
+      <div className="inner-options-container">
+        <InnerOptionsNavbar>
+          <Link to="/projects/new-project" className="btn btn-dark">
+            Novo projeto
+          </Link>
+        </InnerOptionsNavbar>
+      </div>
       <div id="project-table-container">
-        <table id="project-table-admin">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nome</th>
-              <th>Capa</th>
-              <th>Data</th>
-              <th>Editar / Excluir</th>
-            </tr>
-          </thead>
-          <tbody>
-          {isLoading ? (
-            <tr>
-              <td colSpan={5}>Carregando...</td>
-            </tr>
-          ) : (
-            projectList.length > 0 ? projectList.map((project) => (
-              <ProjectRow key={project.id} project={project} deleteFunction={handleDelete} />
-            )) : (
+        {isLoading ? (
+          // Se isLoading for verdadeiro, mostra o componente Loading
+          <Loading />
+        ) : (
+          // Se isLoading for falso, mostra a tabela
+          <table id="project-table-admin">
+            <thead>
               <tr>
-                <td colSpan={5}>Nenhum projeto encontrado</td>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Capa</th>
+                <th>Data</th>
+                <th>Editar / Excluir</th>
               </tr>
-            )
-          )}
-</tbody>
-        </table>
+            </thead>
+            <tbody>
+              {projectList.length > 0 ? (
+                projectList.map((project) => (
+                  <ProjectRow
+                    key={project.id}
+                    project={project}
+                    deleteFunction={handleDelete}
+                  />
+                ))
+              ) : (
+                // Mostra a mensagem apenas se o carregamento foi concluído
+                <tr>
+                  <td colSpan={5}>Nenhum projeto encontrado</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
