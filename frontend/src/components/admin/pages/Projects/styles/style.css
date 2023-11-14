@@ -27,6 +27,7 @@
 
 #project-table-container table tbody tr {
   border-bottom: 2px solid black;
+  cursor: pointer;
   height: 6.5rem;
 }
 

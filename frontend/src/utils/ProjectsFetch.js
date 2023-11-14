@@ -32,15 +32,21 @@ export const deleteProject = async (id) => {
 };
 
 export const saveProject = async (projectFormData, id = null) => {
+  console.log('Project Form Data', projectFormData);
   try {
     const formData = new FormData();
-    formData.append('name', projectFormData.name);
-    formData.append('description', projectFormData.description);
-    formData.append('area', projectFormData.area);
-    formData.append('year', projectFormData.year);
-    formData.append('address', projectFormData.address);
-    formData.append('category_id', projectFormData.category_id);
-    formData.append('active_carousel', projectFormData.active_carousel ? 1 : 0);
+
+    for (const field in projectFormData) {
+      if (projectFormData[field] !== null && projectFormData[field] !== '') {
+        formData.append(field, projectFormData[field]);
+      } else {
+        throw new Error(`O campo ${field} nao pode estar vazio!`);
+      }
+    }
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ', ' + pair[1]);
+    }
 
     const method = id ? 'PATCH' : 'POST';
     const url = id ? `http://localhost/api/projects/${id}` : 'http://localhost/api/projects';
@@ -55,11 +61,13 @@ export const saveProject = async (projectFormData, id = null) => {
         'Content-Type': 'multipart/form-data',
       },
     });
+
     return response.data;
   } catch (error) {
     console.error(`Erro ao ${id ? 'atualizar' : 'enviar'} o projeto:`, error);
     throw error;
   }
 };
+
 
 

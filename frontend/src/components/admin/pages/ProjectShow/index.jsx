@@ -9,6 +9,7 @@ import noImage from '../../../../images/projects/no-image.jpg';
 import MessageCard from '../../assets/MessageCard';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import { Link } from 'react-router-dom';
+import Loading from '../../assets/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 
@@ -25,10 +26,12 @@ export default function ProjectShow() {
 
   
   const handleChange = (field, value) => {
+
     setEditedDetails({
       ...editedDetails,
-      [field]: value,
+      [field]: field === "active_carousel" ? parseInt(value, 10) : value,
     });
+  
   };
   
   const fetchProjectDetails = useCallback(async () => {
@@ -36,7 +39,6 @@ export default function ProjectShow() {
       setIsLoading(true);
       const data = await fetchProject(id);
       setProjectDetails(data);
-      setEditedDetails(data);
     } catch (error) {
       console.error('Erro ao buscar projeto:', error);
     } finally {
@@ -50,9 +52,12 @@ export default function ProjectShow() {
   
   const handleUpdate = async (event, field) => {
     event.preventDefault();
-    console.log(editedDetails[field]);
     try {
-      await saveProject(editedDetails, projectDetails.id);
+      const updatedDetails = {
+        [field]: editedDetails[field],
+      };
+
+      await saveProject(updatedDetails, projectDetails.id);
       const updatedProject = await fetchProject(id);
       setProjectDetails(updatedProject);
       // setEditMode({
@@ -62,10 +67,22 @@ export default function ProjectShow() {
       console.log('Projeto atualizado com sucesso:', updatedProject);
     } catch (error) {
       console.error('Erro ao atualizar projeto:', error);
+    } finally {
+      setEditedDetails({
+        name: "",
+        description: "",
+        area: "",
+        year: "",
+        address: "",
+        image_url: "",
+        category_id: "0",
+        active_carousel: "0",
+      });
+      console.log(editedDetails);
     }
   };
 
-  const renderDefaultEditCell = (name, field) => {
+  const renderDefaultCell = (name, field) => {
 
     return (
     <div className="edition-item">
@@ -94,8 +111,8 @@ export default function ProjectShow() {
     );
   }
 
-  const renderCategoryEditCell = (name, field) => {
-    
+  const renderCategoryCell = (name, field) => {
+    console.log('Lista de Categorias: ', categoriesList);
     return (
       <div className="edition-item">
       <span>{ name }: </span>
@@ -105,7 +122,7 @@ export default function ProjectShow() {
       </button>
       <select
         name="categpry"
-        value={editedDetails[field] || ''}
+        value={editedDetails[field] || 1}
         onChange={(e) => handleChange(field, e.target.value)}
       >
         { categoriesList.map((category, index) => (
@@ -130,11 +147,40 @@ export default function ProjectShow() {
     );
   }
 
+  const renderCarouselCell = (name, field) => {
+    return (
+      <div className="edition-item">
+        <span>{name}: </span>
+        <span>{projectDetails[field] ? 'Ativo' : 'Inativo'}</span>
+        <button className='btn btn-sm edit-btn'>
+          {editSVG}
+        </button>
+        <select
+          name={field}
+          value={editedDetails[field] || ''}
+          onChange={(e) => handleChange(field, e.target.value)}
+        >
+          <option value={ 1 }>Ativo</option>
+          <option value={ 0 }>Inativo</option>
+        </select>
+        <button
+          className='btn btn-sm confirm-btn'
+          onClick={(event) => handleUpdate(event, field)}
+        >
+          {confirmSVG}
+        </button>
+        <button className='btn btn-sm cancel-btn'>
+          {cancelSVG}
+        </button>
+      </div>
+    );
+  };
+
   const renderTextCell = (name, field) => {
     return (
       <div className="edition-item text-item">
       <span>{ name }: </span>
-      <span class='text-edit-content'>{ projectDetails[field] }</span>
+      <span className='text-edit-content'>{ projectDetails[field] }</span>
       <button className='btn btn-sm edit-btn'>
         {editSVG}
       </button>
@@ -158,8 +204,9 @@ export default function ProjectShow() {
     );
   }
 
-  console.log('Detalhes do Projeto: ', projectDetails);
+  console.log('Detalhes do Projeto:', projectDetails);
   console.log('Detalhes Editados: ', editedDetails);
+
 
   return (
     <div id="project-show-container">
@@ -176,31 +223,41 @@ export default function ProjectShow() {
           </Link>
         </InnerOptionsNavbar>
       </div>
-      <div className="project-show-container">
-        <div id="image-container">
-          <img
-            src={ projectDetails.image_url !== null ? `http://localhost/storage/${projectDetails.image_url}` : noImage }
-            alt="Imagem do projeto"
-          />
+          {isLoading ? (
+      <div className="loading-container">
+        <Loading />
+      </div>
+    ) : (
+      <div>
+
+        <div className="project-show-container">
+          <div id="image-container">
+            <img
+              src={ projectDetails.image_url !== null ? `http://localhost/storage/${projectDetails.image_url}` : noImage }
+              alt="Imagem do projeto"
+            />
+          </div>
+        </div>
+        <div id="project-show-edit-container" >
+          <h4>Ficha tecnica:</h4>
+          { renderCategoryCell('Categoria', 'category_id') }
+          { renderDefaultCell('Nome', 'name') }
+          { renderDefaultCell('Area', 'area') }
+          { renderDefaultCell('Localizacao', 'address') }
+          { renderDefaultCell('Data', 'year') }
+          { renderTextCell('Descricao', 'description') }
+          { renderCarouselCell('Exibir na pagina inicial', 'active_carousel') }
+        </div>
+        <div className="project-show-images-list">
+          <div className="images-input-container">
+            <input type="file" name="images" id="images" />
+          </div>
+          <div className="images-container">
+            
+          </div>
         </div>
       </div>
-      <div id="project-show-edit-container" >
-        <h4>Ficha tecnica:</h4>
-        { renderCategoryEditCell('Categoria', 'category_id') }
-        { renderDefaultEditCell('Nome', 'name') }
-        { renderDefaultEditCell('Area', 'area') }
-        { renderDefaultEditCell('Localizacao', 'address') }
-        { renderDefaultEditCell('Data', 'year') }
-        { renderTextCell('Descricao', 'description') }
-      </div>
-      <div className="project-show-images-list">
-        <div className="images-input-container">
-          <input type="file" name="images" id="images" />
-        </div>
-        <div className="images-container">
-          
-        </div>
-      </div>
+          )}
     </div>
   );
 }

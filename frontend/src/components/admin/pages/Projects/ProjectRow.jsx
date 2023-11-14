@@ -10,16 +10,17 @@ const trashSVG = <FontAwesomeIcon icon={ faTrash } />;
 export default function ProjectRow({ project, deleteFunction }) {
 
   return (
-    <tr key={project.id}>
-      <td>{project.id}</td>
-      <td>{project.name}</td>
+    <tr key={ project.id }>
+      <td>{ project.id }</td>
+      <td>{ project.name }</td>
       <td>
         <img
           src={project.image_url !== null ? `http://localhost/storage/${project.image_url}` : noImage}
           alt="Imagem da lista de projetos"
         />
       </td>
-      <td>{project.year}</td>
+      <td>{ project.year }</td>
+      <td>{ project.active_carousel }</td>
       <td>
         <Link to={ `/projects/${project.id}` } className='edit-project-btn'>
           {checkSVG}

@@ -12,7 +12,7 @@ import './styles/style.css';
 export default function Projects() {
   const { setProjectList, projectList } = useContext(ProjectsContext);
   const { setIsLoading, isLoading } = useContext(GeneralDataContext);
-  const respondeMessage = false;
+  const responseMessage = false;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +50,7 @@ export default function Projects() {
         <h1>Projetos</h1>
       </div>
       <div className="message-container">
-        {respondeMessage && <MessageCard />}
+        {responseMessage && <MessageCard />}
       </div>
       <div className="inner-options-container">
         <InnerOptionsNavbar>
@@ -61,10 +61,8 @@ export default function Projects() {
       </div>
       <div id="project-table-container">
         {isLoading ? (
-          // Se isLoading for verdadeiro, mostra o componente Loading
           <Loading />
         ) : (
-          // Se isLoading for falso, mostra a tabela
           <table id="project-table-admin">
             <thead>
               <tr>
@@ -72,6 +70,7 @@ export default function Projects() {
                 <th>Nome</th>
                 <th>Capa</th>
                 <th>Data</th>
+                <th>Pagina Inicial</th>
                 <th>Editar / Excluir</th>
               </tr>
             </thead>
@@ -85,7 +84,6 @@ export default function Projects() {
                   />
                 ))
               ) : (
-                // Mostra a mensagem apenas se o carregamento foi concluído
                 <tr>
                   <td colSpan={5}>Nenhum projeto encontrado</td>
                 </tr>

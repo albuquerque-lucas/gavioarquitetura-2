@@ -20,7 +20,7 @@ export default function ProjectsProvider({ children }) {
     address: "",
     image_url: "",
     category_id: "0",
-    active_carousel: false,
+    active_carousel: "0",
   });
   const [projectList, setProjectList] = useState([]);
   const [projectDetails, setProjectDetails] = useState({
@@ -31,7 +31,7 @@ export default function ProjectsProvider({ children }) {
     address: "",
     image_url: "",
     category_id: "0",
-    active_carousel: false,
+    active_carousel: "0",
   });
   const [editedDetails, setEditedDetails] = useState({
     name: "",
@@ -41,7 +41,7 @@ export default function ProjectsProvider({ children }) {
     address: "",
     image_url: "",
     category_id: "0",
-    active_carousel: false,
+    active_carousel: "0",
   });
 
   const context = useMemo(() => {
