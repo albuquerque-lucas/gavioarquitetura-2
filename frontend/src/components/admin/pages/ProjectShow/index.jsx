@@ -25,15 +25,53 @@ export default function ProjectShow() {
   const confirmSVG = <FontAwesomeIcon icon={ faCheck } />;
 
   
-  const handleChange = (field, value) => {
+  // const handleChange = (field, event) => {
+  //   let value;
+  
+  //   if (event.target.type === 'file') {
+  //     value = event.target.files[0];
+  //   } else {
+  //     value = event.target.value;
+  //   }
+  
+  //   setEditedDetails({
+  //     ...editedDetails,
+  //     [field]: field === 'active_carousel' ? parseInt(value, 10) : value,
+  //   });
+  // };
 
+  const handleChange = (field, event) => {
+    let value;
+  
+    if (event.target.type === 'file') {
+      console.log('TIPO FILE DETECTADO');
+      value = event.target.files[0];
+      console.log(value);
+    } else {
+      // Se o campo for um select e o valor for um objeto, extraia o valor correto
+      value = event.target.value;
+      if (typeof value === 'object' && value !== null) {
+        console.log('TIPO OBJETO DETECTADO');
+        value = value.id;
+      }
+  
+      setEditedDetails({
+        ...editedDetails,
+        [field]: field === 'active_carousel' ? parseInt(value, 10) : value,
+      });
+      console.log('EDITED DETAILS FIELD', editedDetails);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const { files } = e.target;
+    console.log(files);
     setEditedDetails({
       ...editedDetails,
-      [field]: field === "active_carousel" ? parseInt(value, 10) : value,
+      image_url: files[0],
     });
-  
-  };
-  
+  }
+
   const fetchProjectDetails = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -53,17 +91,17 @@ export default function ProjectShow() {
   const handleUpdate = async (event, field) => {
     event.preventDefault();
     try {
-      const updatedDetails = {
-        [field]: editedDetails[field],
-      };
+      const formData = new FormData();
+      formData.append(field, editedDetails[field]);
 
-      await saveProject(updatedDetails, projectDetails.id);
+      for(const $pair of formData.entries()) {
+        console.log('LOG DO FORMULARIO');
+        console.log($pair[0]+ ', '+ $pair[1]);
+      }
+  
+      await saveProject(formData, projectDetails.id);
       const updatedProject = await fetchProject(id);
       setProjectDetails(updatedProject);
-      // setEditMode({
-      //   ...editMode,
-      //   [field]: !editMode[field],
-      // });
       console.log('Projeto atualizado com sucesso:', updatedProject);
     } catch (error) {
       console.error('Erro ao atualizar projeto:', error);
@@ -95,7 +133,7 @@ export default function ProjectShow() {
           type="text"
           placeholder={projectDetails[field]}
           value={editedDetails[field]}
-          onChange={(event) => handleChange(field, event.target.value)}
+          onChange={(event) => handleChange(field, event)}
           name={field}
           />
           <button
@@ -111,8 +149,36 @@ export default function ProjectShow() {
     );
   }
 
+  const renderFileCell = (name) => {
+
+    return (
+    <div className="edition-item">
+          <span>{ name }: </span>
+          <span>{ projectDetails['image_url'] }</span>
+          <button className='btn btn-sm edit-btn'>
+            {editSVG}
+          </button>
+          <input
+          type="file"
+          files={editedDetails['image_url']}
+          placeholder={projectDetails['image_url']}
+          onChange={(event) => handleFileChange(event)}
+          name='image_url'
+          />
+          <button
+            className='btn btn-sm confirm-btn'
+            onClick={ (event) => handleUpdate(event, 'image_url') }
+          >
+            { confirmSVG }
+          </button>
+          <button className='btn btn-sm cancel-btn'>
+            { cancelSVG }
+          </button>
+        </div>
+    );
+  }
+
   const renderCategoryCell = (name, field) => {
-    console.log('Lista de Categorias: ', categoriesList);
     return (
       <div className="edition-item">
       <span>{ name }: </span>
@@ -123,7 +189,7 @@ export default function ProjectShow() {
       <select
         name="categpry"
         value={editedDetails[field] || 1}
-        onChange={(e) => handleChange(field, e.target.value)}
+        onChange={(event) => handleChange(field, event)}
       >
         { categoriesList.map((category, index) => (
           <option
@@ -158,7 +224,7 @@ export default function ProjectShow() {
         <select
           name={field}
           value={editedDetails[field] || ''}
-          onChange={(e) => handleChange(field, e.target.value)}
+          onChange={(event) => handleChange(field, event)}
         >
           <option value={ 1 }>Ativo</option>
           <option value={ 0 }>Inativo</option>
@@ -204,9 +270,6 @@ export default function ProjectShow() {
     );
   }
 
-  console.log('Detalhes do Projeto:', projectDetails);
-  console.log('Detalhes Editados: ', editedDetails);
-
 
   return (
     <div id="project-show-container">
@@ -240,6 +303,7 @@ export default function ProjectShow() {
         </div>
         <div id="project-show-edit-container" >
           <h4>Ficha tecnica:</h4>
+          { renderFileCell('Imagem de capa', 'image_url') }
           { renderCategoryCell('Categoria', 'category_id') }
           { renderDefaultCell('Nome', 'name') }
           { renderDefaultCell('Area', 'area') }

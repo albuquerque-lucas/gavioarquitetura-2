@@ -37,19 +37,50 @@ export default function ProjectForm() {
     });
   };
 
-  const submitForm = async (e) => {
-    e.preventDefault();
-    console.log(projectFormData);
-    try {
-      const data = await saveProject(projectFormData);
+  // const submitForm = async (e) => {
+  //   e.preventDefault();
+  //   console.log(projectFormData);
+  //   try {
+  //     const data = await saveProject(projectFormData);
 
-      console.log('Projeto enviado com sucesso!');
-      console.log(data);
-      navigate('/projects');
-    } catch (error) {
-      console.error('Erro ao enviar o projeto:', error);
+  //     console.log('Projeto enviado com sucesso!');
+  //     console.log(data);
+  //     navigate('/projects');
+  //   } catch (error) {
+  //     console.error('Erro ao enviar o projeto:', error);
+  //   }
+  // };
+
+  const submitForm = async (e) => {
+  e.preventDefault();
+
+  try {
+    const formData = new FormData();
+
+    // Percorra as chaves do projectFormData
+    for (const key in projectFormData) {
+      if (projectFormData.hasOwnProperty(key)) {
+        const value = projectFormData[key];
+
+        // Verifique se o valor é um arquivo (File)
+        if (value instanceof File) {
+          formData.append(key, value);
+        } else {
+          // Se não for um arquivo, assuma que é uma string
+          formData.append(key, value.toString());
+        }
+      }
     }
-  };
+
+    const data = await saveProject(formData);
+
+    console.log('Projeto enviado com sucesso!');
+    console.log(data);
+    navigate('/projects');
+  } catch (error) {
+    console.error('Erro ao enviar o projeto:', error);
+  }
+};
 
   useEffect(() => {
     const fetchData = async () => {

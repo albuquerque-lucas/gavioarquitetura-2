@@ -63,13 +63,19 @@ class ProjectRepository implements IReadAndWrite
     public function update(int $id, array $data): ServiceResponse
     {
         $project = Project::find($id);
+        
         if (!$project) {
             $this->response->setAttributes(404, (object)[
                 'message' => 'Project not found'
             ]);
             return $this->response;
         }
-    
+        
+        if ($project->image_url && Storage::disk('public')->exists($project->image_url)) {
+            Storage::disk('public')->delete($project->image_url);
+        }
+
+
         $project->fill($data);
     
         if ($project->isDirty()) {
