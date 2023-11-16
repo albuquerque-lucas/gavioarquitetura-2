@@ -9,12 +9,14 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 1. Clone o repositório:
 
 ```bash
+Copy code
 git clone https://github.com/seu-usuario/portfolio-arquitetura.git
 cd portfolio-arquitetura
 ```
 
 Execute o Docker Compose para iniciar os serviços:
 ```bash
+Copy code
 docker-compose up -d
 ```
 
@@ -30,6 +32,13 @@ Para parar os serviços, execute:
 ```bash
 Copy code
 docker-compose down
+```
+
+Após iniciar os serviços, vá para o diretório do backend e execute o comando Composer para atualizar e recriar o banco de dados:
+```bash
+Copy code
+cd backend
+composer refresh-db
 ```
 
 ## Detalhes dos Serviços
