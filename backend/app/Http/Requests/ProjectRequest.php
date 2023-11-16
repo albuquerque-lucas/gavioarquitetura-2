@@ -27,9 +27,8 @@ class ProjectRequest extends FormRequest
             'area' => 'required|numeric',
             'year'=> 'required|numeric',
             'address' => 'required|string',
-            'image_url' => 'required|string',
             'category_id' => 'required|numeric',
-            'active_carousel' => 'required|boolean',
+            'active_carousel' => 'required',
         ];
     }
 }

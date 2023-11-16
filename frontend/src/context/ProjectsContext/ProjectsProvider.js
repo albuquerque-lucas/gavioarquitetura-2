@@ -7,24 +7,42 @@ export default function ProjectsProvider({ children }) {
     image_url: false,
     active_carousel: false,
     name: false,
-    category: false,
+    category_id: false,
     area: false,
     address: false,
     description: false,
   });
   const [projectFormData, setProjectFormData] = useState({
-    image_url: "",
-    active_carousel: false,
     name: "",
-    category_id: "0",
-    area: "",
-    date: "",
-    address: "",
     description: "",
+    area: "",
+    year: "",
+    address: "",
+    image_url: "",
+    category_id: "0",
+    active_carousel: "0",
   });
   const [projectList, setProjectList] = useState([]);
-  const [projectDetails, setProjectDetails] = useState({});
-  const [editedDetails, setEditedDetails] = useState({});
+  const [projectDetails, setProjectDetails] = useState({
+    name: "",
+    description: "",
+    area: "",
+    year: "",
+    address: "",
+    image_url: "",
+    category_id: "0",
+    active_carousel: "0",
+  });
+  const [editedDetails, setEditedDetails] = useState({
+    name: "",
+    description: "",
+    area: "",
+    year: "",
+    address: "",
+    image_url: "",
+    category_id: "0",
+    active_carousel: "0",
+  });
 
   const context = useMemo(() => {
     const handleChange = (field, value) => {

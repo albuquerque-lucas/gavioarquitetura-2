@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\ProjectRepository;
 use App\Http\Requests\ProjectRequest;
+use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
@@ -22,7 +23,23 @@ class ProjectsController extends Controller
 
     public function store(ProjectRequest $request)
     {
-        $data = $request->all();
+        $requestData = $request->all();
+
+        if ($request->hasFile('image_url')) {
+            $imagePath = $request->file('image_url')->store('projects/cover', 'public');
+        } else {
+            $imagePath = null;
+        }
+        $data = [
+            'name' => $requestData['name'],
+            'description' => $requestData['description'],
+            'area' => $requestData['area'],
+            'year' => $requestData['year'],
+            'address' => $requestData['address'],
+            'image_url' => $imagePath,
+            'category_id' => $requestData['category_id'],
+            'active_carousel' => $requestData['active_carousel'],
+        ];
         $res = $this->repository->create($data);
         return response()->json($res->data(), $res->status());
     }
@@ -33,9 +50,14 @@ class ProjectsController extends Controller
         return response()->json($res->data(), $res->status());
     }
 
-    public function update(ProjectRequest $request, int $id)
+    public function update(Request $request, int $id)
     {
         $data = $request->all();
+        if ($request->hasFile('image_url')) {
+            $file = $request->file('image_url');
+            $imagePath = $file->store('projects/cover', 'public');
+            $data['image_url'] = $imagePath;
+        }
         $res = $this->repository->update($id, $data);
         return response()->json($res->data(), $res->status());
     }

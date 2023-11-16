@@ -1,0 +1,23 @@
+#edit-project-form {
+  padding: 1rem;
+  border: 2px solid rgb(214, 214, 214);
+  border-radius: 25px;
+  min-height: 30rem;
+}
+
+.info-edit-col {
+}
+
+.input-edit-col {
+  width: 100%;
+}
+
+/* .pst-head-cell {
+  width: 15rem;
+}
+
+.pst-body-cell {
+  display: flex;
+  justify-content: space-between;
+  width: 20rem;
+} */

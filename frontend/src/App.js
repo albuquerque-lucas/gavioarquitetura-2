@@ -1,14 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import Header from './components/admin/Header';
-import Body from './components/admin/Body';
-import Projects from './components/admin/Projects';
-import Home from './components/admin/HomePage';
-import Layout from './components/admin/Layout';
-import Categories from './components/admin/Categories';
-import ProjectShow from './components/admin/ProjectShow';
-import NewProject from './components/admin/NewProject';
+import Header from './components/admin/pages/Header';
+import Body from './components/admin/pages/Body';
+import Projects from './components/admin/pages/Projects';
+import Home from './components/admin/pages/HomePage';
+import Layout from './components/admin/pages/Layout';
+import Categories from './components/admin/pages/Categories';
+import ProjectShow from './components/admin/pages/ProjectShow';
+import NewProject from './components/admin/pages/NewProject';
 
 function App() {
   return (
