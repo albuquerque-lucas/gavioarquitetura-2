@@ -28,14 +28,12 @@ export default function ProjectShow() {
     let value;
   
     if (event.target.type === 'file') {
-      console.log('TIPO FILE DETECTADO');
       value = event.target.files[0];
       console.log(value);
     } else {
       // Se o campo for um select e o valor for um objeto, extraia o valor correto
       value = event.target.value;
       if (typeof value === 'object' && value !== null) {
-        console.log('TIPO OBJETO DETECTADO');
         value = value.id;
       }
   
@@ -43,7 +41,6 @@ export default function ProjectShow() {
         ...editedDetails,
         [field]: field === 'active_carousel' ? parseInt(value, 10) : value,
       });
-      console.log('EDITED DETAILS FIELD', editedDetails);
     }
   };
 
@@ -70,6 +67,16 @@ export default function ProjectShow() {
   
   useEffect(() => {
     fetchProjectDetails();
+    setEditMode({
+      name: false,
+      description: false,
+      area: false,
+      year: false,
+      address: false,
+      image_url: false,
+      category_id: false,
+      active_carousel: false,
+    });
   }, [fetchProjectDetails]);
   
   const handleUpdate = async (event, field) => {
@@ -77,11 +84,6 @@ export default function ProjectShow() {
     try {
       const formData = new FormData();
       formData.append(field, editedDetails[field]);
-
-      for(const $pair of formData.entries()) {
-        console.log('LOG DO FORMULARIO');
-        console.log($pair[0]+ ', '+ $pair[1]);
-      }
   
       await saveProject(formData, projectDetails.id);
       const updatedProject = await fetchProject(id);
@@ -100,7 +102,6 @@ export default function ProjectShow() {
         category_id: "0",
         active_carousel: "0",
       });
-      console.log(editedDetails);
     }
   };
 

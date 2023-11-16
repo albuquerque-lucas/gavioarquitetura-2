@@ -81,6 +81,10 @@
   margin-bottom: 0.5rem;
 }
 
+.edition-item span {
+  padding: 0.5rem;
+}
+
 .edition-item button {
   border: none;
   width: 2rem;
