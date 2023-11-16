@@ -9,6 +9,7 @@ export default function ProjectsProvider({ children }) {
     name: false,
     category_id: false,
     area: false,
+    year: false,
     address: false,
     description: false,
   });

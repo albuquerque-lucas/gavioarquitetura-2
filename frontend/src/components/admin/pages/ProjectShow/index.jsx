@@ -24,22 +24,6 @@ export default function ProjectShow() {
   const cancelSVG = <FontAwesomeIcon icon={ faXmark } />;
   const confirmSVG = <FontAwesomeIcon icon={ faCheck } />;
 
-  
-  // const handleChange = (field, event) => {
-  //   let value;
-  
-  //   if (event.target.type === 'file') {
-  //     value = event.target.files[0];
-  //   } else {
-  //     value = event.target.value;
-  //   }
-  
-  //   setEditedDetails({
-  //     ...editedDetails,
-  //     [field]: field === 'active_carousel' ? parseInt(value, 10) : value,
-  //   });
-  // };
-
   const handleChange = (field, event) => {
     let value;
   
@@ -120,32 +104,51 @@ export default function ProjectShow() {
     }
   };
 
-  const renderDefaultCell = (name, field) => {
+  const cancelEdition = (field) => {
+    setEditMode({ ...editMode, [field]: !editMode[field] });
+    setEditedDetails({
+      ...editedDetails,
+      [field]: '',
+    });
+  }
 
+  const renderDefaultCell = (name, field) => {
     return (
-    <div className="edition-item">
-          <span>{ name }: </span>
-          <span>{ projectDetails[field] }</span>
-          <button className='btn btn-sm edit-btn'>
-            {editSVG}
-          </button>
-          <input
-          type="text"
-          placeholder={projectDetails[field]}
-          value={editedDetails[field]}
-          onChange={(event) => handleChange(field, event)}
-          name={field}
-          />
-          <button
-            className='btn btn-sm confirm-btn'
-            onClick={ (event) => handleUpdate(event, field) }
-          >
-            { confirmSVG }
-          </button>
-          <button className='btn btn-sm cancel-btn'>
-            { cancelSVG }
-          </button>
-        </div>
+      <div className="edition-item">
+        <span>{ name }: </span>
+        <span>{ projectDetails[field] }</span>
+        <button
+          className='btn btn-sm edit-btn'
+          onClick={() => setEditMode({ ...editMode, [field]: !editMode[field] })}
+        >
+          {editSVG}
+        </button>
+        { 
+          editMode[field] && (
+            <>
+              <input
+                type="text"
+                placeholder={projectDetails[field]}
+                value={editedDetails[field]}
+                onChange={(event) => handleChange(field, event)}
+                name={field}
+              />
+              <button
+                className='btn btn-sm confirm-btn'
+                onClick={ (event) => handleUpdate(event, field) }
+              >
+                { confirmSVG }
+              </button>
+              <button
+                className='btn btn-sm cancel-btn'
+                onClick={() => cancelEdition(field)}
+              >
+              {cancelSVG}
+            </button>
+            </>
+          )
+        }
+      </div>
     );
   }
 
@@ -154,26 +157,39 @@ export default function ProjectShow() {
     return (
     <div className="edition-item">
           <span>{ name }: </span>
-          <span>{ projectDetails['image_url'] }</span>
-          <button className='btn btn-sm edit-btn'>
+          <span>{ projectDetails['image_url'] ? projectDetails['image_url'].substring(0, 25) : 'Sem imagem' }</span>
+          <button
+            className='btn btn-sm edit-btn'
+            onClick={() => setEditMode({ ...editMode, 'image_url': !editMode['image_url'] })}
+          >
             {editSVG}
           </button>
-          <input
-          type="file"
-          files={editedDetails['image_url']}
-          placeholder={projectDetails['image_url']}
-          onChange={(event) => handleFileChange(event)}
-          name='image_url'
-          />
-          <button
-            className='btn btn-sm confirm-btn'
-            onClick={ (event) => handleUpdate(event, 'image_url') }
-          >
-            { confirmSVG }
-          </button>
-          <button className='btn btn-sm cancel-btn'>
-            { cancelSVG }
-          </button>
+          {
+            editMode['image_url'] && (
+              <>
+                <input
+                type="file"
+                files={editedDetails['image_url']}
+                placeholder={projectDetails['image_url']}
+                onChange={(event) => handleFileChange(event)}
+                name='image_url'
+                />
+                <button
+                  className='btn btn-sm confirm-btn'
+                  onClick={ (event) => handleUpdate(event, 'image_url') }
+                >
+                  { confirmSVG }
+                </button>
+                <button
+                  className='btn btn-sm cancel-btn'
+                  onClick={() => setEditMode({ ...editMode, 'image_url': !editMode['image_url'] })}
+                >
+                  {cancelSVG}
+                </button>
+              </>
+            )
+          }
+
         </div>
     );
   }
@@ -183,32 +199,44 @@ export default function ProjectShow() {
       <div className="edition-item">
       <span>{ name }: </span>
       <span>{ projectDetails.category ? projectDetails.category.name : 'Categoria nao encontrada' }</span>
-      <button className='btn btn-sm edit-btn'>
+      <button
+      className='btn btn-sm edit-btn'
+      onClick={() => setEditMode({ ...editMode, [field]: !editMode[field] })}
+      >
         {editSVG}
       </button>
-      <select
-        name="categpry"
-        value={editedDetails[field] || 1}
-        onChange={(event) => handleChange(field, event)}
-      >
-        { categoriesList.map((category, index) => (
-          <option
-          key={ index }
-          value={category.id}
-          >
-            {category.name}
-            </option>
-        ))}
-      </select>
-      <button
-      className='btn btn-sm confirm-btn'
-      onClick={ (event) => handleUpdate(event, field) }
-      >
-        { confirmSVG }
-      </button>
-      <button className='btn btn-sm cancel-btn'>
-        { cancelSVG }
-      </button>
+      {
+        editMode[field] && (
+          <>
+            <select
+              name="categpry"
+              value={editedDetails[field] || 1}
+              onChange={(event) => handleChange(field, event)}
+            >
+              { categoriesList.map((category, index) => (
+                <option
+                key={ index }
+                value={category.id}
+                >
+                  {category.name}
+                  </option>
+              ))}
+            </select>
+            <button
+            className='btn btn-sm confirm-btn'
+            onClick={ (event) => handleUpdate(event, field) }
+            >
+              { confirmSVG }
+            </button>
+            <button
+              className='btn btn-sm cancel-btn'
+              onClick={() => setEditMode({ ...editMode, [field]: !editMode[field] })}
+            >
+              {cancelSVG}
+            </button>
+          </>
+        )
+      }
     </div>
     );
   }
@@ -218,26 +246,39 @@ export default function ProjectShow() {
       <div className="edition-item">
         <span>{name}: </span>
         <span>{projectDetails[field] ? 'Ativo' : 'Inativo'}</span>
-        <button className='btn btn-sm edit-btn'>
+        <button
+          className='btn btn-sm edit-btn'
+          onClick={() => setEditMode({ ...editMode, [field]: !editMode[field] })}
+        >
           {editSVG}
         </button>
-        <select
-          name={field}
-          value={editedDetails[field] || ''}
-          onChange={(event) => handleChange(field, event)}
-        >
-          <option value={ 1 }>Ativo</option>
-          <option value={ 0 }>Inativo</option>
-        </select>
-        <button
-          className='btn btn-sm confirm-btn'
-          onClick={(event) => handleUpdate(event, field)}
-        >
-          {confirmSVG}
-        </button>
-        <button className='btn btn-sm cancel-btn'>
-          {cancelSVG}
-        </button>
+        {
+        editMode[field] && (
+          <>
+            <select
+              name={field}
+              value={editedDetails[field] || ''}
+              onChange={(event) => handleChange(field, event)}
+            >
+              <option value={ 1 }>Ativo</option>
+              <option value={ 0 }>Inativo</option>
+            </select>
+            <button
+              className='btn btn-sm confirm-btn'
+              onClick={(event) => handleUpdate(event, field)}
+            >
+              {confirmSVG}
+            </button>
+            <button
+              className='btn btn-sm cancel-btn'
+              onClick={() => setEditMode({ ...editMode, [field]: !editMode[field] })}
+            >
+              {cancelSVG}
+            </button>
+          </>
+        )
+      }
+
       </div>
     );
   };
@@ -247,28 +288,49 @@ export default function ProjectShow() {
       <div className="edition-item text-item">
       <span>{ name }: </span>
       <span className='text-edit-content'>{ projectDetails[field] }</span>
-      <button className='btn btn-sm edit-btn'>
+      <button
+        className='btn btn-sm edit-btn'
+        onClick={() => setEditMode({ ...editMode, [field]: !editMode[field] })}
+      >
         {editSVG}
       </button>
-      <textarea
-      placeholder={projectDetails[field]}
-      value={editedDetails[field]}
-      onChange={(event) => handleChange(field, event.target.value)}
-      name={field}
-      >
-      </textarea>
-      <button
-        className='btn btn-sm confirm-btn'
-        onClick={ (event) => handleUpdate(event, field) }
-      >
-        { confirmSVG }
-      </button>
-      <button className='btn btn-sm cancel-btn'>
-        { cancelSVG }
-      </button>
+      {
+        editMode[field] && (
+          <>
+            <textarea
+              placeholder={projectDetails[field]}
+              value={editedDetails[field]}
+              onChange={(event) => handleChange(field, event)}
+              name={field}
+              >
+            </textarea>
+            <button
+              className='btn btn-sm confirm-btn'
+              onClick={ (event) => handleUpdate(event, field) }
+            >
+              { confirmSVG }
+            </button>
+            <button
+              className='btn btn-sm cancel-btn'
+              onClick={() => setEditMode({ ...editMode, [field]: !editMode[field] })}
+            >
+              { cancelSVG }
+            </button>
+          </>
+        )
+      }
+
     </div>
     );
   }
+
+  const toggleAllEditModes = () => {
+    const updatedEditModes = Object.keys(editMode).reduce((acc, field) => {
+      acc[field] = !editMode[field];
+      return acc;
+    }, {});
+    setEditMode(updatedEditModes);
+  };
 
 
   return (
@@ -291,9 +353,9 @@ export default function ProjectShow() {
         <Loading />
       </div>
     ) : (
-      <div>
+      <div className="project-info-container">
 
-        <div className="project-show-container">
+        <div>
           <div id="image-container">
             <img
               src={ projectDetails.image_url !== null ? `http://localhost/storage/${projectDetails.image_url}` : noImage }
@@ -301,8 +363,15 @@ export default function ProjectShow() {
             />
           </div>
         </div>
-        <div id="project-show-edit-container" >
-          <h4>Ficha tecnica:</h4>
+        <div id="project-show-edit-container">
+          <div id="edit-header">
+            <h4>Ficha tecnica:</h4>
+            <button
+              onClick={ toggleAllEditModes }
+            >
+              { editSVG }
+            </button>
+          </div>
           { renderFileCell('Imagem de capa', 'image_url') }
           { renderCategoryCell('Categoria', 'category_id') }
           { renderDefaultCell('Nome', 'name') }
