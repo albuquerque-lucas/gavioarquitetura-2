@@ -10,9 +10,9 @@ export const fetchProject = async (id) => {
   }
 };
 
-export const fetchProjectsList = async () => {
+export const fetchProjectsList = async (url) => {
   try {
-    const response = await axios.get('http://localhost/api/projects');
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     console.error('Erro ao buscar projetos:', error);

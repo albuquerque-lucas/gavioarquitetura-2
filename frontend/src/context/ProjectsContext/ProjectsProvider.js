@@ -3,6 +3,9 @@ import { useMemo, useState } from "react";
 import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(null);
+  const [navigationLinks, setNavigationLinks] = useState([]);
   const [editMode, setEditMode] = useState({
     image_url: false,
     active_carousel: false,
@@ -65,6 +68,12 @@ export default function ProjectsProvider({ children }) {
       setEditMode,
       projectFormData,
       setProjectFormData,
+      currentPage,
+      setCurrentPage,
+      lastPage,
+      setLastPage,
+      navigationLinks,
+      setNavigationLinks,
     };
   }, [
     projectList,
@@ -77,6 +86,12 @@ export default function ProjectsProvider({ children }) {
     setEditMode,
     projectFormData,
     setProjectFormData,
+    currentPage,
+    setCurrentPage,
+    lastPage,
+    setLastPage,
+    navigationLinks,
+    setNavigationLinks,
   ]);
 
   return (

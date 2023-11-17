@@ -1,46 +1,47 @@
 #project-list-container {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+#navigation-btn-container {
+  width: 75vw;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0 2rem 0;
+  padding: 1rem;
+}
+
+#navigation-btn-container button {
+  outline: none;
+  border: 2px solid transparent;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+#navigation-btn-container button:hover {
+  border: 2px solid black;
+}
+
+#navigation-btn-container button:disabled {
+  border: none;
 }
 
 #project-table-container {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: 50vh;
   position: relative;
   width: 75vw;
 }
 
 #project-table-container table {
-  font-weight: 700;
-  text-align: center;
   width: 100%;
-}
-
-#project-table-container table a{
-  color: #212529;
-  font-size: 1.4rem;
-  margin: 0 0.5rem;
-}
-
-#project-table-container table tbody tr {
-  border-bottom: 2px solid black;
-  cursor: pointer;
-  height: 6.5rem;
-}
-
-#project-table-container table tbody tr:hover {
-  background-color: #f2f2f2;
-}
-
-#project-table-container table tbody tr td{
-  padding: 0.3rem;
-}
-
-#project-table-container table tbody img {
-  max-width: 150px;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 10rem;
 }
 
 #project-table-container table thead {
@@ -48,15 +49,45 @@
   color: white;
   height: 4rem;
 }
+
+#project-table-container table thead tr {
+  border-bottom: 2px solid black;
+}
+
+#project-table-container table thead th {
+  padding: 0.3rem;
+}
+
+#project-table-container table tbody tr {
+  cursor: pointer;
+  height: 6.5rem;
+  border-bottom: 2px solid black;
+}
+
+#project-table-container table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+#project-table-container table tbody td {
+  padding: 0.3rem;
+}
+
+#project-table-container table tbody img {
+  max-width: 150px;
+  max-height: 100px;
+}
+
 #project-table-container table a {
+  font-size: 1.4rem;
+  color: #212529;
   border-radius: 5px;
   padding: 0.4rem;
-  margin: 0.5rem;
+  margin: 0 0.5rem;
 }
 
 #project-table-container table button {
-  border: none;
   background-color: transparent;
+  border: none;
   border-radius: 5px;
   font-size: 120%;
   padding: 0.5rem;
@@ -64,11 +95,11 @@
 }
 
 #project-table-container table .edit-project-btn:hover {
-  color: white;
   background-color: #007bff;
+  color: white;
 }
 
 #project-table-container table .delete-project-btn:hover {
-  color: white;
   background-color: #dc3545;
+  color: white;
 }

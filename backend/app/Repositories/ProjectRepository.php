@@ -19,7 +19,7 @@ class ProjectRepository implements IReadAndWrite
 
     public function getAll(): ServiceResponse
     {
-        $list = Project::all();
+        $list = Project::paginate();
         if ($list->isEmpty()) {
             $this->response->setAttributes(404, (object)[
                 'message' => 'Projects not found'
