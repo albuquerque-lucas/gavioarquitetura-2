@@ -9,14 +9,12 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 1. Clone o repositório:
 
 ```bash
-Copy code
 git clone https://github.com/seu-usuario/portfolio-arquitetura.git
 cd portfolio-arquitetura
 ```
 
 Execute o Docker Compose para iniciar os serviços:
 ```bash
-Copy code
 docker-compose up -d
 ```
 
@@ -25,14 +23,12 @@ Este comando construirá e iniciará os contêineres do frontend, backend, MySQL
 Nota: Se a porta 80 estiver ocupada, identifique o PID do processo que está usando a porta 80. Em sistemas Unix, use o comando:
 
 ```bash
-Copy code
 sudo lsof -i :80
 ```
 
 Em seguida, execute:
 
 ```bash
-Copy code
 sudo kill <PID>
 ```
 
@@ -44,13 +40,11 @@ Backend: http://localhost
 
 Para parar os serviços, execute:
 ```bash
-Copy code
 docker-compose down
 ```
 
 Após iniciar os serviços, vá para o diretório do backend e execute o comando Composer para atualizar e recriar o banco de dados:
 ```bash
-Copy code
 cd backend
 composer refresh-db
 ```
