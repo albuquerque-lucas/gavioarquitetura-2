@@ -25,8 +25,7 @@ export default function Projects() {
     setIsLoading,
     isLoading,
   } = useContext(GeneralDataContext);
-
-  const messageVisible = true;
+  
   const notify = () => toast.success('Projeto deletado com sucesso!');
 
   useEffect(() => {
