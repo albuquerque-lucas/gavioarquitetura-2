@@ -19,14 +19,29 @@ class ProjectRepository implements IReadAndWrite
 
     public function getAll(): ServiceResponse
     {
-        $list = Project::all();
+        $list = Project::paginate();
+    
         if ($list->isEmpty()) {
             $this->response->setAttributes(404, (object)[
                 'message' => 'Projects not found'
             ]);
             return $this->response;
         }
-
+    
+        $response_message = [
+            'message' => 'Projects retrieved successfully',
+            'type' => 'success',
+        ];
+    
+        // Converta a lista para uma matriz
+        $listArray = $list->toArray();
+    
+        // Adicione a nova chave à matriz
+        $listArray['response_message'] = $response_message;
+    
+        // Converta a matriz de volta para uma coleção
+        $list = collect($listArray);
+    
         $this->response->setAttributes(200, $list);
         return $this->response;
     }
@@ -110,12 +125,10 @@ class ProjectRepository implements IReadAndWrite
         if (!$isDeleted) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'Error deleting project',
-                'deleted' => $isDeleted,
             ]);
         } else {
             $this->response->setAttributes(200, (object)[
                 'message' => 'Project deleted successfully',
-                'deleted' => $isDeleted,
             ]);
         }
 

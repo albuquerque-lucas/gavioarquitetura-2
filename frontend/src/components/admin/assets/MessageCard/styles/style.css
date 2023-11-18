@@ -1,8 +1,8 @@
 #message-card {
   background-color: #a6d96a;
-  border-radius: 25px;
-  height: 5rem;
+  height: 100%;
   width: 75vw;
+  padding: 1rem;
 }
 
 #message-card .message-content {

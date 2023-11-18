@@ -1,11 +1,12 @@
+import React, { useState, useEffect, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import './styles/style.css';
 
-export default function MessageCard() {
+export default function MessageCard({ message }) {
 
   const checkSVG = <FontAwesomeIcon icon={ faCheckCircle } />;
-
 
   return (
       <div id="message-card" className='row'>
@@ -13,7 +14,7 @@ export default function MessageCard() {
           { checkSVG }
         </div>
         <div className="message-content col-8 message-content">
-          Campo alterado com sucesso!
+          { message }
         </div>
       </div>
   );

@@ -4,11 +4,14 @@ import { fetchCategoriesList } from "../../../../utils/CategoriesFetch";
 import { saveProject } from "../../../../utils/ProjectsFetch";
 import CategoriesContext from "../../../../context/CategoriesContext/CategoriesContext";
 import ProjectsContext from "../../../../context/ProjectsContext/ProjectsContext";
+import { toast } from 'react-toastify';
 
 export default function ProjectForm() {
   const { categoriesList, setCategoriesList } = useContext(CategoriesContext);
   const { projectFormData, setProjectFormData } = useContext(ProjectsContext);
   const navigate = useNavigate();
+
+  const notify = () => toast.success('Projeto criado com sucesso!');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,21 +38,7 @@ export default function ProjectForm() {
       ...projectFormData,
       active_carousel: checked,
     });
-  };
-
-  // const submitForm = async (e) => {
-  //   e.preventDefault();
-  //   console.log(projectFormData);
-  //   try {
-  //     const data = await saveProject(projectFormData);
-
-  //     console.log('Projeto enviado com sucesso!');
-  //     console.log(data);
-  //     navigate('/projects');
-  //   } catch (error) {
-  //     console.error('Erro ao enviar o projeto:', error);
-  //   }
-  // };
+  };;
 
   const submitForm = async (e) => {
   e.preventDefault();
@@ -57,16 +46,13 @@ export default function ProjectForm() {
   try {
     const formData = new FormData();
 
-    // Percorra as chaves do projectFormData
     for (const key in projectFormData) {
       if (projectFormData.hasOwnProperty(key)) {
         const value = projectFormData[key];
 
-        // Verifique se o valor é um arquivo (File)
         if (value instanceof File) {
           formData.append(key, value);
         } else {
-          // Se não for um arquivo, assuma que é uma string
           formData.append(key, value.toString());
         }
       }
@@ -74,6 +60,7 @@ export default function ProjectForm() {
 
     const data = await saveProject(formData);
 
+    notify();
     console.log('Projeto enviado com sucesso!');
     console.log(data);
     navigate('/projects');

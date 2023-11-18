@@ -7,18 +7,36 @@ import Loading from '../../assets/Loading';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
+import { toast } from 'react-toastify';
 import './styles/style.css';
 
 export default function Projects() {
-  const { setProjectList, projectList } = useContext(ProjectsContext);
-  const { setIsLoading, isLoading } = useContext(GeneralDataContext);
-  const responseMessage = false;
+  const {
+    setProjectList,
+    projectList,
+    currentPage,
+    setCurrentPage,
+    lastPage,
+    setLastPage,
+    navigationLinks,
+    setNavigationLinks,
+  } = useContext(ProjectsContext);
+  const {
+    setIsLoading,
+    isLoading,
+  } = useContext(GeneralDataContext);
+  
+  const notify = () => toast.success('Projeto deletado com sucesso!');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const data = await fetchProjectsList();
+        const { data, last_page, links } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`);
+        const navLinks = links.slice(1, -1);
+        console.log(currentPage);
+        setNavigationLinks(navLinks);
+        setLastPage(last_page);
         setProjectList(data);
         setIsLoading(false);
       } catch (error) {
@@ -29,28 +47,27 @@ export default function Projects() {
     };
 
     fetchData();
-  }, [setProjectList, setIsLoading]);
+  }, [setProjectList, setIsLoading, currentPage]);
 
   const handleDelete = async (id) => {
     try {
       setIsLoading(true);
       await deleteProject(id);
-      const data = await fetchProjectsList();
+      const { data } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`);
       setProjectList(data);
       setIsLoading(false);
+      notify();
     } catch (error) {
       console.error('Erro ao deletar projeto:', error);
       setIsLoading(false);
     }
   }
 
+
   return (
     <div id='project-list-container'>
       <div className="text-center my-5">
         <h1>Projetos</h1>
-      </div>
-      <div className="message-container">
-        {responseMessage && <MessageCard />}
       </div>
       <div className="inner-options-container">
         <InnerOptionsNavbar>
@@ -59,21 +76,46 @@ export default function Projects() {
           </Link>
         </InnerOptionsNavbar>
       </div>
+      <div id='navigation-btn-container'>
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        {
+          navigationLinks.map((link) => (
+            <button
+              key={link.label}
+              onClick={() => setCurrentPage(Number(link.url.split('page=')[1]))}
+              disabled={link.active}
+            >
+              {link.label}
+            </button>
+          ))
+        }
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === lastPage}
+        >
+          Next
+        </button>
+          </div>
       <div id="project-table-container">
-        {isLoading ? (
-          <Loading />
-        ) : (
           <table id="project-table-admin">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Nome</th>
-                <th>Capa</th>
-                <th>Data</th>
-                <th>Pagina Inicial</th>
-                <th>Editar / Excluir</th>
+                <th className='col-1' >#</th>
+                <th className='col-1' >Nome</th>
+                <th className='col-2' >Capa</th>
+                <th className='col-1' >Data</th>
+                <th className='col-1' >Pagina Inicial</th>
+                <th className='col-1' >Editar / Excluir</th>
               </tr>
             </thead>
+        {isLoading ? (
+            <Loading />
+        ) : (
             <tbody>
               {projectList.length > 0 ? (
                 projectList.map((project) => (
@@ -89,9 +131,9 @@ export default function Projects() {
                 </tr>
               )}
             </tbody>
-          </table>
         )}
-      </div>
+          </table>
+        </div>
     </div>
   );
 }
