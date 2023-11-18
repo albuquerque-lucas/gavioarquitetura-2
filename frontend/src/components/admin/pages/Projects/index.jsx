@@ -20,8 +20,12 @@ export default function Projects() {
     navigationLinks,
     setNavigationLinks,
   } = useContext(ProjectsContext);
-  const { setIsLoading, isLoading } = useContext(GeneralDataContext);
-  const responseMessage = false;
+  const {
+    setIsLoading,
+    isLoading,
+  } = useContext(GeneralDataContext);
+
+  const messageVisible = true;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,7 +52,7 @@ export default function Projects() {
     try {
       setIsLoading(true);
       await deleteProject(id);
-      const { data } = await fetchProjectsList();
+      const { data } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`);
       setProjectList(data);
       setIsLoading(false);
     } catch (error) {
@@ -57,13 +61,14 @@ export default function Projects() {
     }
   }
 
+
   return (
     <div id='project-list-container'>
       <div className="text-center my-5">
         <h1>Projetos</h1>
       </div>
       <div className="message-container">
-        {responseMessage && <MessageCard />}
+        { messageVisible && <MessageCard/>}
       </div>
       <div className="inner-options-container">
         <InnerOptionsNavbar>
