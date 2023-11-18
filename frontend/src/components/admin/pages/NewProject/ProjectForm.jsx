@@ -11,7 +11,7 @@ export default function ProjectForm() {
   const { projectFormData, setProjectFormData } = useContext(ProjectsContext);
   const navigate = useNavigate();
 
-  const notify = () => toast.success('Projeto criado com sucesso!');
+  const notify = () => toast.success('Projeto enviado com sucesso!');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +38,7 @@ export default function ProjectForm() {
       ...projectFormData,
       active_carousel: checked,
     });
-  };;
+  };
 
   const submitForm = async (e) => {
   e.preventDefault();
@@ -59,7 +59,6 @@ export default function ProjectForm() {
     }
 
     const data = await saveProject(formData);
-
     notify();
     console.log('Projeto enviado com sucesso!');
     console.log(data);

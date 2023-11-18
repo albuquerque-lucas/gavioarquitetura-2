@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import Loading from '../../assets/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
 
 
 export default function ProjectShow() {
@@ -23,6 +24,8 @@ export default function ProjectShow() {
   const editSVG = <FontAwesomeIcon icon={ faPenToSquare } />;
   const cancelSVG = <FontAwesomeIcon icon={ faXmark } />;
   const confirmSVG = <FontAwesomeIcon icon={ faCheck } />;
+
+  const notify = (field) => toast.success(`Campo ${field} atualizado com sucesso.`);
 
   const handleChange = (field, event) => {
     let value;
@@ -88,6 +91,7 @@ export default function ProjectShow() {
       await saveProject(formData, projectDetails.id);
       const updatedProject = await fetchProject(id);
       setProjectDetails(updatedProject);
+      notify(field);
       console.log('Projeto atualizado com sucesso:', updatedProject);
     } catch (error) {
       console.error('Erro ao atualizar projeto:', error);
@@ -338,9 +342,6 @@ export default function ProjectShow() {
     <div id="project-show-container">
       <div className="text-center my-5">
         <h1>{projectDetails.name}</h1>
-      </div>
-      <div className="message-container">
-        <MessageCard />
       </div>
       <div className="d-flex justify-content-center w-100">
         <InnerOptionsNavbar>
