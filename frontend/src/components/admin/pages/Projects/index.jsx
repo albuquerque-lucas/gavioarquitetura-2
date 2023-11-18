@@ -7,6 +7,7 @@ import Loading from '../../assets/Loading';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
+import { toast } from 'react-toastify';
 import './styles/style.css';
 
 export default function Projects() {
@@ -26,6 +27,7 @@ export default function Projects() {
   } = useContext(GeneralDataContext);
 
   const messageVisible = true;
+  const notify = () => toast.success('Projeto deletado com sucesso!');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +57,7 @@ export default function Projects() {
       const { data } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`);
       setProjectList(data);
       setIsLoading(false);
+      notify();
     } catch (error) {
       console.error('Erro ao deletar projeto:', error);
       setIsLoading(false);
@@ -66,9 +69,6 @@ export default function Projects() {
     <div id='project-list-container'>
       <div className="text-center my-5">
         <h1>Projetos</h1>
-      </div>
-      <div className="message-container">
-        { messageVisible && <MessageCard/>}
       </div>
       <div className="inner-options-container">
         <InnerOptionsNavbar>

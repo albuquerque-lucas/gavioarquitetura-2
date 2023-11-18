@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/admin/pages/Header';
 import Body from './components/admin/pages/Body';
@@ -9,6 +10,8 @@ import Layout from './components/admin/pages/Layout';
 import Categories from './components/admin/pages/Categories';
 import ProjectShow from './components/admin/pages/ProjectShow';
 import NewProject from './components/admin/pages/NewProject';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -25,6 +28,7 @@ function App() {
           </Routes>
         </Body>
       </Layout>
+      <ToastContainer />
     </main>
   );
 }
