@@ -22,6 +22,20 @@ docker-compose up -d
 
 Este comando construirá e iniciará os contêineres do frontend, backend, MySQL, Redis, Meilisearch, Mailpit e Selenium.
 
+Nota: Se a porta 80 estiver ocupada, identifique o PID do processo que está usando a porta 80. Em sistemas Unix, use o comando:
+
+```bash
+Copy code
+sudo lsof -i :80
+```
+
+Em seguida, execute:
+
+```bash
+Copy code
+sudo kill <PID>
+```
+
 Acesse a aplicação:
 ```bash
 Frontend: http://localhost:3000
