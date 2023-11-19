@@ -20,3 +20,22 @@ export const mapUpdateField = (field) => {
       return '';
   }
 }
+
+export const mapSelectedFilter = (filter) => {
+  switch (filter) {
+    case 'recent':
+      return 'Ids mais recentes';
+    case 'latest':
+      return 'Ids mais antigos';
+    case 'activeCarousel':
+      return 'Exibidos na página inicial';
+    case 'inactiveCarousel':
+      return 'Não exibidos na página inicial';
+    case 'byYearDesc':
+      return 'Data';
+    case 'alphabeticalAsc':
+      return 'Ordem alfabetica';
+    default:
+      return '';
+  }
+}

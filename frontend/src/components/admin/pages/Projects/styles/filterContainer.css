@@ -1,0 +1,35 @@
+.filter-container {
+  border-radius: 25px;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 4fr 1fr 2fr 1fr;
+  border: 1px solid white;
+  width: 75%;
+}
+
+.filter-container label {
+  margin-right: 0.5rem;
+  font-weight: 700;
+}
+
+.filter-container select {
+  margin-right: 0.5rem;
+  border-radius: 25px;
+  padding: 0.25rem;
+}
+
+.filter-container button {
+  border: 2px solid #212529;
+  background-color: #212529;
+  color: white;
+  font-weight: 700;
+  margin-right: 0.5rem;
+  border-radius: 25px;
+  padding: 0.25rem;
+  transform: 0.1s;
+}
+
+.filter-container button:hover {
+  background-color: white;
+  color: #212529;
+}

@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { mapSelectedFilter } from '../../../../utils/mappers';
+import './styles/filterContainer.css';
 
 export default function ProjectsFilters({ projectList, setProjectList }) {
   const [selectedFilter, setSelectedFilter] = useState('recent');
+  const [clickedFilter, setClickedFilter] = useState('');
 
   const sortProjects = (filter) => {
     let sortProjects = [...projectList];
+    setClickedFilter(filter);
+    console.log(clickedFilter)
     console.log(sortProjects);
     switch (filter) {
       case 'recent':
@@ -37,12 +42,15 @@ export default function ProjectsFilters({ projectList, setProjectList }) {
             return 0;
           }
         });
+        setProjectList(sortProjects);
         break;
       case 'byYearDesc':
         sortProjects.sort((a, b) => b.year - a.year);
+        setProjectList(sortProjects);
         break;
       case 'alphabeticalAsc':
         sortProjects.sort((a, b) => a.name.localeCompare(b.name));
+        setProjectList(sortProjects);
         break;
       default:
         break;
@@ -51,6 +59,7 @@ export default function ProjectsFilters({ projectList, setProjectList }) {
 
   return (
     <div className="filter-container">
+    <span>{`Filtro selecionado: ${mapSelectedFilter(clickedFilter)}`}</span>
     <label htmlFor="filter">Ordenar por: </label>
     <select
       name="filter"
