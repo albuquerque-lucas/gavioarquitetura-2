@@ -4,6 +4,13 @@
   align-items: center;
 }
 
+.filter-container {
+  background-color: red;
+  padding: 1rem;
+  display: flex;
+  width: 50%;
+}
+
 #navigation-btn-container {
   width: 75vw;
   display: flex;

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import MessageCard from '../../assets/MessageCard';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import ProjectRow from './ProjectRow';
 import Loading from '../../assets/Loading';
+import ProjectsFilters from './ProjectsFilters';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
@@ -25,8 +25,6 @@ export default function Projects() {
     setIsLoading,
     isLoading,
   } = useContext(GeneralDataContext);
-  
-  const notify = () => toast.success('Projeto deletado com sucesso!');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +45,53 @@ export default function Projects() {
     };
 
     fetchData();
-  }, [setProjectList, setIsLoading, currentPage]);
+  }, [setIsLoading, currentPage]);
+
+  const sortProjects = (filter) => {
+    let sortProjects = [...projectList];
+    console.log(sortProjects);
+    switch (filter) {
+      case 'recent':
+        sortProjects.sort((a, b) => b.id - a.id);
+        setProjectList(sortProjects);
+        break;
+      case 'latest':
+        sortProjects.sort((a, b) => a.id - b.id);
+        setProjectList(sortProjects);
+        break;
+      case 'activeCarousel':
+        sortProjects.sort((a, b) => {
+          if (a.active_carousel === true && b.active_carousel !== true) {
+            return -1;
+          } else if (!a.active_carousel && b.active_carousel) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+        setProjectList(sortProjects);
+        break;
+      case 'inactiveCarousel':
+        sortProjects.sort((a, b) => {
+          if (a.active_carousel && !b.active_carousel) {
+            return 1;
+          } else if (!a.active_carousel && b.active_carousel) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        break;
+      case 'byYearDesc':
+        sortProjects.sort((a, b) => b.year - a.year);
+        break;
+      case 'alphabeticalAsc':
+        sortProjects.sort((a, b) => a.nome.localeCompare(b.nome));
+        break;
+      default:
+        break;
+    }
+  }
 
   const handleDelete = async (id) => {
     try {
@@ -80,6 +124,24 @@ export default function Projects() {
           <Link to="/projects/new-project" className="btn btn-dark">
             Novo projeto
           </Link>
+          <ProjectsFilters
+            projectList={projectList}
+            setProjectList={setProjectList}
+          />
+          {/* <div className="filter-container">
+            <label htmlFor="filter">Ordenar por: </label>
+            <select name="filter" id="filter">
+              <option value="recent">Mais recentes</option>
+              <option value="latest">Mais antigos</option>
+              <option value="activeCarousel">Exibidos na pagina inicial</option>
+              <option value="inactiveCarousel">Nao exibidos na pagina inicial</option>
+              <option value="alphabeticalAsc">Nome</option>
+              <option value="byYearDesc">Data</option>
+            </select>
+            <button
+              onClick={() => sortProjects(document.getElementById('filter').value)}
+            >Ordenar</button>
+          </div> */}
         </InnerOptionsNavbar>
       </div>
       <div id='navigation-btn-container'>

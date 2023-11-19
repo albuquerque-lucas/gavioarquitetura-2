@@ -212,7 +212,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 21',
             'description' => 'Descrição do Projeto 21',
             'area' => 180,
-            'year' => 2023,
+            'year' => 2009,
             'address' => 'Endereço do Projeto 21',
         ]);
         
@@ -222,7 +222,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 22',
             'description' => 'Descrição do Projeto 22',
             'area' => 200,
-            'year' => 2023,
+            'year' => 2010,
             'address' => 'Endereço do Projeto 22',
         ]);
         
@@ -232,7 +232,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 23',
             'description' => 'Descrição do Projeto 23',
             'area' => 170,
-            'year' => 2023,
+            'year' => 2011,
             'address' => 'Endereço do Projeto 23',
         ]);
         
@@ -242,7 +242,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 24',
             'description' => 'Descrição do Projeto 24',
             'area' => 210,
-            'year' => 2023,
+            'year' => 2012,
             'address' => 'Endereço do Projeto 24',
         ]);
         
@@ -252,7 +252,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 25',
             'description' => 'Descrição do Projeto 25',
             'area' => 240,
-            'year' => 2023,
+            'year' => 2013,
             'address' => 'Endereço do Projeto 25',
         ]);
         $project26 = Project::create([
@@ -261,7 +261,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 26',
             'description' => 'Descrição do Projeto 26',
             'area' => 180,
-            'year' => 2023,
+            'year' => 2014,
             'address' => 'Endereço do Projeto 26',
         ]);
         
@@ -271,7 +271,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 27',
             'description' => 'Descrição do Projeto 27',
             'area' => 200,
-            'year' => 2023,
+            'year' => 2015,
             'address' => 'Endereço do Projeto 27',
         ]);
         
@@ -281,7 +281,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 28',
             'description' => 'Descrição do Projeto 28',
             'area' => 190,
-            'year' => 2023,
+            'year' => 2016,
             'address' => 'Endereço do Projeto 28',
         ]);
         
@@ -291,7 +291,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 29',
             'description' => 'Descrição do Projeto 29',
             'area' => 220,
-            'year' => 2023,
+            'year' => 2017,
             'address' => 'Endereço do Projeto 29',
         ]);
         
@@ -301,7 +301,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 30',
             'description' => 'Descrição do Projeto 30',
             'area' => 170,
-            'year' => 2023,
+            'year' => 2018,
             'address' => 'Endereço do Projeto 30',
         ]);
         
@@ -311,7 +311,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 31',
             'description' => 'Descrição do Projeto 31',
             'area' => 190,
-            'year' => 2023,
+            'year' => 2019,
             'address' => 'Endereço do Projeto 31',
         ]);
         
@@ -321,7 +321,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 32',
             'description' => 'Descrição do Projeto 32',
             'area' => 200,
-            'year' => 2023,
+            'year' => 2020,
             'address' => 'Endereço do Projeto 32',
         ]);
         
@@ -331,7 +331,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 33',
             'description' => 'Descrição do Projeto 33',
             'area' => 210,
-            'year' => 2023,
+            'year' => 2021,
             'address' => 'Endereço do Projeto 33',
         ]);
         
@@ -341,7 +341,7 @@ class ProjectsSeeder extends Seeder
             'name' => 'Projeto 34',
             'description' => 'Descrição do Projeto 34',
             'area' => 220,
-            'year' => 2023,
+            'year' => 2022,
             'address' => 'Endereço do Projeto 34',
         ]);
         
