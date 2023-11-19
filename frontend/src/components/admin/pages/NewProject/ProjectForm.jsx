@@ -58,10 +58,16 @@ export default function ProjectForm() {
       }
     }
 
-    const data = await saveProject(formData);
-    notify();
+    await toast.promise(
+      saveProject(formData),
+      {
+        pending: 'Projeto está sendo enviado...',
+        success: 'Projeto enviado com sucesso! 👌',
+        error: 'Erro ao enviar o projeto.',
+      }
+    );
+    // notify();
     console.log('Projeto enviado com sucesso!');
-    console.log(data);
     navigate('/projects');
   } catch (error) {
     console.error('Erro ao enviar o projeto:', error);

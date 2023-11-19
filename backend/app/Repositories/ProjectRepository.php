@@ -19,7 +19,7 @@ class ProjectRepository implements IReadAndWrite
 
     public function getAll(): ServiceResponse
     {
-        $list = Project::orderBy('created_at', 'desc')->paginate();
+        $list = Project::orderBy('id', 'desc')->paginate();
     
         if ($list->isEmpty()) {
             $this->response->setAttributes(404, (object)[

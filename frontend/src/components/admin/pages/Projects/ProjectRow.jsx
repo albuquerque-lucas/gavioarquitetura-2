@@ -20,7 +20,7 @@ export default function ProjectRow({ project, deleteFunction }) {
         />
       </td>
       <td>{ project.year }</td>
-      <td>{ project.active_carousel }</td>
+      <td>{ project.active_carousel ? 'Ativo' : 'Inativo' }</td>
       <td>
         <Link to={ `/projects/${project.id}` } className='edit-project-btn'>
           {checkSVG}
