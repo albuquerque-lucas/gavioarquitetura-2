@@ -75,7 +75,10 @@ export default function ProjectsFilters({ projectList, setProjectList }) {
     </select>
     <button
       onClick={() => sortProjects(selectedFilter)}
-    >Ordenar</button>
+      className='btn btn-dark'
+    >
+      Ordenar
+    </button>
   </div>
   )
 }

@@ -36,6 +36,6 @@ export const mapSelectedFilter = (filter) => {
     case 'alphabeticalAsc':
       return 'Ordem alfabetica';
     default:
-      return '';
+      return 'Nenhum filtro selecionado';
   }
 }
