@@ -52,11 +52,17 @@ export default function Projects() {
   const handleDelete = async (id) => {
     try {
       setIsLoading(true);
-      await deleteProject(id);
+      await toast.promise(
+        deleteProject(id),
+        {
+          pending: 'Deletando projeto...',
+          success: 'Projeto deletado com sucesso! 👌',
+          error: 'Erro ao deletar projeto.',
+        }
+      );
       const { data } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`);
       setProjectList(data);
       setIsLoading(false);
-      notify();
     } catch (error) {
       console.error('Erro ao deletar projeto:', error);
       setIsLoading(false);

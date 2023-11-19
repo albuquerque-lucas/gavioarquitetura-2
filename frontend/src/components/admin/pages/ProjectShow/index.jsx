@@ -13,6 +13,7 @@ import Loading from '../../assets/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
+import { mapUpdateField } from '../../../../utils/mappers';
 
 
 export default function ProjectShow() {
@@ -25,7 +26,7 @@ export default function ProjectShow() {
   const cancelSVG = <FontAwesomeIcon icon={ faXmark } />;
   const confirmSVG = <FontAwesomeIcon icon={ faCheck } />;
 
-  const notify = (field) => toast.success(`Campo ${field} atualizado com sucesso.`);
+  const notify = (field) => toast.success(`Campo ${mapUpdateField(field)} atualizado com sucesso.`);
 
   const handleChange = (field, event) => {
     let value;
