@@ -61,7 +61,7 @@ class ProjectRepository implements IReadAndWrite
         return $this->response;
     }
 
-    public function update(int $id, array $data): ServiceResponse
+    public function update(int $id, array $data, bool $hasImage = false): ServiceResponse
     {
         $project = Project::find($id);
         
@@ -72,7 +72,7 @@ class ProjectRepository implements IReadAndWrite
             return $this->response;
         }
         
-        if ($project->image_url && Storage::disk('public')->exists($project->image_url)) {
+        if ($hasImage && Storage::disk('public')->exists($project->image_url)) {
             Storage::disk('public')->delete($project->image_url);
         }
 

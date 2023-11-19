@@ -3,19 +3,19 @@ export const mapUpdateField = (field) => {
     case 'name':
       return '"nome"';
     case 'area':
-      return '"area"';
+      return '"área"';
     case 'category_id':
-      return 'address';
-    case '"localizacao"':
-      return 'year';
+      return '"categoria"';
+    case 'address':
+      return '"localização"';
     case 'year':
       return '"data"';
     case 'description':
-      return '"descricao"';
+      return '"descrição"';
     case 'image_url':
       return '"imagem"';
-    case '"active_carousel"':
-      return '"exibir na pagina inicial"';
+    case 'active_carousel':
+      return '"exibir na página inicial"';
     default:
       return '';
   }
