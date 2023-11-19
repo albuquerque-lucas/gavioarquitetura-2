@@ -9,8 +9,8 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/portfolio-arquitetura.git
-cd portfolio-arquitetura
+git clone https://github.com/seu-usuario/gavioarquitetura-2.git
+cd gavioarquitetura-2
 ```
 
 Execute o Docker Compose para iniciar os serviços:
