@@ -219,7 +219,7 @@ export default function ProjectShow() {
           <>
             <select
               name="categpry"
-              value={editedDetails[field] || 1}
+              value={editedDetails[field] === 0 ? 1 : editedDetails[field]}
               onChange={(event) => handleChange(field, event)}
             >
               { categoriesList.map((category, index) => (

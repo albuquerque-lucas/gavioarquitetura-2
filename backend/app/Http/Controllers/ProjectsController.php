@@ -61,6 +61,10 @@ class ProjectsController extends Controller
             $data['image_url'] = $imagePath;
             $hasImage = true;
         }
+
+        if (array_key_exists('category_id', $data) && $data['category_id'] === '0') {
+            $data['category_id'] = 1;
+        }
     
         $res = $this->repository->update($id, $data, $hasImage);
     
