@@ -4,29 +4,7 @@
   align-items: center;
 }
 
-#navigation-btn-container {
-  width: 75vw;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin: 1rem 0 2rem 0;
-  padding: 1rem;
-}
 
-#navigation-btn-container button {
-  outline: none;
-  border: 2px solid transparent;
-  padding: 0.5rem;
-  border-radius: 5px;
-}
-
-#navigation-btn-container button:hover {
-  border: 2px solid black;
-}
-
-#navigation-btn-container button:disabled {
-  border: none;
-}
 
 #project-table-container {
   display: flex;

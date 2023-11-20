@@ -55,13 +55,19 @@ class ProjectsController extends Controller
     {
         $data = $request->all();
         $hasImage = false;
+    
         if ($request->hasFile('image_url')) {
-            $file = $request->file('image_url');
-            $imagePath = $file->store('projects/cover', 'public');
+            $imagePath = $request->file('image_url')->store('projects/cover', 'public');
             $data['image_url'] = $imagePath;
             $hasImage = true;
         }
+
+        if (array_key_exists('category_id', $data) && $data['category_id'] === '0') {
+            $data['category_id'] = 1;
+        }
+    
         $res = $this->repository->update($id, $data, $hasImage);
+    
         return response()->json($res->data(), $res->status());
     }
 
