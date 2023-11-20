@@ -20,6 +20,8 @@ class ProjectsSeeder extends Seeder
             'area' => 100,
             'year' => 2022,
             'address' => 'Endereço do Projeto 1',
+            'image_url' => 'projects/cover/no-image.jpg',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
 
         $project2 = Project::create([
@@ -30,6 +32,7 @@ class ProjectsSeeder extends Seeder
             'area' => 300,
             'year' => 2022,
             'address' => 'Endereço do Projeto 2',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
 
         $project3 = Project::create([
@@ -40,6 +43,7 @@ class ProjectsSeeder extends Seeder
             'area' => 200,
             'year' => 2024,
             'address' => 'Endereço do Projeto 3',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         $project4 = Project::create([
             'category_id' => 1,
@@ -49,6 +53,7 @@ class ProjectsSeeder extends Seeder
             'area' => 150,
             'year' => 2024,
             'address' => 'Endereço do Projeto 4',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
 
         $project5 = Project::create([
@@ -59,6 +64,7 @@ class ProjectsSeeder extends Seeder
             'area' => 250,
             'year' => 2026,
             'address' => 'Endereço do Projeto 5',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
 
         $project6 = Project::create([
@@ -69,6 +75,7 @@ class ProjectsSeeder extends Seeder
             'area' => 180,
             'year' => 2027,
             'address' => 'Endereço do Projeto 6',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         $project7 = Project::create([
             'category_id' => 3,
@@ -78,6 +85,7 @@ class ProjectsSeeder extends Seeder
             'area' => 180,
             'year' => 2027,
             'address' => 'Endereço do Projeto 7',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         $project8 = Project::create([
             'category_id' => 3,
@@ -87,6 +95,7 @@ class ProjectsSeeder extends Seeder
             'area' => 180,
             'year' => 2027,
             'address' => 'Endereço do Projeto 8',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         $project9 = Project::create([
             'category_id' => 2,
@@ -96,6 +105,7 @@ class ProjectsSeeder extends Seeder
             'area' => 280,
             'year' => 2031,
             'address' => 'Endereço do Projeto 9',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project10 = Project::create([
@@ -106,6 +116,7 @@ class ProjectsSeeder extends Seeder
             'area' => 220,
             'year' => 2032,
             'address' => 'Endereço do Projeto 10',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project11 = Project::create([
@@ -116,6 +127,7 @@ class ProjectsSeeder extends Seeder
             'area' => 170,
             'year' => 2033,
             'address' => 'Endereço do Projeto 11',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         $project12 = Project::create([
             'category_id' => 2,
@@ -125,6 +137,7 @@ class ProjectsSeeder extends Seeder
             'area' => 190,
             'year' => 2034,
             'address' => 'Endereço do Projeto 12',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project13 = Project::create([
@@ -135,6 +148,7 @@ class ProjectsSeeder extends Seeder
             'area' => 260,
             'year' => 2035,
             'address' => 'Endereço do Projeto 13',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project14 = Project::create([
@@ -145,6 +159,7 @@ class ProjectsSeeder extends Seeder
             'area' => 150,
             'year' => 2036,
             'address' => 'Endereço do Projeto 14',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project15 = Project::create([
@@ -155,6 +170,7 @@ class ProjectsSeeder extends Seeder
             'area' => 200,
             'year' => 2037,
             'address' => 'Endereço do Projeto 15',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project16 = Project::create([
@@ -165,6 +181,7 @@ class ProjectsSeeder extends Seeder
             'area' => 180,
             'year' => 2038,
             'address' => 'Endereço do Projeto 16',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         $project17 = Project::create([
             'category_id' => 1,
@@ -174,6 +191,7 @@ class ProjectsSeeder extends Seeder
             'area' => 160,
             'year' => 2023,
             'address' => 'Endereço do Projeto 17',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project18 = Project::create([
@@ -184,6 +202,7 @@ class ProjectsSeeder extends Seeder
             'area' => 220,
             'year' => 2023,
             'address' => 'Endereço do Projeto 18',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project19 = Project::create([
@@ -194,6 +213,7 @@ class ProjectsSeeder extends Seeder
             'area' => 190,
             'year' => 2023,
             'address' => 'Endereço do Projeto 19',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project20 = Project::create([
@@ -204,6 +224,7 @@ class ProjectsSeeder extends Seeder
             'area' => 250,
             'year' => 2023,
             'address' => 'Endereço do Projeto 20',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project21 = Project::create([
@@ -214,6 +235,7 @@ class ProjectsSeeder extends Seeder
             'area' => 180,
             'year' => 2009,
             'address' => 'Endereço do Projeto 21',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project22 = Project::create([
@@ -224,6 +246,7 @@ class ProjectsSeeder extends Seeder
             'area' => 200,
             'year' => 2010,
             'address' => 'Endereço do Projeto 22',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project23 = Project::create([
@@ -234,6 +257,7 @@ class ProjectsSeeder extends Seeder
             'area' => 170,
             'year' => 2011,
             'address' => 'Endereço do Projeto 23',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project24 = Project::create([
@@ -244,6 +268,7 @@ class ProjectsSeeder extends Seeder
             'area' => 210,
             'year' => 2012,
             'address' => 'Endereço do Projeto 24',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project25 = Project::create([
@@ -254,6 +279,7 @@ class ProjectsSeeder extends Seeder
             'area' => 240,
             'year' => 2013,
             'address' => 'Endereço do Projeto 25',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         $project26 = Project::create([
             'category_id' => 1,
@@ -263,6 +289,7 @@ class ProjectsSeeder extends Seeder
             'area' => 180,
             'year' => 2014,
             'address' => 'Endereço do Projeto 26',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project27 = Project::create([
@@ -273,6 +300,7 @@ class ProjectsSeeder extends Seeder
             'area' => 200,
             'year' => 2015,
             'address' => 'Endereço do Projeto 27',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project28 = Project::create([
@@ -283,6 +311,7 @@ class ProjectsSeeder extends Seeder
             'area' => 190,
             'year' => 2016,
             'address' => 'Endereço do Projeto 28',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project29 = Project::create([
@@ -293,6 +322,7 @@ class ProjectsSeeder extends Seeder
             'area' => 220,
             'year' => 2017,
             'address' => 'Endereço do Projeto 29',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project30 = Project::create([
@@ -303,6 +333,7 @@ class ProjectsSeeder extends Seeder
             'area' => 170,
             'year' => 2018,
             'address' => 'Endereço do Projeto 30',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project31 = Project::create([
@@ -313,6 +344,7 @@ class ProjectsSeeder extends Seeder
             'area' => 190,
             'year' => 2019,
             'address' => 'Endereço do Projeto 31',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project32 = Project::create([
@@ -323,6 +355,7 @@ class ProjectsSeeder extends Seeder
             'area' => 200,
             'year' => 2020,
             'address' => 'Endereço do Projeto 32',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project33 = Project::create([
@@ -333,6 +366,7 @@ class ProjectsSeeder extends Seeder
             'area' => 210,
             'year' => 2021,
             'address' => 'Endereço do Projeto 33',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project34 = Project::create([
@@ -343,6 +377,7 @@ class ProjectsSeeder extends Seeder
             'area' => 220,
             'year' => 2022,
             'address' => 'Endereço do Projeto 34',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         $project35 = Project::create([
@@ -353,6 +388,7 @@ class ProjectsSeeder extends Seeder
             'area' => 180,
             'year' => 2023,
             'address' => 'Endereço do Projeto 35',
+            'image_url' => 'projects/cover/no-image.jpg',
         ]);
         
         

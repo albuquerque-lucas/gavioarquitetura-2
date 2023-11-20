@@ -82,11 +82,10 @@ class ProjectRepository implements IReadAndWrite
             return $this->response;
         }
         
-        if ($hasImage && Storage::disk('public')->exists($project->image_url)) {
+        if ($hasImage && $project->image_url != 'projects/cover/no-image.jpg' && Storage::disk('public')->exists($project->image_url)) {
             Storage::disk('public')->delete($project->image_url);
         }
-
-
+    
         $project->fill($data);
     
         if ($project->isDirty()) {

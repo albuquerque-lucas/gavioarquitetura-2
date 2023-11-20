@@ -54,15 +54,16 @@ class ProjectsController extends Controller
     public function update(Request $request, int $id)
     {
         $data = $request->all();
+        $hasImage = false;
+    
         if ($request->hasFile('image_url')) {
-            $file = $request->file('image_url');
-            $imagePath = $file->store('projects/cover', 'public');
+            $imagePath = $request->file('image_url')->store('projects/cover', 'public');
             $data['image_url'] = $imagePath;
             $hasImage = true;
-        } else {
-            $hasImage = false;
         }
+    
         $res = $this->repository->update($id, $data, $hasImage);
+    
         return response()->json($res->data(), $res->status());
     }
 
