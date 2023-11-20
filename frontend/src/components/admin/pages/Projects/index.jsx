@@ -102,6 +102,7 @@ export default function Projects() {
                 <th className='col-2' >Capa</th>
                 <th className='col-1' >Data</th>
                 <th className='col-1' >Pagina Inicial</th>
+                <th className='col-1' >Categoria</th>
                 <th className='col-1' >Editar / Excluir</th>
               </tr>
             </thead>
