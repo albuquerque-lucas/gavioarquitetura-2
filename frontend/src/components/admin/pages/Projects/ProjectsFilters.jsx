@@ -3,82 +3,81 @@ import { mapSelectedFilter } from '../../../../utils/mappers';
 import './styles/filterContainer.css';
 
 export default function ProjectsFilters({ projectList, setProjectList }) {
-  const [selectedFilter, setSelectedFilter] = useState('recent');
+  const [selectedFilter, setSelectedFilter] = useState('idRecent');
   const [clickedFilter, setClickedFilter] = useState('');
+  const [selectedSort, setSelectedSort] = useState('asc');
 
   const sortProjects = (filter) => {
     let sortProjects = [...projectList];
     setClickedFilter(filter);
-    console.log(clickedFilter)
-    console.log(sortProjects);
+
     switch (filter) {
-      case 'recent':
-        sortProjects.sort((a, b) => b.id - a.id);
-        setProjectList(sortProjects);
-        break;
-      case 'latest':
-        sortProjects.sort((a, b) => a.id - b.id);
-        setProjectList(sortProjects);
+      case 'idRecent':
+        sortProjects.sort((a, b) => (selectedSort === 'asc' ? a.id - b.id : b.id - a.id));
         break;
       case 'activeCarousel':
         sortProjects.sort((a, b) => {
-          if (a.active_carousel === true && b.active_carousel !== true) {
-            return -1;
-          } else if (!a.active_carousel && b.active_carousel) {
-            return 1;
+          if (selectedSort === 'asc') {
+            return a.active_carousel === true && b.active_carousel !== true ? -1 : 0;
           } else {
-            return 0;
+            return a.active_carousel === true && b.active_carousel !== true ? 0 : 1;
           }
         });
-        setProjectList(sortProjects);
         break;
       case 'inactiveCarousel':
         sortProjects.sort((a, b) => {
-          if (a.active_carousel && !b.active_carousel) {
-            return 1;
-          } else if (!a.active_carousel && b.active_carousel) {
-            return -1;
+          if (selectedSort === 'asc') {
+            return a.active_carousel && !b.active_carousel ? 1 : 0;
           } else {
-            return 0;
+            return a.active_carousel && !b.active_carousel ? 0 : -1;
           }
         });
-        setProjectList(sortProjects);
         break;
       case 'byYearDesc':
-        sortProjects.sort((a, b) => b.year - a.year);
-        setProjectList(sortProjects);
+        sortProjects.sort((a, b) => (selectedSort === 'asc' ? a.year - b.year : b.year - a.year));
         break;
       case 'alphabeticalAsc':
-        sortProjects.sort((a, b) => a.name.localeCompare(b.name));
-        setProjectList(sortProjects);
+        sortProjects.sort((a, b) =>
+          selectedSort === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+        );
         break;
       default:
         break;
     }
-  }
+
+    setProjectList(sortProjects);
+  };
 
   return (
     <div className="filter-container">
-    <span>{`Filtro selecionado: ${mapSelectedFilter(clickedFilter)}`}</span>
-    <label htmlFor="filter">Ordenar por: </label>
-    <select
-      name="filter"
-      id="filter"
-      onChange={(e) => setSelectedFilter(e.target.value)}
-      >
-      <option value="recent">Mais recentes</option>
-      <option value="latest">Mais antigos</option>
-      <option value="activeCarousel">Exibidos na pagina inicial</option>
-      <option value="inactiveCarousel">Nao exibidos na pagina inicial</option>
-      <option value="alphabeticalAsc">Nome</option>
-      <option value="byYearDesc">Data</option>
-    </select>
-    <button
-      onClick={() => sortProjects(selectedFilter)}
-      className='btn btn-dark'
-    >
-      Ordenar
-    </button>
-  </div>
-  )
+      <span>{`Filtro selecionado: ${mapSelectedFilter(clickedFilter)} ${selectedSort}`}</span>
+      <label htmlFor="filter">Ordenar por: </label>
+      <select name="filter" id="filter" onChange={(e) => setSelectedFilter(e.target.value)}>
+        <option value="idRecent">Identificador único</option>
+        <option value="activeCarousel">Exibidos na página inicial</option>
+        <option value="inactiveCarousel">Não exibidos na página inicial</option>
+        <option value="alphabeticalAsc">Nome</option>
+        <option value="byYearDesc">Data</option>
+      </select>
+      <label htmlFor="asc-filter">Asc: </label>
+      <input
+        type="radio"
+        name="sort-order"
+        id="asc-filter"
+        checked={selectedSort === 'asc'}
+        onChange={() => setSelectedSort('asc')}
+      />
+      <label htmlFor="desc-filter">Desc: </label>
+      <input
+        type="radio"
+        name="sort-order"
+        id="desc-filter"
+        checked={selectedSort === 'desc'}
+        onChange={() => setSelectedSort('desc')}
+      />
+      <button onClick={() => sortProjects(selectedFilter)} className="btn btn-dark">
+        Ordenar
+      </button>
+    </div>
+  );
 }
