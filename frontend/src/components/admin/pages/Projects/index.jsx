@@ -4,6 +4,7 @@ import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import ProjectRow from './ProjectRow';
 import Loading from '../../assets/Loading';
 import ProjectsFilters from './ProjectsFilters';
+import PaginationButtons from './PaginationButtons';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
@@ -85,31 +86,12 @@ export default function Projects() {
         listOfProjects={ projectList }
         setListFunction={ setProjectList }
       />
-      <div id='navigation-btn-container'>
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        {
-          navigationLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={() => setCurrentPage(Number(link.url.split('page=')[1]))}
-              disabled={link.active}
-            >
-              {link.label}
-            </button>
-          ))
-        }
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === lastPage}
-        >
-          Next
-        </button>
-          </div>
+      <PaginationButtons
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        lastPage={lastPage}
+        navigationLinks={navigationLinks}
+      />
       <div id="project-table-container">
           <table id="project-table-admin">
             <thead>
