@@ -81,8 +81,8 @@ export default function Projects() {
         </InnerOptionsNavbar>
       </div>
       <ProjectsFilters
-        projectList={projectList}
-        setProjectList={setProjectList}
+        listOfProjects={ projectList }
+        setListFunction={ setProjectList }
       />
       <div id='navigation-btn-container'>
         <button

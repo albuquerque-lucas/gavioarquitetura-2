@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
+import { fetchProjectsList } from '../../../../utils/ProjectsFetch';
 import { mapSelectedFilter } from '../../../../utils/mappers';
 import './styles/filterContainer.css';
 
-export default function ProjectsFilters({ projectList, setProjectList }) {
+export default function ProjectsFilters({ listOfProjects, setListFunction }) {
   const [selectedFilter, setSelectedFilter] = useState('idRecent');
   const [clickedFilter, setClickedFilter] = useState('');
   const [selectedSort, setSelectedSort] = useState('asc');
+  const [selectedSearchSort, setSelectedSearchSort] = useState('asc');
+  const {
+    setProjectList,
+    projectList,
+  } = useContext(ProjectsContext);
 
   const sortProjects = (filter) => {
-    let sortProjects = [...projectList];
+    let sortProjects = [...listOfProjects];
     setClickedFilter(filter);
 
     switch (filter) {
@@ -45,39 +52,55 @@ export default function ProjectsFilters({ projectList, setProjectList }) {
         break;
     }
 
-    setProjectList(sortProjects);
+    setListFunction(sortProjects);
   };
 
   return (
-    <div className="filter-container">
-      <span>{`Filtro selecionado: ${mapSelectedFilter(clickedFilter)} ${selectedSort}`}</span>
-      <label htmlFor="filter">Ordenar por: </label>
-      <select name="filter" id="filter" onChange={(e) => setSelectedFilter(e.target.value)}>
-        <option value="idRecent">Identificador único</option>
-        <option value="activeCarousel">Exibidos na página inicial</option>
-        <option value="inactiveCarousel">Não exibidos na página inicial</option>
-        <option value="alphabeticalAsc">Nome</option>
-        <option value="byYearDesc">Data</option>
-      </select>
-      <label htmlFor="asc-filter">Asc: </label>
-      <input
-        type="radio"
-        name="sort-order"
-        id="asc-filter"
-        checked={selectedSort === 'asc'}
-        onChange={() => setSelectedSort('asc')}
-      />
-      <label htmlFor="desc-filter">Desc: </label>
-      <input
-        type="radio"
-        name="sort-order"
-        id="desc-filter"
-        checked={selectedSort === 'desc'}
-        onChange={() => setSelectedSort('desc')}
-      />
-      <button onClick={() => sortProjects(selectedFilter)} className="btn btn-dark">
-        Ordenar
-      </button>
-    </div>
+    <>
+      <div className="filter-container">
+        <span>{`Filtro selecionado: ${mapSelectedFilter(clickedFilter)} ${selectedSort}`}</span>
+        <label htmlFor="filter">Ordenar por: </label>
+        <select name="filter" id="filter" onChange={(e) => setSelectedFilter(e.target.value)}>
+          <option value="idRecent">Identificador único</option>
+          <option value="activeCarousel">Exibidos na página inicial</option>
+          <option value="inactiveCarousel">Não exibidos na página inicial</option>
+          <option value="alphabeticalAsc">Nome</option>
+          <option value="byYearDesc">Data</option>
+        </select>
+        <label htmlFor="asc-filter">Asc: </label>
+        <input
+          type="radio"
+          name="sort-order"
+          id="asc-filter"
+          checked={selectedSort === 'asc'}
+          onChange={() => setSelectedSort('asc')}
+        />
+        <label htmlFor="desc-filter">Desc: </label>
+        <input
+          type="radio"
+          name="sort-order"
+          id="desc-filter"
+          checked={selectedSort === 'desc'}
+          onChange={() => setSelectedSort('desc')}
+        />
+        <button onClick={() => sortProjects(selectedFilter)} className="btn btn-dark">
+          Ordenar
+        </button>
+      </div>
+      <div className="request-filter-container">
+        <h6>Buscar projetos por ordem:</h6>
+        <select
+          name="search-order"
+          id="search-order"
+          onChange={(e) => setSelectedSearchSort(e.target.value)}
+        >
+          <option value="asc">Ascendente</option>
+          <option value="desc">Descendente</option>
+        </select>
+        <button className="btn btn-dark">
+          Buscar
+        </button>
+      </div>
+    </>
   );
 }
