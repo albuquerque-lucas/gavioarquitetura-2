@@ -6,7 +6,6 @@ import CategoriesContext from '../../../../context/CategoriesContext/CategoriesC
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProject, saveProject } from '../../../../utils/ProjectsFetch';
 import noImage from '../../../../images/projects/no-image.jpg';
-import MessageCard from '../../assets/MessageCard';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import { Link } from 'react-router-dom';
 import Loading from '../../assets/Loading';
@@ -35,7 +34,7 @@ export default function ProjectShow() {
       value = event.target.files[0];
       console.log(value);
     } else {
-      // Se o campo for um select e o valor for um objeto, extraia o valor correto
+      // Se o campo for um select e o valor for um objeto, extrai o valor correto
       value = event.target.value;
       if (typeof value === 'object' && value !== null) {
         value = value.id;
@@ -107,8 +106,8 @@ export default function ProjectShow() {
         year: "",
         address: "",
         image_url: "",
-        category_id: "0",
-        active_carousel: "0",
+        category_id: "1",
+        active_carousel: "1",
       });
     }
   };
@@ -219,13 +218,13 @@ export default function ProjectShow() {
           <>
             <select
               name="categpry"
-              value={editedDetails[field] === 0 ? 1 : editedDetails[field]}
+              value={editedDetails[field] === '0' ? 1 : editedDetails[field]}
               onChange={(event) => handleChange(field, event)}
             >
               { categoriesList.map((category, index) => (
                 <option
                 key={ index }
-                value={category.id}
+                value={ Number(category.id) }
                 >
                   {category.name}
                   </option>
@@ -254,7 +253,7 @@ export default function ProjectShow() {
     return (
       <div className="edition-item">
         <span>{name}: </span>
-        <span>{projectDetails[field] ? 'Ativo' : 'Inativo'}</span>
+        <span>{projectDetails[field] ? 'Ativo' : 'Desativado'}</span>
         <button
           className='btn btn-sm edit-btn'
           onClick={() => setEditMode({ ...editMode, [field]: !editMode[field] })}
@@ -269,8 +268,8 @@ export default function ProjectShow() {
               value={editedDetails[field] || ''}
               onChange={(event) => handleChange(field, event)}
             >
-              <option value={ 1 }>Ativo</option>
-              <option value={ 0 }>Inativo</option>
+              <option value={ 1 }>Ativar</option>
+              <option value={ 0 }>Desativar</option>
             </select>
             <button
               className='btn btn-sm confirm-btn'
@@ -334,69 +333,74 @@ export default function ProjectShow() {
   }
 
   const toggleAllEditModes = () => {
+    const isAnyFieldInEditMode = Object.values(editMode).some(value => value === true);
+  
     const updatedEditModes = Object.keys(editMode).reduce((acc, field) => {
-      acc[field] = !editMode[field];
+      acc[field] = isAnyFieldInEditMode ? false : true;
       return acc;
     }, {});
+  
     setEditMode(updatedEditModes);
   };
 
 
   return (
-    <div id="project-show-container">
-      <div className="text-center my-5">
-        <h1>{projectDetails.name}</h1>
-      </div>
-      <div className="d-flex justify-content-center w-100">
-        <InnerOptionsNavbar>
-          <Link to="/projects" className="btn btn-dark">
-            Voltar
-          </Link>
-        </InnerOptionsNavbar>
-      </div>
-          {isLoading ? (
-      <div className="loading-container">
-        <Loading />
-      </div>
-    ) : (
-      <div className="project-info-container">
+    <>
+      <div id="project-show-container">
+        <div className="text-center my-5">
+          <h1>{projectDetails.name}</h1>
+        </div>
+        <div className="d-flex justify-content-center w-100">
+          <InnerOptionsNavbar>
+            <Link to="/projects" className="btn btn-dark">
+              Voltar
+            </Link>
+          </InnerOptionsNavbar>
+        </div>
+            {isLoading ? (
+        <div className="loading-container">
+          <Loading />
+        </div>
+      ) : (
+        <div className="project-info-container">
 
-        <div>
-          <div id="image-container">
-            <img
-              src={ projectDetails.image_url !== null ? `http://localhost/storage/${projectDetails.image_url}` : noImage }
-              alt="Imagem do projeto"
-            />
+          <div>
+            <div id="image-container">
+              <img
+                src={ projectDetails.image_url !== null ? `http://localhost/storage/${projectDetails.image_url}` : noImage }
+                alt="Imagem do projeto"
+              />
+            </div>
+          </div>
+          <div id="project-show-edit-container">
+            <div id="edit-header">
+              <h4>Ficha tecnica:</h4>
+              <button
+                onClick={ toggleAllEditModes }
+              >
+                { editSVG }
+              </button>
+            </div>
+            { renderFileCell('Imagem de capa', 'image_url') }
+            { renderCategoryCell('Categoria', 'category_id') }
+            { renderDefaultCell('Nome', 'name') }
+            { renderDefaultCell('Area', 'area') }
+            { renderDefaultCell('Localizacao', 'address') }
+            { renderDefaultCell('Data', 'year') }
+            { renderTextCell('Descricao', 'description') }
+            { renderCarouselCell('Exibir na pagina inicial', 'active_carousel') }
+          </div>
+          <div className="project-show-images-list">
+            <div className="images-input-container">
+              <input type="file" name="images" id="images" />
+            </div>
+            <div className="images-container">
+              
+            </div>
           </div>
         </div>
-        <div id="project-show-edit-container">
-          <div id="edit-header">
-            <h4>Ficha tecnica:</h4>
-            <button
-              onClick={ toggleAllEditModes }
-            >
-              { editSVG }
-            </button>
-          </div>
-          { renderFileCell('Imagem de capa', 'image_url') }
-          { renderCategoryCell('Categoria', 'category_id') }
-          { renderDefaultCell('Nome', 'name') }
-          { renderDefaultCell('Area', 'area') }
-          { renderDefaultCell('Localizacao', 'address') }
-          { renderDefaultCell('Data', 'year') }
-          { renderTextCell('Descricao', 'description') }
-          { renderCarouselCell('Exibir na pagina inicial', 'active_carousel') }
-        </div>
-        <div className="project-show-images-list">
-          <div className="images-input-container">
-            <input type="file" name="images" id="images" />
-          </div>
-          <div className="images-container">
-            
-          </div>
-        </div>
+            )}
       </div>
-          )}
-    </div>
+    </>
   );
 }

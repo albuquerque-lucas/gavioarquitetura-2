@@ -56,6 +56,7 @@ export default function ProjectsFilters({ listOfProjects, setListFunction }) {
   };
 
   const handleSearch = async () => {
+    console.log('SEARCH SORT', selectedSearchSort);
     const url = `http://localhost/api/projects?page=1`;
     try {
       const { data } = await fetchProjectsList(url, selectedSearchSort);
@@ -103,9 +104,10 @@ export default function ProjectsFilters({ listOfProjects, setListFunction }) {
           name="search-order"
           id="search-order"
           onChange={(e) => setSelectedSearchSort(e.target.value)}
+          defaultValue={selectedSearchSort}
         >
-          <option value="asc">Ascendente</option>
           <option value="desc">Descendente</option>
+          <option value="asc">Ascendente</option>
         </select>
         <button
           className="btn btn-dark"

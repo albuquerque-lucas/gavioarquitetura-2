@@ -81,11 +81,3 @@
   background-color: #dc3545;
   color: white;
 }
-
-.scroll-to-top {
-  background-color: #212529;
-}
-
-.scroll-to-top:hover {
-  box-shadow: 0 0 10px #212529;
-}

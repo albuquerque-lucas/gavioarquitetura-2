@@ -6,3 +6,11 @@
   width: 75vw;
   margin-bottom: 2rem;
 }
+
+.scroll-to-top {
+  background-color: #212529;
+}
+
+.scroll-to-top:hover {
+  box-shadow: 0 0 10px #212529;
+}
