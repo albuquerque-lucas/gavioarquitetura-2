@@ -90,7 +90,10 @@ export default function ProjectShow() {
       formData.append(field, editedDetails[field]);
   
       await saveProject(formData, projectDetails.id);
-      const updatedProject = await fetchProject(id);
+      for(let pair of formData.entries()) {
+        console.log(pair[0]+ ', '+ pair[1]);
+      }
+      const updatedProject = await fetchProject(projectDetails.id);
       setProjectDetails(updatedProject);
       notify(field);
       console.log('Projeto atualizado com sucesso:', updatedProject);
