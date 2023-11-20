@@ -6,6 +6,7 @@ export default function ProjectsProvider({ children }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(null);
   const [navigationLinks, setNavigationLinks] = useState([]);
+  const [selectedSearchSort, setSelectedSearchSort] = useState('asc');
   const [editMode, setEditMode] = useState({
     image_url: false,
     active_carousel: false,
@@ -74,6 +75,8 @@ export default function ProjectsProvider({ children }) {
       setLastPage,
       navigationLinks,
       setNavigationLinks,
+      selectedSearchSort,
+      setSelectedSearchSort,
     };
   }, [
     projectList,
@@ -92,6 +95,8 @@ export default function ProjectsProvider({ children }) {
     setLastPage,
     navigationLinks,
     setNavigationLinks,
+    selectedSearchSort,
+    setSelectedSearchSort,
   ]);
 
   return (

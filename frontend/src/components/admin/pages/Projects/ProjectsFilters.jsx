@@ -8,9 +8,10 @@ export default function ProjectsFilters({ listOfProjects, setListFunction }) {
   const [selectedFilter, setSelectedFilter] = useState('idRecent');
   const [clickedFilter, setClickedFilter] = useState('');
   const [selectedSort, setSelectedSort] = useState('asc');
-  const [selectedSearchSort, setSelectedSearchSort] = useState('asc');
   const {
     setProjectList,
+    selectedSearchSort,
+    setSelectedSearchSort,
   } = useContext(ProjectsContext);
 
   const sortProjects = (filter) => {

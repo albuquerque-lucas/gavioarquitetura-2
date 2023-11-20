@@ -20,6 +20,7 @@ export default function Projects() {
     setLastPage,
     navigationLinks,
     setNavigationLinks,
+    selectedSearchSort,
   } = useContext(ProjectsContext);
   const {
     setIsLoading,
@@ -30,7 +31,7 @@ export default function Projects() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const { data, last_page, links } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`);
+        const { data, last_page, links } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`, selectedSearchSort);
         const navLinks = links.slice(1, -1);
         console.log(currentPage);
         setNavigationLinks(navLinks);
