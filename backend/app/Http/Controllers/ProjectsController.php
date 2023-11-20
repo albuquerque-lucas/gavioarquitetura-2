@@ -15,9 +15,10 @@ class ProjectsController extends Controller
         $this->repository = new ProjectRepository();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $res = $this->repository->getAll();
+        $order = $request->input('order', 'desc');
+        $res = $this->repository->getAll($order);
         return response()->json($res->data(), $res->status());
     }
 

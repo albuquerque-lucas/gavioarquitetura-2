@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import MessageCard from '../../assets/MessageCard';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import ProjectRow from './ProjectRow';
 import Loading from '../../assets/Loading';
+import ProjectsFilters from './ProjectsFilters';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
@@ -25,8 +25,6 @@ export default function Projects() {
     setIsLoading,
     isLoading,
   } = useContext(GeneralDataContext);
-  
-  const notify = () => toast.success('Projeto deletado com sucesso!');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +45,7 @@ export default function Projects() {
     };
 
     fetchData();
-  }, [setProjectList, setIsLoading, currentPage]);
+  }, [setIsLoading, currentPage]);
 
   const handleDelete = async (id) => {
     try {
@@ -82,6 +80,10 @@ export default function Projects() {
           </Link>
         </InnerOptionsNavbar>
       </div>
+      <ProjectsFilters
+        listOfProjects={ projectList }
+        setListFunction={ setProjectList }
+      />
       <div id='navigation-btn-container'>
         <button
           onClick={() => setCurrentPage(currentPage - 1)}

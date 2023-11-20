@@ -10,9 +10,11 @@ export const fetchProject = async (id) => {
   }
 };
 
-export const fetchProjectsList = async (url) => {
+export const fetchProjectsList = async (url, order='desc') => {
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      params: { order },
+    });
     return response.data;
   } catch (error) {
     console.error('Erro ao buscar projetos:', error);
