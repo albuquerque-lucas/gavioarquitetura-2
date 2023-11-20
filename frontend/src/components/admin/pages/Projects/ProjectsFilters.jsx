@@ -11,7 +11,6 @@ export default function ProjectsFilters({ listOfProjects, setListFunction }) {
   const [selectedSearchSort, setSelectedSearchSort] = useState('asc');
   const {
     setProjectList,
-    projectList,
   } = useContext(ProjectsContext);
 
   const sortProjects = (filter) => {
@@ -53,6 +52,16 @@ export default function ProjectsFilters({ listOfProjects, setListFunction }) {
     }
 
     setListFunction(sortProjects);
+  };
+
+  const handleSearch = async () => {
+    const url = `http://localhost/api/projects?page=1`;
+    try {
+      const { data } = await fetchProjectsList(url, selectedSearchSort);
+      setProjectList(data);
+    } catch (error) {
+      console.error('Erro ao buscar projetos:', error);
+    }
   };
 
   return (
@@ -97,7 +106,10 @@ export default function ProjectsFilters({ listOfProjects, setListFunction }) {
           <option value="asc">Ascendente</option>
           <option value="desc">Descendente</option>
         </select>
-        <button className="btn btn-dark">
+        <button
+          className="btn btn-dark"
+          onClick={ handleSearch }
+        >
           Buscar
         </button>
       </div>

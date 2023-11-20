@@ -17,9 +17,18 @@ class ProjectRepository implements IReadAndWrite
         $this->response = new ServiceResponse();
     }
 
-    public function getAll(): ServiceResponse
+    public function getAll($order = 'desc'): ServiceResponse
     {
-        $list = Project::orderBy('id', 'desc')->paginate();
+        $validOrders = ['asc', 'desc'];
+    
+        if (!in_array($order, $validOrders)) {
+            $this->response->setAttributes(400, (object)[
+                'message' => 'Invalid order parameter. Use "asc" or "desc".'
+            ]);
+            return $this->response;
+        }
+    
+        $list = Project::orderBy('id', $order)->paginate();
     
         if ($list->isEmpty()) {
             $this->response->setAttributes(404, (object)[
@@ -31,6 +40,7 @@ class ProjectRepository implements IReadAndWrite
         $this->response->setAttributes(200, $list);
         return $this->response;
     }
+    
 
     public function getById(int $id): ServiceResponse
     {
