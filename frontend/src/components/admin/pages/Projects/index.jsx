@@ -9,6 +9,8 @@ import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
 import { toast } from 'react-toastify';
+import ScrollToTop from 'react-scroll-to-top';
+
 import './styles/style.css';
 
 export default function Projects() {
@@ -125,6 +127,11 @@ export default function Projects() {
         )}
           </table>
         </div>
+        <ScrollToTop
+        smooth
+        color='#fff'
+        className='scroll-to-top'
+        />
     </div>
   );
 }
