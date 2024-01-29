@@ -7,7 +7,7 @@ import ProjectsFilters from './ProjectsFilters';
 import PaginationButtons from './PaginationButtons';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
-import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
+import { fetchProjects, deleteProject, fetchByCategory } from '../../../../utils/ProjectsFetch';
 import { toast } from 'react-toastify';
 import './styles/style.css';
 import { faL, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +23,7 @@ export default function Projects() {
     navigationLinks,
     setNavigationLinks,
     selectedSearchSort,
+    selectedCategoryId,
   } = useContext(ProjectsContext);
   const {
     setIsLoading,
@@ -31,14 +32,20 @@ export default function Projects() {
 
   useEffect(() => {
     const fetchData = async () => {
+      let data;
       try {
         setIsLoading(true);
-        const { data, last_page, links } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`, selectedSearchSort);
-        const navLinks = links.slice(1, -1);
-        console.log(currentPage);
+        
+        if (selectedCategoryId !== null) {
+          data = await fetchByCategory(selectedCategoryId);
+        } else {
+          data = await fetchProjects(`http://localhost/api/projects?page=${currentPage}`, selectedSearchSort);
+        }
+
+        const navLinks = data.links.slice(1, -1);
         setNavigationLinks(navLinks);
-        setLastPage(last_page);
-        setProjectList(data);
+        setLastPage(data.last_page);
+        setProjectList(data.data);
       } catch (error) {
         console.error('Erro ao buscar projetos:', error);
         setProjectList([]);
@@ -61,7 +68,7 @@ export default function Projects() {
           error: 'Erro ao deletar projeto.',
         }
       );
-      const { data } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`);
+      const { data } = await fetchProjects(`http://localhost/api/projects?page=${currentPage}`);
       setProjectList(data);
       setIsLoading(false);
     } catch (error) {
@@ -85,12 +92,7 @@ export default function Projects() {
         </InnerOptionsNavbar>
       </div>
       <ProjectsFilters />
-      <PaginationButtons
-        currentPage={ currentPage }
-        setCurrentPage={ setCurrentPage }
-        lastPage={ lastPage }
-        navigationLinks={ navigationLinks }
-      />
+      <PaginationButtons />
       <div id="project-table-container">
           <table id="project-table-admin">
             <thead>

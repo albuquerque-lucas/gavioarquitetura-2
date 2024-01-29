@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
+import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import './styles/paginationButtons.css';
 
-export default function PaginationButtons ({ currentPage, setCurrentPage, lastPage, navigationLinks })  {
+export default function PaginationButtons ()  {
+
+  const {
+    currentPage,
+    setCurrentPage,
+    lastPage,
+    navigationLinks,
+  } = useContext(ProjectsContext);
+
   return (
     <div id='navigation-btn-container'>
       <button

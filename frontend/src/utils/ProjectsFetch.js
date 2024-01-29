@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const fetchProject = async (id) => {
+export const fetchById = async (id) => {
   try {
     const response = await axios.get(`http://localhost/api/projects/${id}`);
     return response.data;
@@ -10,7 +10,8 @@ export const fetchProject = async (id) => {
   }
 };
 
-export const fetchProjectsList = async (url, order='desc') => {
+export const fetchProjects = async (url, order='desc') => {
+  console.log("chamou fetchProjects");
   try {
     const response = await axios.get(url, {
       params: { order },

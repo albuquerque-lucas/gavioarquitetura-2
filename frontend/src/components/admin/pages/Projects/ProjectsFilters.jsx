@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
-import { fetchProjectsList, fetchByCategory } from '../../../../utils/ProjectsFetch';
+import { fetchProjects, fetchByCategory } from '../../../../utils/ProjectsFetch';
 import CategoriesContext from '../../../../context/CategoriesContext/CategoriesContext';
 import './styles/filterContainer.css';
 
@@ -13,21 +13,25 @@ export default function ProjectsFilters() {
     projectFilter,
     selectedFilter,
     setSelectedFilter,
+    setSelectedCategoryId,
+    setNavigationLinks
   } = useContext(ProjectsContext);
 
   const { categoriesList } = useContext(CategoriesContext);
 
   const handleCategoryFilter = async (id = null) => {
+    setSelectedCategoryId(id);
     let data;
-    console.log("botao filtro categoria.")
     try {
       if (id === null) {
-        data = await fetchProjectsList(`http://localhost/api/projects?page=1`);
+        data = await fetchProjects(`http://localhost/api/projects?page=1`);
+        const navLinks = data.links.slice(1, -1);
+        setNavigationLinks(navLinks);
         setProjectList(data.data);
-        console.log("NAO tem id");
       } else {
-        console.log("tem id");
         data = await fetchByCategory(id);
+        const navLinks = data.links.slice(1, -1);
+        setNavigationLinks(navLinks);
         setProjectList(data.data);
       }
     } catch (error) {

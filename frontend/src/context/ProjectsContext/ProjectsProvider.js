@@ -57,6 +57,8 @@ export default function ProjectsProvider({ children }) {
 
   const [selectedFilter, setSelectedFilter] = useState("id");
 
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
   const context = useMemo(() => {
     const handleChange = (field, value) => {
       setEditedDetails({
@@ -89,6 +91,8 @@ export default function ProjectsProvider({ children }) {
       setProjectFilter,
       selectedFilter,
       setSelectedFilter,
+      selectedCategoryId,
+      setSelectedCategoryId,
     };
   }, [
     projectList,
@@ -113,6 +117,8 @@ export default function ProjectsProvider({ children }) {
     setProjectFilter,
     selectedFilter,
     setSelectedFilter,
+    selectedCategoryId,
+    setSelectedCategoryId,
   ]);
 
   return (

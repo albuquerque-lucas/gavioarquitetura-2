@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import CategoriesContext from '../../../../context/CategoriesContext/CategoriesContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
-import { fetchProject, saveProject } from '../../../../utils/ProjectsFetch';
+import { fetchById, saveProject } from '../../../../utils/ProjectsFetch';
 import noImage from '../../../../images/projects/no-image.jpg';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import { Link } from 'react-router-dom';
@@ -59,7 +59,7 @@ export default function ProjectShow() {
   const fetchProjectDetails = useCallback(async () => {
     try {
       setIsLoading(true);
-      const data = await fetchProject(id);
+      const data = await fetchById(id);
       setProjectDetails(data);
     } catch (error) {
       console.error('Erro ao buscar projeto:', error);
@@ -92,7 +92,7 @@ export default function ProjectShow() {
       for(let pair of formData.entries()) {
         console.log(pair[0]+ ', '+ pair[1]);
       }
-      const updatedProject = await fetchProject(projectDetails.id);
+      const updatedProject = await fetchById(projectDetails.id);
       setProjectDetails(updatedProject);
       notify(field);
       console.log('Projeto atualizado com sucesso:', updatedProject);
