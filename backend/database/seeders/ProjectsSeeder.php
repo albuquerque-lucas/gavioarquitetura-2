@@ -21,7 +21,6 @@ class ProjectsSeeder extends Seeder
             'year' => 2022,
             'address' => 'Endereço do Projeto 1',
             'image_url' => 'projects/cover/no-image.jpg',
-            'image_url' => 'projects/cover/no-image.jpg',
         ]);
 
         $project2 = Project::create([

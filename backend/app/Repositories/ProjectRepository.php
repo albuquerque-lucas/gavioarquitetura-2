@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\IReadAndWrite;
+use App\Models\Category;
 use App\Models\Project;
 use App\Models\ServiceResponse;
 use DB;
@@ -17,18 +18,25 @@ class ProjectRepository implements IReadAndWrite
         $this->response = new ServiceResponse();
     }
 
-    public function getAll($order = 'desc'): ServiceResponse
+    public function getAll($order = 'desc', $orderBy = 'id', $categoryId = null): ServiceResponse
     {
         $validOrders = ['asc', 'desc'];
+        $validOrderBy = ['id', 'name', 'created_at'];
     
-        if (!in_array($order, $validOrders)) {
+        if (!in_array($order, $validOrders) || !in_array($orderBy, $validOrderBy)) {
             $this->response->setAttributes(400, (object)[
-                'message' => 'Invalid order parameter. Use "asc" or "desc".'
+                'message' => 'Invalid order or orderBy parameter.'
             ]);
             return $this->response;
         }
     
-        $list = Project::orderBy('id', $order)->paginate();
+        $query = Project::orderBy($orderBy, $order);
+    
+        if ($categoryId !== null) {
+            $query->where('category_id', $categoryId);
+        }
+    
+        $list = $query->paginate();
     
         if ($list->isEmpty()) {
             $this->response->setAttributes(404, (object)[
@@ -57,6 +65,33 @@ class ProjectRepository implements IReadAndWrite
             return $this->response;
         });
     }
+
+    public function getByCategory(int $categoryId, string $order = "desc"): ServiceResponse
+    {
+        $validOrders = ['asc', 'desc'];
+    
+        if (!in_array($order, $validOrders)) {
+            $this->response->setAttributes(400, (object)[
+                'message' => 'Invalid order parameter. Use "asc" or "desc".'
+            ]);
+            return $this->response;
+        }
+    
+        $projects = Project::where('category_id', $categoryId)
+            ->orderBy('id', $order)
+            ->paginate();
+    
+        if ($projects->isEmpty()) {
+            $this->response->setAttributes(404, (object)[
+                'message' => 'Projects not found for the specified category'
+            ]);
+            return $this->response;
+        }
+    
+        $this->response->setAttributes(200, $projects);
+        return $this->response;
+    }
+    
 
     public function create(array $data): ServiceResponse
     {

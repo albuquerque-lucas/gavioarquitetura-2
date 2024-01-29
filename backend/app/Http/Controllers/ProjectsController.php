@@ -76,4 +76,10 @@ class ProjectsController extends Controller
         $res = $this->repository->delete($id);
         return response()->json($res->data(), $res->status());
     }
+
+    public function getByCategory(int $categoryId)
+    {
+        $res = $this->repository->getByCategory($categoryId);
+        return response()->json($res->data(), $res->status());
+    }
 }

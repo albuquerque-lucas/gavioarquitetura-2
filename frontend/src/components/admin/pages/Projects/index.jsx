@@ -9,8 +9,8 @@ import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
 import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
 import { toast } from 'react-toastify';
-
 import './styles/style.css';
+import { faL, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 
 export default function Projects() {
   const {
@@ -39,10 +39,10 @@ export default function Projects() {
         setNavigationLinks(navLinks);
         setLastPage(last_page);
         setProjectList(data);
-        setIsLoading(false);
       } catch (error) {
         console.error('Erro ao buscar projetos:', error);
         setProjectList([]);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -66,7 +66,8 @@ export default function Projects() {
       setIsLoading(false);
     } catch (error) {
       console.error('Erro ao deletar projeto:', error);
-      setIsLoading(false);
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -83,15 +84,12 @@ export default function Projects() {
           </Link>
         </InnerOptionsNavbar>
       </div>
-      <ProjectsFilters
-        listOfProjects={ projectList }
-        setListFunction={ setProjectList }
-      />
+      <ProjectsFilters />
       <PaginationButtons
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        lastPage={lastPage}
-        navigationLinks={navigationLinks}
+        currentPage={ currentPage }
+        setCurrentPage={ setCurrentPage }
+        lastPage={ lastPage }
+        navigationLinks={ navigationLinks }
       />
       <div id="project-table-container">
           <table id="project-table-admin">
@@ -106,7 +104,7 @@ export default function Projects() {
                 <th className='col-1' >Editar / Excluir</th>
               </tr>
             </thead>
-        {isLoading ? (
+        {isLoading && currentPage === 1 ? (
             <Loading />
         ) : (
             <tbody>

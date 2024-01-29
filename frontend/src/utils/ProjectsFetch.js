@@ -15,6 +15,7 @@ export const fetchProjectsList = async (url, order='desc') => {
     const response = await axios.get(url, {
       params: { order },
     });
+    console.log('RESPONSE', response.data);
     return response.data;
   } catch (error) {
     console.error('Erro ao buscar projetos:', error);
@@ -55,6 +56,17 @@ export const saveProject = async (projectFormData, id = null) => {
     throw error;
   }
 };
+
+export const fetchByCategory = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost/api/projects/category/${id}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar projetos por categoria:', error);
+    throw error;
+  }
+}
 
 
 

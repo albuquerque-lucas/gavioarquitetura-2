@@ -1,120 +1,98 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
-import { fetchProjectsList } from '../../../../utils/ProjectsFetch';
-import { mapSelectedFilter } from '../../../../utils/mappers';
+import { fetchProjectsList, fetchByCategory } from '../../../../utils/ProjectsFetch';
+import CategoriesContext from '../../../../context/CategoriesContext/CategoriesContext';
 import './styles/filterContainer.css';
 
-export default function ProjectsFilters({ listOfProjects, setListFunction }) {
-  const [selectedFilter, setSelectedFilter] = useState('idRecent');
-  const [clickedFilter, setClickedFilter] = useState('');
-  const [selectedSort, setSelectedSort] = useState('asc');
+export default function ProjectsFilters() {
+
   const {
     setProjectList,
     selectedSearchSort,
     setSelectedSearchSort,
+    projectFilter,
+    selectedFilter,
+    setSelectedFilter,
   } = useContext(ProjectsContext);
 
-  const sortProjects = (filter) => {
-    let sortProjects = [...listOfProjects];
-    setClickedFilter(filter);
+  const { categoriesList } = useContext(CategoriesContext);
 
-    switch (filter) {
-      case 'idRecent':
-        sortProjects.sort((a, b) => (selectedSort === 'asc' ? a.id - b.id : b.id - a.id));
-        break;
-      case 'activeCarousel':
-        sortProjects.sort((a, b) => {
-          if (selectedSort === 'asc') {
-            return a.active_carousel === true && b.active_carousel !== true ? -1 : 0;
-          } else {
-            return a.active_carousel === true && b.active_carousel !== true ? 0 : 1;
-          }
-        });
-        break;
-      case 'inactiveCarousel':
-        sortProjects.sort((a, b) => {
-          if (selectedSort === 'asc') {
-            return a.active_carousel && !b.active_carousel ? 1 : 0;
-          } else {
-            return a.active_carousel && !b.active_carousel ? 0 : -1;
-          }
-        });
-        break;
-      case 'byYearDesc':
-        sortProjects.sort((a, b) => (selectedSort === 'asc' ? a.year - b.year : b.year - a.year));
-        break;
-      case 'alphabeticalAsc':
-        sortProjects.sort((a, b) =>
-          selectedSort === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
-        );
-        break;
-      default:
-        break;
-    }
-
-    setListFunction(sortProjects);
-  };
-
-  const handleSearch = async () => {
-    console.log('SEARCH SORT', selectedSearchSort);
-    const url = `http://localhost/api/projects?page=1`;
+  const handleCategoryFilter = async (id = null) => {
+    let data;
+    console.log("botao filtro categoria.")
     try {
-      const { data } = await fetchProjectsList(url, selectedSearchSort);
-      setProjectList(data);
+      if (id === null) {
+        data = await fetchProjectsList(`http://localhost/api/projects?page=1`);
+        setProjectList(data.data);
+        console.log("NAO tem id");
+      } else {
+        console.log("tem id");
+        data = await fetchByCategory(id);
+        setProjectList(data.data);
+      }
     } catch (error) {
       console.error('Erro ao buscar projetos:', error);
     }
-  };
+  }
+
+  const handleSelectedFilter = (filter) => {
+    
+  }
 
   return (
     <>
-      <div className="filter-container">
-        <span>{`Filtro selecionado: ${mapSelectedFilter(clickedFilter)} ${selectedSort}`}</span>
-        <label htmlFor="filter">Ordenar por: </label>
-        <select name="filter" id="filter" onChange={(e) => setSelectedFilter(e.target.value)}>
-          <option value="idRecent">Identificador único</option>
-          <option value="activeCarousel">Exibidos na página inicial</option>
-          <option value="inactiveCarousel">Não exibidos na página inicial</option>
-          <option value="alphabeticalAsc">Nome</option>
-          <option value="byYearDesc">Data</option>
+      <div className="request-filter-container">
+        <select
+          name="select-filter"
+          id="select-filter"
+          onChange={(e) => setSelectedFilter(e.target.value)}
+          value={ selectedFilter }
+        >
+          {
+            projectFilter.map((item) => <option value={ item }> { item } </option>)
+          }
         </select>
-        <label htmlFor="asc-filter">Asc: </label>
-        <input
-          type="radio"
-          name="sort-order"
-          id="asc-filter"
-          checked={selectedSort === 'asc'}
-          onChange={() => setSelectedSort('asc')}
-        />
-        <label htmlFor="desc-filter">Desc: </label>
-        <input
-          type="radio"
-          name="sort-order"
-          id="desc-filter"
-          checked={selectedSort === 'desc'}
-          onChange={() => setSelectedSort('desc')}
-        />
-        <button onClick={() => sortProjects(selectedFilter)} className="btn btn-dark">
-          Ordenar
+        <button
+          className="btn btn-dark"
+          onClick={ (e) => handleSelectedFilter(e.target.value) }
+        >
+          Filtrar
         </button>
       </div>
       <div className="request-filter-container">
-        <h6>Buscar projetos por ordem:</h6>
         <select
           name="search-order"
           id="search-order"
           onChange={(e) => setSelectedSearchSort(e.target.value)}
-          defaultValue={selectedSearchSort}
+          value={ selectedSearchSort }
         >
-          <option value="desc">Descendente</option>
-          <option value="asc">Ascendente</option>
+          <option value="desc">Mais recentes</option>
+          <option value="asc">Mais antigos</option>
         </select>
         <button
           className="btn btn-dark"
-          onClick={ handleSearch }
         >
-          Buscar
+          Ordenar
         </button>
+      </div>
+      <div className="category-filter-container">
+        <button
+          className="btn btn-dark mx-3"
+          onClick={ () => handleCategoryFilter() }
+        >
+          Todos
+        </button>
+        {
+          categoriesList.map((category) => (
+            <button
+              key={ category.id }
+              className="btn btn-dark mx-3"
+              onClick={ () => handleCategoryFilter(category.id) }
+            >
+              { category.name }
+            </button>
+          ))
+        }
       </div>
     </>
   );

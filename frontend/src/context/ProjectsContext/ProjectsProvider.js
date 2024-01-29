@@ -49,6 +49,14 @@ export default function ProjectsProvider({ children }) {
     active_carousel: "0",
   });
 
+  const [projectFilter, setProjectFilter] = useState([
+    "id",
+    "name",
+    "created-at",
+  ]);
+
+  const [selectedFilter, setSelectedFilter] = useState("id");
+
   const context = useMemo(() => {
     const handleChange = (field, value) => {
       setEditedDetails({
@@ -77,6 +85,10 @@ export default function ProjectsProvider({ children }) {
       setNavigationLinks,
       selectedSearchSort,
       setSelectedSearchSort,
+      projectFilter,
+      setProjectFilter,
+      selectedFilter,
+      setSelectedFilter,
     };
   }, [
     projectList,
@@ -97,6 +109,10 @@ export default function ProjectsProvider({ children }) {
     setNavigationLinks,
     selectedSearchSort,
     setSelectedSearchSort,
+    projectFilter,
+    setProjectFilter,
+    selectedFilter,
+    setSelectedFilter,
   ]);
 
   return (
