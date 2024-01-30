@@ -18,7 +18,8 @@ class ProjectsController extends Controller
     public function index(Request $request)
     {
         $order = $request->input('order', 'desc');
-        $res = $this->repository->getAll($order);
+        $hasAttribute = $request->input('hasAttribute', true);
+        $res = $this->repository->getAll($order, $hasAttribute);
         return response()->json($res->data(), $res->status());
     }
 

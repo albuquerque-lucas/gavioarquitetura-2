@@ -18,10 +18,14 @@ class ProjectRepository implements IReadAndWrite
         $this->response = new ServiceResponse();
     }
 
-    public function getAll($order = 'desc', $orderBy = 'id', $categoryId = null): ServiceResponse
+    public function getAll(
+        $order = 'desc',
+        $hasAttribute = true,
+        $orderBy = 'id',
+        $categoryId = null): ServiceResponse
     {
         $validOrders = ['asc', 'desc'];
-        $validOrderBy = ['id', 'name', 'created_at'];
+        $validOrderBy = ['id', 'name', 'active_carousel', 'image_url'];
     
         if (!in_array($order, $validOrders) || !in_array($orderBy, $validOrderBy)) {
             $this->response->setAttributes(400, (object)[
