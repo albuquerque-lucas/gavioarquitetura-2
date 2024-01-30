@@ -17,13 +17,12 @@ export default function Projects() {
     setProjectList,
     projectList,
     currentPage,
-    setCurrentPage,
-    lastPage,
     setLastPage,
-    navigationLinks,
     setNavigationLinks,
     selectedSearchSort,
     selectedCategoryId,
+    setNextPageLink,
+    setPreviousPageLink,
   } = useContext(ProjectsContext);
   const {
     setIsLoading,
@@ -35,15 +34,16 @@ export default function Projects() {
       let data;
       try {
         setIsLoading(true);
-        
         if (selectedCategoryId !== null) {
           data = await fetchByCategory(selectedCategoryId);
         } else {
           data = await fetchProjects(`http://localhost/api/projects?page=${currentPage}`, selectedSearchSort);
         }
-
+        console.log("DATA", data);
         const navLinks = data.links.slice(1, -1);
         setNavigationLinks(navLinks);
+        setNextPageLink(data.next_page_url);
+        setPreviousPageLink(data.prev_page_url);
         setLastPage(data.last_page);
         setProjectList(data.data);
       } catch (error) {
@@ -55,7 +55,7 @@ export default function Projects() {
     };
 
     fetchData();
-  }, [setIsLoading, currentPage]);
+  }, [setIsLoading]);
 
   const handleDelete = async (id) => {
     try {

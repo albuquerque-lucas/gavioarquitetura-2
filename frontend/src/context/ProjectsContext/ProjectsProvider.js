@@ -4,6 +4,8 @@ import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [nextPageLink, setNextPageLink] = useState(null);
+  const [previousPageLink, setPreviousPageLink] = useState(null);
   const [lastPage, setLastPage] = useState(null);
   const [navigationLinks, setNavigationLinks] = useState([]);
   const [selectedSearchSort, setSelectedSearchSort] = useState('desc');
@@ -49,11 +51,12 @@ export default function ProjectsProvider({ children }) {
     active_carousel: "0",
   });
 
-  const [projectFilter, setProjectFilter] = useState([
-    "id",
-    "name",
-    "created-at",
-  ]);
+  const [projectFilter, setProjectFilter] = useState({
+    id: "Id",
+    name: "Nome",
+    'created_at': "Data de criação",
+    'active_carousel': "Em exibicao na pagina inicial"
+  });
 
   const [selectedFilter, setSelectedFilter] = useState("id");
 
@@ -93,6 +96,10 @@ export default function ProjectsProvider({ children }) {
       setSelectedFilter,
       selectedCategoryId,
       setSelectedCategoryId,
+      nextPageLink,
+      setNextPageLink,
+      previousPageLink,
+      setPreviousPageLink,
     };
   }, [
     projectList,
@@ -119,6 +126,10 @@ export default function ProjectsProvider({ children }) {
     setSelectedFilter,
     selectedCategoryId,
     setSelectedCategoryId,
+    nextPageLink,
+    setNextPageLink,
+    previousPageLink,
+    setPreviousPageLink,
   ]);
 
   return (

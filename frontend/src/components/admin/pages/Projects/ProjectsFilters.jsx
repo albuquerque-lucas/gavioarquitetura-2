@@ -14,7 +14,11 @@ export default function ProjectsFilters() {
     selectedFilter,
     setSelectedFilter,
     setSelectedCategoryId,
-    setNavigationLinks
+    setNavigationLinks,
+    setCurrentPage,
+    setLastPage,
+    setNextPageLink,
+    setPreviousPageLink,
   } = useContext(ProjectsContext);
 
   const { categoriesList } = useContext(CategoriesContext);
@@ -25,22 +29,26 @@ export default function ProjectsFilters() {
     try {
       if (id === null) {
         data = await fetchProjects(`http://localhost/api/projects?page=1`);
-        const navLinks = data.links.slice(1, -1);
-        setNavigationLinks(navLinks);
-        setProjectList(data.data);
       } else {
         data = await fetchByCategory(id);
-        const navLinks = data.links.slice(1, -1);
-        setNavigationLinks(navLinks);
-        setProjectList(data.data);
       }
+
+      console.log("Data", data);
+
+      const navLinks = data.links.slice(1, -1);
+      setNavigationLinks(navLinks);
+      setNextPageLink(data.next_page_url);
+      setPreviousPageLink(data.prev_page_url);
+      setCurrentPage(1);
+      setProjectList(data.data);
+      setLastPage(data.last_page);
     } catch (error) {
       console.error('Erro ao buscar projetos:', error);
     }
   }
 
   const handleSelectedFilter = (filter) => {
-    
+    console.log("selected Filter", filter);
   }
 
   return (
@@ -50,20 +58,14 @@ export default function ProjectsFilters() {
           name="select-filter"
           id="select-filter"
           onChange={(e) => setSelectedFilter(e.target.value)}
-          value={ selectedFilter }
+          value={selectedFilter}
         >
-          {
-            projectFilter.map((item) => <option value={ item }> { item } </option>)
-          }
+          {Object.entries(projectFilter).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
         </select>
-        <button
-          className="btn btn-dark"
-          onClick={ (e) => handleSelectedFilter(e.target.value) }
-        >
-          Filtrar
-        </button>
-      </div>
-      <div className="request-filter-container">
         <select
           name="search-order"
           id="search-order"
@@ -76,7 +78,7 @@ export default function ProjectsFilters() {
         <button
           className="btn btn-dark"
         >
-          Ordenar
+          Buscar
         </button>
       </div>
       <div className="category-filter-container">

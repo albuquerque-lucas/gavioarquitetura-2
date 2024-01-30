@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -10,15 +10,17 @@ import GeneralDataProvider from './context/GeneralDataContext/GeneralDataProvide
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <GeneralDataProvider>
-    <CategoriesProvider>
-      <ProjectsProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ProjectsProvider>
-    </CategoriesProvider>
-  </GeneralDataProvider>
+  <StrictMode>
+    <GeneralDataProvider>
+      <CategoriesProvider>
+        <ProjectsProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ProjectsProvider>
+      </CategoriesProvider>
+    </GeneralDataProvider>
+  </StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
