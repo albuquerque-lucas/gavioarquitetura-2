@@ -54,8 +54,10 @@ export default function ProjectsProvider({ children }) {
   const [projectFilter, setProjectFilter] = useState({
     id: "Id",
     name: "Nome",
-    'created_at': "Data de criação",
-    'active_carousel': "Em exibicao na pagina inicial"
+    active_carousel: "Em exibicao na pagina inicial",
+    innactive_carousel: "Nao em exibicao na pagina inicial",
+    with_image: "Possui imagem",
+    without_image: "Nao possui imagem",
   });
 
   const [selectedFilter, setSelectedFilter] = useState("id");

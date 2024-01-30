@@ -47,9 +47,54 @@ export default function ProjectsFilters() {
     }
   }
 
-  const handleSelectedFilter = (filter) => {
+  const handleSelectedFilter = async (filter, sortOrder) => {
     console.log("selected Filter", filter);
+    console.log("sort order", sortOrder);
+    const filterInfo = translateFilter(filter, sortOrder);
+    const response = await fetchProjects('localhost/api/projects');
+    console.log(filterInfo);
   }
+
+  const translateFilter = (filter, sortOrder) => {
+    let translatedFilter;
+    let completeFilter;
+    let withAttribute = true;
+
+    switch (filter) {
+      case 'id':
+        translatedFilter = 'id';
+        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        break;
+      case 'name':
+        translatedFilter = 'name';
+        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        break;
+      case 'active_carousel':
+        translatedFilter = 'active_carousel';
+        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        break;
+      case 'innactive_carousel':
+        translatedFilter = 'active_carousel';
+        withAttribute = false;
+        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        break;
+      case 'with_image':
+        translatedFilter = 'image_url';
+        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        break;
+      case 'without_image':
+        translatedFilter = 'image_url';
+        withAttribute = false;
+        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        break;
+      default:
+        completeFilter = ['', '', !withAttribute];
+        break;
+    }
+  
+    return completeFilter;
+  }
+  
 
   return (
     <>
@@ -77,6 +122,7 @@ export default function ProjectsFilters() {
         </select>
         <button
           className="btn btn-dark"
+          onClick={() => handleSelectedFilter(selectedFilter, selectedSearchSort)}
         >
           Buscar
         </button>
