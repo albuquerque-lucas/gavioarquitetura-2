@@ -389,7 +389,115 @@ class ProjectsSeeder extends Seeder
             'address' => 'Endereço do Projeto 35',
             'image_url' => 'projects/cover/no-image.jpg',
         ]);
+
+        $project36 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => true,
+            'name' => 'Projeto 36',
+            'description' => 'Descrição do Projeto 36',
+            'area' => 190,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 36',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
         
+        $project37 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => false,
+            'name' => 'Projeto 37',
+            'description' => 'Descrição do Projeto 37',
+            'area' => 200,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 37',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
         
+        $project38 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => true,
+            'name' => 'Projeto 38',
+            'description' => 'Descrição do Projeto 38',
+            'area' => 210,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 38',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
+        
+        $project39 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => false,
+            'name' => 'Projeto 39',
+            'description' => 'Descrição do Projeto 39',
+            'area' => 220,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 39',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
+        
+        $project40 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => true,
+            'name' => 'Projeto 40',
+            'description' => 'Descrição do Projeto 40',
+            'area' => 230,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 40',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
+        
+        $project41 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => true,
+            'name' => 'Projeto 41',
+            'description' => 'Descrição do Projeto 41',
+            'area' => 240,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 41',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
+        
+        $project42 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => false,
+            'name' => 'Projeto 42',
+            'description' => 'Descrição do Projeto 42',
+            'area' => 250,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 42',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
+        
+        $project43 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => true,
+            'name' => 'Projeto 43',
+            'description' => 'Descrição do Projeto 43',
+            'area' => 260,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 43',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
+        
+        $project44 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => false,
+            'name' => 'Projeto 44',
+            'description' => 'Descrição do Projeto 44',
+            'area' => 270,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 44',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
+        
+        $project45 = Project::create([
+            'category_id' => 2,
+            'active_carousel' => true,
+            'name' => 'Projeto 45',
+            'description' => 'Descrição do Projeto 45',
+            'area' => 280,
+            'year' => 2023,
+            'address' => 'Endereço do Projeto 45',
+            'image_url' => 'projects/cover/no-image.jpg',
+        ]);
     }
 }
