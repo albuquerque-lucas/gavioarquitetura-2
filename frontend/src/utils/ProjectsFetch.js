@@ -10,10 +10,10 @@ export const fetchById = async (id) => {
   }
 };
 
-export const fetchProjects = async (url, order='desc', hasAttribute = true) => {
+export const fetchProjects = async (url, order='desc', hasAttribute = true, attribute = 'id') => {
   try {
     const response = await axios.get(url, {
-      params: { order, hasAttribute },
+      params: { order, hasAttribute, attribute },
     });
     return response.data;
   } catch (error) {

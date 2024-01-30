@@ -19,7 +19,8 @@ class ProjectsController extends Controller
     {
         $order = $request->input('order', 'desc');
         $hasAttribute = $request->input('hasAttribute', true);
-        $res = $this->repository->getAll($order, $hasAttribute);
+        $attribute = $request->input('attribute', 'id');
+        $res = $this->repository->getAll($order, $hasAttribute, $attribute);
         return response()->json($res->data(), $res->status());
     }
 

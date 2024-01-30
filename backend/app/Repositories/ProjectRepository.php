@@ -21,20 +21,20 @@ class ProjectRepository implements IReadAndWrite
     public function getAll(
         $order = 'desc',
         $hasAttribute = true,
-        $orderBy = 'id',
-        $categoryId = null): ServiceResponse
-    {
+        $filterAttribute = 'id',
+        $categoryId = null
+    ): ServiceResponse {
         $validOrders = ['asc', 'desc'];
-        $validOrderBy = ['id', 'name', 'active_carousel', 'image_url'];
+        $validFilters = ['id', 'name', 'active_carousel', 'image_url'];
     
-        if (!in_array($order, $validOrders) || !in_array($orderBy, $validOrderBy)) {
+        if (!in_array($order, $validOrders) || !in_array($filterAttribute, $validFilters)) {
             $this->response->setAttributes(400, (object)[
-                'message' => 'Invalid order or orderBy parameter.'
+                'message' => "Invalid order ($order) or filter attribute ($filterAttribute) parameters."
             ]);
             return $this->response;
         }
     
-        $query = Project::orderBy($orderBy, $order);
+        $query = Project::orderBy($filterAttribute, $order);
     
         if ($categoryId !== null) {
             $query->where('category_id', $categoryId);
@@ -52,6 +52,7 @@ class ProjectRepository implements IReadAndWrite
         $this->response->setAttributes(200, $list);
         return $this->response;
     }
+    
     
 
     public function getById(int $id): ServiceResponse

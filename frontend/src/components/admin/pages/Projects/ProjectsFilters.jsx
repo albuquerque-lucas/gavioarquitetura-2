@@ -48,14 +48,31 @@ export default function ProjectsFilters() {
   }
 
   const handleSelectedFilter = async (filter, sortOrder) => {
-    console.log("selected Filter", filter);
-    console.log("sort order", sortOrder);
-    const filterInfo = translateFilter(filter, sortOrder);
-    const response = await fetchProjects('localhost/api/projects');
-    console.log(filterInfo);
+    try {
+      
+      const filterInfo = translateFilter(filter, sortOrder);
+      const response = await fetchProjects(
+        'http://localhost/api/projects',
+        sortOrder,
+        filterInfo[1],
+        filterInfo[0]);
+      
+      console.log('FILTER INFO:', filterInfo);
+      console.log('RESPONSE:', response);
+
+      setNavigationLinks(response.links.slice(1, -1));
+      setNextPageLink(response.next_page_url);
+      setPreviousPageLink(response.prev_page_url);
+      setCurrentPage(1);
+      setProjectList(response.data);
+      setLastPage(response.last_page);
+    } catch (error) {
+      console.error('Erro ao buscar projetos:', error);
+      // Lide com o erro conforme necessário
+    }
   }
 
-  const translateFilter = (filter, sortOrder) => {
+  const translateFilter = (filter) => {
     let translatedFilter;
     let completeFilter;
     let withAttribute = true;
@@ -63,32 +80,32 @@ export default function ProjectsFilters() {
     switch (filter) {
       case 'id':
         translatedFilter = 'id';
-        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        completeFilter = [translatedFilter, withAttribute];
         break;
       case 'name':
         translatedFilter = 'name';
-        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        completeFilter = [translatedFilter, withAttribute];
         break;
       case 'active_carousel':
         translatedFilter = 'active_carousel';
-        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        completeFilter = [translatedFilter, withAttribute];
         break;
       case 'innactive_carousel':
         translatedFilter = 'active_carousel';
         withAttribute = false;
-        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        completeFilter = [translatedFilter, withAttribute];
         break;
       case 'with_image':
         translatedFilter = 'image_url';
-        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        completeFilter = [translatedFilter, withAttribute];
         break;
       case 'without_image':
         translatedFilter = 'image_url';
         withAttribute = false;
-        completeFilter = [translatedFilter, sortOrder, withAttribute];
+        completeFilter = [translatedFilter, withAttribute];
         break;
       default:
-        completeFilter = ['', '', !withAttribute];
+        completeFilter = ['', !withAttribute];
         break;
     }
   
