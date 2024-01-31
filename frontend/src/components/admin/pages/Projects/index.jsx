@@ -23,6 +23,7 @@ export default function Projects() {
     selectedCategoryId,
     setNextPageLink,
     setPreviousPageLink,
+    queryParams,
   } = useContext(ProjectsContext);
   const {
     setIsLoading,
@@ -37,7 +38,7 @@ export default function Projects() {
         if (selectedCategoryId !== null) {
           data = await fetchByCategory(selectedCategoryId);
         } else {
-          data = await fetchProjects(`http://localhost/api/projects?page=${currentPage}`, selectedSearchSort);
+          data = await fetchProjects(`http://localhost/api/projects?${queryParams}`, selectedSearchSort);
         }
         console.log("DATA", data);
         const navLinks = data.links.slice(1, -1);

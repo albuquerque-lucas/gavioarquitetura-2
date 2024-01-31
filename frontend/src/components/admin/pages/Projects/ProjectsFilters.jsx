@@ -19,6 +19,10 @@ export default function ProjectsFilters() {
     setLastPage,
     setNextPageLink,
     setPreviousPageLink,
+    lastPage,
+    nextPage,
+    currentPage,
+    queryParams,
   } = useContext(ProjectsContext);
 
   const { categoriesList } = useContext(CategoriesContext);
@@ -28,7 +32,7 @@ export default function ProjectsFilters() {
     let data;
     try {
       if (id === null) {
-        data = await fetchProjects(`http://localhost/api/projects?page=1`);
+        data = await fetchProjects(`http://localhost/api/projects?${queryParams}`);
       } else {
         data = await fetchByCategory(id);
       }
@@ -50,7 +54,7 @@ export default function ProjectsFilters() {
   const handleSelectedFilter = async (filter, sortOrder) => {
     try {
       
-      const filterInfo = translateFilter(filter, sortOrder);
+      const filterInfo = translateFilter(filter);
       const response = await fetchProjects(
         'http://localhost/api/projects',
         sortOrder,
@@ -58,17 +62,20 @@ export default function ProjectsFilters() {
         filterInfo[0]);
       
       console.log('FILTER INFO:', filterInfo);
-      console.log('RESPONSE:', response);
 
       setNavigationLinks(response.links.slice(1, -1));
       setNextPageLink(response.next_page_url);
       setPreviousPageLink(response.prev_page_url);
       setCurrentPage(1);
       setProjectList(response.data);
-      setLastPage(response.last_page);
+      setLastPage(response.last_page_url);
+      console.log('NEXT PAGE', nextPage);
+      console.log('CURRENT PAGE', currentPage);
+      console.log('LAST PAGE', lastPage);
+      console.log('RESPONSE', response);
+
     } catch (error) {
       console.error('Erro ao buscar projetos:', error);
-      // Lide com o erro conforme necessário
     }
   }
 
@@ -80,7 +87,10 @@ export default function ProjectsFilters() {
     switch (filter) {
       case 'id':
         translatedFilter = 'id';
-        completeFilter = [translatedFilter, withAttribute];
+        completeFilter = {
+          filterName: translatedFilter,
+          hasAttribute: true,
+        }
         break;
       case 'name':
         translatedFilter = 'name';

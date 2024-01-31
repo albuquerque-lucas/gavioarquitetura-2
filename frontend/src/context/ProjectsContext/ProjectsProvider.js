@@ -3,6 +3,23 @@ import { useMemo, useState } from "react";
 import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
+  const [paramsList, setParamsList] = useState({
+    attribute: 'id',
+    hasAttribute: true,
+    order: 'desc',
+  });
+  const [queryParams, setQueryParams] = useState();
+  const [allowedParams, setAllowedParams] = useState([
+    'id',
+    'name',
+    'active_carousel',
+    'image',
+    'category_id',
+    'page',
+    'order',
+    'attribute',
+    'hasAttribute',
+  ]);
   const [currentPage, setCurrentPage] = useState(1);
   const [nextPageLink, setNextPageLink] = useState(null);
   const [previousPageLink, setPreviousPageLink] = useState(null);
@@ -102,6 +119,12 @@ export default function ProjectsProvider({ children }) {
       setNextPageLink,
       previousPageLink,
       setPreviousPageLink,
+      queryParams,
+      setQueryParams,
+      paramsList,
+      setParamsList,
+      allowedParams,
+      setAllowedParams,
     };
   }, [
     projectList,
@@ -132,6 +155,12 @@ export default function ProjectsProvider({ children }) {
     setNextPageLink,
     previousPageLink,
     setPreviousPageLink,
+    queryParams,
+    setQueryParams,
+    paramsList,
+    setParamsList,
+    allowedParams,
+    setAllowedParams,
   ]);
 
   return (
