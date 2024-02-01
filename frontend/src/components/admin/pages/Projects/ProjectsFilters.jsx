@@ -22,7 +22,7 @@ export default function ProjectsFilters() {
     lastPage,
     nextPage,
     currentPage,
-    queryParams,
+    setParamsList,
   } = useContext(ProjectsContext);
 
   const { categoriesList } = useContext(CategoriesContext);
@@ -32,7 +32,7 @@ export default function ProjectsFilters() {
     let data;
     try {
       if (id === null) {
-        data = await fetchProjects(`http://localhost/api/projects?${queryParams}`);
+        data = await fetchProjects('http://localhost/api/projects');
       } else {
         data = await fetchByCategory(id);
       }
@@ -53,13 +53,19 @@ export default function ProjectsFilters() {
 
   const handleSelectedFilter = async (filter, sortOrder) => {
     try {
+
       
       const filterInfo = translateFilter(filter);
+      setParamsList({
+        attribute: filterInfo.filterName,
+        hasAttribute: filterInfo.hasAttribute,
+        order: sortOrder,
+      });
       const response = await fetchProjects(
         'http://localhost/api/projects',
         sortOrder,
-        filterInfo[1],
-        filterInfo[0]);
+        filterInfo.hasAttribute,
+        filterInfo.filterName);
       
       console.log('FILTER INFO:', filterInfo);
 
@@ -83,44 +89,60 @@ export default function ProjectsFilters() {
     let translatedFilter;
     let completeFilter;
     let withAttribute = true;
-
+  
     switch (filter) {
       case 'id':
         translatedFilter = 'id';
         completeFilter = {
           filterName: translatedFilter,
-          hasAttribute: true,
-        }
+          hasAttribute: withAttribute,
+        };
         break;
       case 'name':
         translatedFilter = 'name';
-        completeFilter = [translatedFilter, withAttribute];
+        completeFilter = {
+          filterName: translatedFilter,
+          hasAttribute: withAttribute,
+        };
         break;
       case 'active_carousel':
         translatedFilter = 'active_carousel';
-        completeFilter = [translatedFilter, withAttribute];
+        completeFilter = {
+          filterName: translatedFilter,
+          hasAttribute: withAttribute,
+        };
         break;
       case 'innactive_carousel':
         translatedFilter = 'active_carousel';
         withAttribute = false;
-        completeFilter = [translatedFilter, withAttribute];
+        completeFilter = {
+          filterName: translatedFilter,
+          hasAttribute: withAttribute,
+        };
         break;
       case 'with_image':
         translatedFilter = 'image_url';
-        completeFilter = [translatedFilter, withAttribute];
+        completeFilter = {
+          filterName: translatedFilter,
+          hasAttribute: withAttribute,
+        };
         break;
       case 'without_image':
         translatedFilter = 'image_url';
         withAttribute = false;
-        completeFilter = [translatedFilter, withAttribute];
+        completeFilter = {
+          filterName: translatedFilter,
+          hasAttribute: withAttribute,
+        };
         break;
       default:
-        completeFilter = ['', !withAttribute];
+        completeFilter = { filterName: '', hasAttribute: !withAttribute };
         break;
     }
   
     return completeFilter;
-  }
+  };
+  
   
 
   return (

@@ -10,7 +10,6 @@ import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDa
 import { fetchProjects, deleteProject, fetchByCategory } from '../../../../utils/ProjectsFetch';
 import { toast } from 'react-toastify';
 import './styles/style.css';
-import { faL, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 
 export default function Projects() {
   const {
@@ -19,11 +18,10 @@ export default function Projects() {
     currentPage,
     setLastPage,
     setNavigationLinks,
-    selectedSearchSort,
     selectedCategoryId,
     setNextPageLink,
     setPreviousPageLink,
-    queryParams,
+    paramsList,
   } = useContext(ProjectsContext);
   const {
     setIsLoading,
@@ -38,7 +36,11 @@ export default function Projects() {
         if (selectedCategoryId !== null) {
           data = await fetchByCategory(selectedCategoryId);
         } else {
-          data = await fetchProjects(`http://localhost/api/projects?${queryParams}`, selectedSearchSort);
+          data = await fetchProjects('http://localhost/api/projects',
+          paramsList.order,
+          paramsList.hasAttribute,
+          paramsList.attribute,
+          );
         }
         console.log("DATA", data);
         const navLinks = data.links.slice(1, -1);

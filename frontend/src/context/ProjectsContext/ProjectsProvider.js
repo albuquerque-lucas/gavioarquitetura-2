@@ -8,7 +8,7 @@ export default function ProjectsProvider({ children }) {
     hasAttribute: true,
     order: 'desc',
   });
-  const [queryParams, setQueryParams] = useState();
+  const [queryParams, setQueryParams] = useState('');
   const [allowedParams, setAllowedParams] = useState([
     'id',
     'name',
@@ -119,12 +119,12 @@ export default function ProjectsProvider({ children }) {
       setNextPageLink,
       previousPageLink,
       setPreviousPageLink,
-      queryParams,
-      setQueryParams,
+      // queryParams,
+      // setQueryParams,
       paramsList,
       setParamsList,
-      allowedParams,
-      setAllowedParams,
+      // allowedParams,
+      // setAllowedParams,
     };
   }, [
     projectList,
@@ -155,12 +155,12 @@ export default function ProjectsProvider({ children }) {
     setNextPageLink,
     previousPageLink,
     setPreviousPageLink,
-    queryParams,
-    setQueryParams,
+    // queryParams,
+    // setQueryParams,
     paramsList,
     setParamsList,
-    allowedParams,
-    setAllowedParams,
+    // allowedParams,
+    // setAllowedParams,
   ]);
 
   return (

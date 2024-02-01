@@ -15,6 +15,7 @@ export default function PaginationButtons ()  {
     setNextPageLink,
     setPreviousPageLink,
     setLastPage,
+    paramsList,
   } = useContext(ProjectsContext);
 
   const { setIsLoading } = useContext(GeneralDataContext);
@@ -22,9 +23,16 @@ export default function PaginationButtons ()  {
 
   const handleClick = async (link) => {
     if (link !== null) {
+      console.log(`${link}`);
       try {
         setIsLoading(true);
-        const data = await fetchProjects(link);
+        
+        const data = await fetchProjects(
+          link,
+          paramsList.order,
+          paramsList.hasAttribute,
+          paramsList.attribute);
+
         const navLinks = data.links.slice(1, -1);
         setNavigationLinks(navLinks);
         setNextPageLink(data.next_page_url);
