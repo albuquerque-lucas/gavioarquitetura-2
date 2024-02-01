@@ -40,6 +40,7 @@ export default function Projects() {
           paramsList.order,
           paramsList.hasAttribute,
           paramsList.attribute,
+          selectedCategoryId,
           );
         }
         console.log("DATA", data);

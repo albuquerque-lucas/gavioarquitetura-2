@@ -10,12 +10,18 @@ export const fetchById = async (id) => {
   }
 };
 
-export const fetchProjects = async (url, order='desc', hasAttribute = true, attribute = 'id') => {
+export const fetchProjects = async (
+  url,
+  order='desc',
+  hasAttribute = true,
+  attribute = 'id',
+  categoryId = null) => {
   try {
     const response = await axios.get(url, {
-      params: { order, hasAttribute, attribute },
+      params: { order, hasAttribute, attribute, categoryId },
     });
     return response.data;
+
   } catch (error) {
     console.error('Erro ao buscar projetos:', error);
     throw error;

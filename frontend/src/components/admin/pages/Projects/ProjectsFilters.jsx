@@ -13,6 +13,7 @@ export default function ProjectsFilters() {
     projectFilter,
     selectedFilter,
     setSelectedFilter,
+    selectedCategoryId,
     setSelectedCategoryId,
     setNavigationLinks,
     setCurrentPage,
@@ -65,7 +66,9 @@ export default function ProjectsFilters() {
         'http://localhost/api/projects',
         sortOrder,
         filterInfo.hasAttribute,
-        filterInfo.filterName);
+        filterInfo.filterName,
+        selectedCategoryId
+        );
       
       console.log('FILTER INFO:', filterInfo);
 

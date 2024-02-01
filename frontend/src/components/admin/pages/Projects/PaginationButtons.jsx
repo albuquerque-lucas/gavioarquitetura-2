@@ -16,6 +16,7 @@ export default function PaginationButtons ()  {
     setPreviousPageLink,
     setLastPage,
     paramsList,
+    selectedCategoryId,
   } = useContext(ProjectsContext);
 
   const { setIsLoading } = useContext(GeneralDataContext);
@@ -31,7 +32,9 @@ export default function PaginationButtons ()  {
           link,
           paramsList.order,
           paramsList.hasAttribute,
-          paramsList.attribute);
+          paramsList.attribute,
+          selectedCategoryId,
+          );
 
         const navLinks = data.links.slice(1, -1);
         setNavigationLinks(navLinks);
