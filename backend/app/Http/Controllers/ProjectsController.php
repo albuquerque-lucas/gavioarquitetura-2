@@ -18,7 +18,11 @@ class ProjectsController extends Controller
     public function index(Request $request)
     {
         $order = $request->input('order', 'desc');
-        $res = $this->repository->getAll($order);
+        $hasAttribute = $request->input('hasAttribute', true);
+        $attribute = $request->input('attribute', 'id');
+        $categoryId = $request->input('categoryId', null);
+
+        $res = $this->repository->getAll($order, $hasAttribute, $attribute, $categoryId);
         return response()->json($res->data(), $res->status());
     }
 
@@ -74,6 +78,12 @@ class ProjectsController extends Controller
     public function destroy(int $id)
     {
         $res = $this->repository->delete($id);
+        return response()->json($res->data(), $res->status());
+    }
+
+    public function getByCategory(int $categoryId)
+    {
+        $res = $this->repository->getByCategory($categoryId);
         return response()->json($res->data(), $res->status());
     }
 }

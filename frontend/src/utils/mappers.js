@@ -39,3 +39,16 @@ export const mapSelectedFilter = (filter) => {
       return 'Nenhum filtro selecionado';
   }
 }
+
+export const mapCategory = (id) => {
+  switch (id) {
+    case 1:
+      return 'Residencial';
+    case 2:
+      return 'Interiores';
+    case 3:
+      return 'Comercial';
+    default:
+      return 'Nenhuma categoria selecionada';
+  }
+}

@@ -39,4 +39,10 @@ class CategoriesController extends Controller
         $res = $this->repository->delete($id);
         return response()->json($res->data(), $res->status());
     }
+
+    public function projects(int $id)
+    {
+        $res = $this->repository->getProjects($id);
+        return response()->json($res->data(), $res->status());
+    }
 }

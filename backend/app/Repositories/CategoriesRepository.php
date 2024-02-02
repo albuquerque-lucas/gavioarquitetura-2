@@ -36,6 +36,27 @@ class CategoriesRepository implements IReadAndWrite
         $this->response->setAttributes(200, $category);
         return $this->response;
     }
+
+    public function getProjects(int $id):ServiceResponse
+    {
+        $category = Category::find($id);
+        if (!$category) {
+            $this->response->setAttributes(404, (object)[
+                'message' => 'Category not found'
+            ]);
+            return $this->response;
+        }
+        $projects = $category->projects()->paginate();
+        if ($projects->isEmpty()) {
+            $this->response->setAttributes(404, (object)[
+                'message' => 'Projects not found'
+            ]);
+            return $this->response;
+        }
+        $this->response->setAttributes(200, $projects);
+        return $this->response;
+    }   
+
     public function create(array $data):ServiceResponse
     {
         $category = Category::create($data);

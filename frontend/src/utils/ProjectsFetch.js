@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const fetchProject = async (id) => {
+export const fetchById = async (id) => {
   try {
     const response = await axios.get(`http://localhost/api/projects/${id}`);
     return response.data;
@@ -10,12 +10,21 @@ export const fetchProject = async (id) => {
   }
 };
 
-export const fetchProjectsList = async (url, order='desc') => {
+export const fetchProjects = async (
+  url,
+  order='desc',
+  hasAttribute = true,
+  attribute = 'id',
+  categoryId = null) => {
   try {
+    console.log('HAS ATTRIBUTE', hasAttribute);
     const response = await axios.get(url, {
-      params: { order },
+      params: { order, hasAttribute, attribute, categoryId },
     });
+
+    console.log('RESPONSE', response);
     return response.data;
+
   } catch (error) {
     console.error('Erro ao buscar projetos:', error);
     throw error;
@@ -55,6 +64,17 @@ export const saveProject = async (projectFormData, id = null) => {
     throw error;
   }
 };
+
+export const fetchByCategory = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost/api/projects/category/${id}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar projetos por categoria:', error);
+    throw error;
+  }
+}
 
 
 

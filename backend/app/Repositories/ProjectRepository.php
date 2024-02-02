@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\IReadAndWrite;
+use App\Models\Category;
 use App\Models\Project;
 use App\Models\ServiceResponse;
 use DB;
@@ -17,18 +18,46 @@ class ProjectRepository implements IReadAndWrite
         $this->response = new ServiceResponse();
     }
 
-    public function getAll($order = 'desc'): ServiceResponse
-    {
+    public function getAll(
+        string $order = 'desc',
+        bool $hasAttribute = true,
+        string $attribute = 'id',
+        int $categoryId = null
+    ): ServiceResponse {
         $validOrders = ['asc', 'desc'];
+        $validFilters = ['id', 'name', 'active_carousel', 'image_url'];
     
-        if (!in_array($order, $validOrders)) {
+        if (!in_array($order, $validOrders) || !in_array($attribute, $validFilters)) {
             $this->response->setAttributes(400, (object)[
-                'message' => 'Invalid order parameter. Use "asc" or "desc".'
+                'message' => "Invalid order ($order) or filter attribute ($attribute) parameters."
             ]);
             return $this->response;
         }
+        $checkedAttribute = $attribute;
+
+        if ($checkedAttribute === 'active_carousel' || $checkedAttribute === 'image_url') {
+            $checkedAttribute = 'id';
+        }
     
-        $list = Project::orderBy('id', $order)->paginate();
+        $query = Project::orderBy($checkedAttribute, $order);
+    
+        if ($categoryId !== null) {
+            $query->where('category_id', $categoryId);
+        }
+
+        if ($attribute === 'active_carousel') {
+            if ($hasAttribute == true) {
+                $query->where($attribute, 1);
+            } else {
+                $query->where($attribute, 0);
+            }
+        } elseif ($attribute === 'image_url' && $hasAttribute) {
+            $query->where($attribute, '!=', 'projects/cover/no-image.jpg');
+        } elseif ($attribute === 'image_url' && !$hasAttribute) {
+            $query->where($attribute, '=', 'projects/cover/no-image.jpg');
+        }
+    
+        $list = $query->paginate();
     
         if ($list->isEmpty()) {
             $this->response->setAttributes(404, (object)[
@@ -40,6 +69,7 @@ class ProjectRepository implements IReadAndWrite
         $this->response->setAttributes(200, $list);
         return $this->response;
     }
+    
     
 
     public function getById(int $id): ServiceResponse
@@ -57,6 +87,33 @@ class ProjectRepository implements IReadAndWrite
             return $this->response;
         });
     }
+
+    public function getByCategory(int $categoryId, string $order = "desc"): ServiceResponse
+    {
+        $validOrders = ['asc', 'desc'];
+    
+        if (!in_array($order, $validOrders)) {
+            $this->response->setAttributes(400, (object)[
+                'message' => 'Invalid order parameter. Use "asc" or "desc".'
+            ]);
+            return $this->response;
+        }
+    
+        $projects = Project::where('category_id', $categoryId)
+            ->orderBy('id', $order)
+            ->paginate();
+    
+        if ($projects->isEmpty()) {
+            $this->response->setAttributes(404, (object)[
+                'message' => 'Projects not found for the specified category'
+            ]);
+            return $this->response;
+        }
+    
+        $this->response->setAttributes(200, $projects);
+        return $this->response;
+    }
+    
 
     public function create(array $data): ServiceResponse
     {

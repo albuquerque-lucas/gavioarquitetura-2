@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import noImage from '../../../../images/projects/no-image.jpg';
+import { mapCategory } from '../../../../utils/mappers';
 
 const checkSVG = <FontAwesomeIcon icon={ faPenToSquare } />;
 const trashSVG = <FontAwesomeIcon icon={ faTrash } />;
@@ -21,6 +22,7 @@ export default function ProjectRow({ project, deleteFunction }) {
       </td>
       <td>{ project.year }</td>
       <td>{ project.active_carousel ? 'Exibir' : 'Nao exibir' }</td>
+      <td>{ mapCategory(project.category_id) }</td>
       <td>
         <Link to={ `/projects/${project.id}` } className='edit-project-btn'>
           {checkSVG}

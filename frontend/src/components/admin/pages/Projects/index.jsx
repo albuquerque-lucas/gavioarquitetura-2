@@ -7,9 +7,8 @@ import ProjectsFilters from './ProjectsFilters';
 import PaginationButtons from './PaginationButtons';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
-import { fetchProjectsList, deleteProject } from '../../../../utils/ProjectsFetch';
+import { fetchProjects, deleteProject, fetchByCategory } from '../../../../utils/ProjectsFetch';
 import { toast } from 'react-toastify';
-
 import './styles/style.css';
 
 export default function Projects() {
@@ -17,12 +16,12 @@ export default function Projects() {
     setProjectList,
     projectList,
     currentPage,
-    setCurrentPage,
-    lastPage,
     setLastPage,
-    navigationLinks,
     setNavigationLinks,
-    selectedSearchSort,
+    selectedCategoryId,
+    setNextPageLink,
+    setPreviousPageLink,
+    paramsList,
   } = useContext(ProjectsContext);
   const {
     setIsLoading,
@@ -31,24 +30,37 @@ export default function Projects() {
 
   useEffect(() => {
     const fetchData = async () => {
+      let data;
       try {
         setIsLoading(true);
-        const { data, last_page, links } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`, selectedSearchSort);
-        const navLinks = links.slice(1, -1);
-        console.log(currentPage);
+        if (selectedCategoryId !== null) {
+          data = await fetchByCategory(selectedCategoryId);
+        } else {
+          data = await fetchProjects('http://localhost/api/projects',
+          paramsList.order,
+          paramsList.hasAttribute,
+          paramsList.attribute,
+          selectedCategoryId,
+          );
+        }
+        console.log("DATA", data);
+        console.log('PARAMS LIST HAS ATTRIBUTE', paramsList.hasAttribute);
+        const navLinks = data.links.slice(1, -1);
         setNavigationLinks(navLinks);
-        setLastPage(last_page);
-        setProjectList(data);
-        setIsLoading(false);
+        setNextPageLink(data.next_page_url);
+        setPreviousPageLink(data.prev_page_url);
+        setLastPage(data.last_page);
+        setProjectList(data.data);
       } catch (error) {
         console.error('Erro ao buscar projetos:', error);
         setProjectList([]);
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [setIsLoading, currentPage]);
+  }, [setIsLoading]);
 
   const handleDelete = async (id) => {
     try {
@@ -61,12 +73,13 @@ export default function Projects() {
           error: 'Erro ao deletar projeto.',
         }
       );
-      const { data } = await fetchProjectsList(`http://localhost/api/projects?page=${currentPage}`);
+      const { data } = await fetchProjects(`http://localhost/api/projects?page=${currentPage}`);
       setProjectList(data);
       setIsLoading(false);
     } catch (error) {
       console.error('Erro ao deletar projeto:', error);
-      setIsLoading(false);
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -83,16 +96,8 @@ export default function Projects() {
           </Link>
         </InnerOptionsNavbar>
       </div>
-      <ProjectsFilters
-        listOfProjects={ projectList }
-        setListFunction={ setProjectList }
-      />
-      <PaginationButtons
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        lastPage={lastPage}
-        navigationLinks={navigationLinks}
-      />
+      <ProjectsFilters />
+      <PaginationButtons />
       <div id="project-table-container">
           <table id="project-table-admin">
             <thead>
@@ -102,10 +107,11 @@ export default function Projects() {
                 <th className='col-2' >Capa</th>
                 <th className='col-1' >Data</th>
                 <th className='col-1' >Pagina Inicial</th>
+                <th className='col-1' >Categoria</th>
                 <th className='col-1' >Editar / Excluir</th>
               </tr>
             </thead>
-        {isLoading ? (
+        {isLoading && currentPage === 1 ? (
             <Loading />
         ) : (
             <tbody>
