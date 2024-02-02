@@ -20,9 +20,6 @@ export default function ProjectsFilters() {
     setLastPage,
     setNextPageLink,
     setPreviousPageLink,
-    lastPage,
-    nextPage,
-    currentPage,
     setParamsList,
   } = useContext(ProjectsContext);
 
@@ -78,10 +75,6 @@ export default function ProjectsFilters() {
       setCurrentPage(1);
       setProjectList(response.data);
       setLastPage(response.last_page_url);
-      console.log('NEXT PAGE', nextPage);
-      console.log('CURRENT PAGE', currentPage);
-      console.log('LAST PAGE', lastPage);
-      console.log('RESPONSE', response);
 
     } catch (error) {
       console.error('Erro ao buscar projetos:', error);

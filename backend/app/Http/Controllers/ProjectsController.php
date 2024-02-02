@@ -21,6 +21,7 @@ class ProjectsController extends Controller
         $hasAttribute = $request->input('hasAttribute', true);
         $attribute = $request->input('attribute', 'id');
         $categoryId = $request->input('categoryId', null);
+
         $res = $this->repository->getAll($order, $hasAttribute, $attribute, $categoryId);
         return response()->json($res->data(), $res->status());
     }

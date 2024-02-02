@@ -17,9 +17,12 @@ export const fetchProjects = async (
   attribute = 'id',
   categoryId = null) => {
   try {
+    console.log('HAS ATTRIBUTE', hasAttribute);
     const response = await axios.get(url, {
       params: { order, hasAttribute, attribute, categoryId },
     });
+
+    console.log('RESPONSE', response);
     return response.data;
 
   } catch (error) {

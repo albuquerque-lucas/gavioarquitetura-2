@@ -19,25 +19,42 @@ class ProjectRepository implements IReadAndWrite
     }
 
     public function getAll(
-        $order = 'desc',
-        $hasAttribute = true,
-        $filterAttribute = 'id',
-        $categoryId = null
+        string $order = 'desc',
+        bool $hasAttribute = true,
+        string $attribute = 'id',
+        int $categoryId = null
     ): ServiceResponse {
         $validOrders = ['asc', 'desc'];
         $validFilters = ['id', 'name', 'active_carousel', 'image_url'];
     
-        if (!in_array($order, $validOrders) || !in_array($filterAttribute, $validFilters)) {
+        if (!in_array($order, $validOrders) || !in_array($attribute, $validFilters)) {
             $this->response->setAttributes(400, (object)[
-                'message' => "Invalid order ($order) or filter attribute ($filterAttribute) parameters."
+                'message' => "Invalid order ($order) or filter attribute ($attribute) parameters."
             ]);
             return $this->response;
         }
+        $checkedAttribute = $attribute;
+
+        if ($checkedAttribute === 'active_carousel' || $checkedAttribute === 'image_url') {
+            $checkedAttribute = 'id';
+        }
     
-        $query = Project::orderBy($filterAttribute, $order);
+        $query = Project::orderBy($checkedAttribute, $order);
     
         if ($categoryId !== null) {
             $query->where('category_id', $categoryId);
+        }
+
+        if ($attribute === 'active_carousel') {
+            if ($hasAttribute == true) {
+                $query->where($attribute, 1);
+            } else {
+                $query->where($attribute, 0);
+            }
+        } elseif ($attribute === 'image_url' && $hasAttribute) {
+            $query->where($attribute, '!=', 'projects/cover/no-image.jpg');
+        } elseif ($attribute === 'image_url' && !$hasAttribute) {
+            $query->where($attribute, '=', 'projects/cover/no-image.jpg');
         }
     
         $list = $query->paginate();

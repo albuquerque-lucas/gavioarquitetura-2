@@ -44,6 +44,7 @@ export default function Projects() {
           );
         }
         console.log("DATA", data);
+        console.log('PARAMS LIST HAS ATTRIBUTE', paramsList.hasAttribute);
         const navLinks = data.links.slice(1, -1);
         setNavigationLinks(navLinks);
         setNextPageLink(data.next_page_url);
