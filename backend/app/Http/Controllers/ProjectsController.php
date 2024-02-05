@@ -29,7 +29,6 @@ class ProjectsController extends Controller
     public function store(ProjectRequest $request)
     {
         $requestData = $request->all();
-
         if ($request->hasFile('image_url')) {
             $imagePath = $request->file('image_url')->store('projects/cover', 'public');
         } else {

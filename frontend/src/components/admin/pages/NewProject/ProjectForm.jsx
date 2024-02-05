@@ -11,8 +11,6 @@ export default function ProjectForm() {
   const { projectFormData, setProjectFormData } = useContext(ProjectsContext);
   const navigate = useNavigate();
 
-  const notify = () => toast.success('Projeto enviado com sucesso!');
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -62,11 +60,11 @@ export default function ProjectForm() {
       saveProject(formData),
       {
         pending: 'Projeto está sendo enviado...',
-        success: 'Projeto enviado com sucesso! 👌',
-        error: 'Erro ao enviar o projeto.',
+        success: 'Projeto enviado com sucesso.',
+        error: (error) => `Erro ao enviar o projeto: ${error.message}`,
       }
     );
-    // notify();
+
     console.log('Projeto enviado com sucesso!');
     navigate('/projects');
   } catch (error) {
