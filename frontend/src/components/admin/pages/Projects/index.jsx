@@ -90,7 +90,6 @@ export default function Projects() {
           <Link to="/projects/new-project" className="btn btn-dark">
             Novo projeto
           </Link>
-          <button>Filtros</button>
         </InnerOptionsNavbar>
       </div>
       <ProjectsFilters />
