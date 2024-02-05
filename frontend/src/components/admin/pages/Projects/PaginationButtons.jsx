@@ -14,7 +14,6 @@ export default function PaginationButtons ()  {
     setNavigationLinks,
     setNextPageLink,
     setPreviousPageLink,
-    setLastPage,
     paramsList,
     selectedCategoryId,
   } = useContext(ProjectsContext);
@@ -40,7 +39,6 @@ export default function PaginationButtons ()  {
         setNavigationLinks(navLinks);
         setNextPageLink(data.next_page_url);
         setPreviousPageLink(data.prev_page_url);
-        setLastPage(data.last_page);
         setProjectList(data.data);
         console.log("NAVLINKS", navLinks);
       } catch (error) {

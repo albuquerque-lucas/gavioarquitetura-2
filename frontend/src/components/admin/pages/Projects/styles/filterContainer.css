@@ -1,13 +1,14 @@
-.filter-container{
-  align-self: flex-start;
-  margin: auto;
-  border-radius: 35px;
-  padding: 1rem;
-  display: grid;
-  grid-template-columns: 3fr 1fr 2fr 0.25fr 0.25fr 0.25fr 0.25fr 1fr;
-  border: 1px solid white;
-  width: 60%;
+.project-filters {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  padding: 1rem;
+  width: 60%;
+  transition: 0.7s;
+}
+
+.project-filters:hover {
+  opacity: 1;
 }
 
 .filter-container label {
