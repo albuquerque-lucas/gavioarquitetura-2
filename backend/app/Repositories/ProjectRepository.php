@@ -20,7 +20,7 @@ class ProjectRepository implements IReadAndWrite
 
     public function getAll(
         string $order = 'desc',
-        bool $hasAttribute = true,
+        bool $hasAttribute = false,
         string $attribute = 'id',
         int $categoryId = null
     ): ServiceResponse {
@@ -46,17 +46,19 @@ class ProjectRepository implements IReadAndWrite
         }
 
         if ($attribute === 'active_carousel') {
-            if ($hasAttribute == true) {
+            if ($hasAttribute) {
                 $query->where($attribute, 1);
             } else {
                 $query->where($attribute, 0);
             }
-        } elseif ($attribute === 'image_url' && $hasAttribute) {
+        }
+
+        if ($attribute === 'image_url' && $hasAttribute) {
             $query->where($attribute, '!=', 'projects/cover/no-image.jpg');
         } elseif ($attribute === 'image_url' && !$hasAttribute) {
             $query->where($attribute, '=', 'projects/cover/no-image.jpg');
         }
-    
+
         $list = $query->paginate();
     
         if ($list->isEmpty()) {

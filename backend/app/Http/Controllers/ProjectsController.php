@@ -18,7 +18,7 @@ class ProjectsController extends Controller
     public function index(Request $request)
     {
         $order = $request->input('order', 'desc');
-        $hasAttribute = $request->input('hasAttribute', true);
+        $hasAttribute = filter_var($request->input('hasAttribute', true), FILTER_VALIDATE_BOOLEAN);
         $attribute = $request->input('attribute', 'id');
         $categoryId = $request->input('categoryId', null);
 
