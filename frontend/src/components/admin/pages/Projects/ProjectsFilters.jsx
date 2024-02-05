@@ -16,8 +16,6 @@ export default function ProjectsFilters() {
     selectedCategoryId,
     setSelectedCategoryId,
     setNavigationLinks,
-    setCurrentPage,
-    setLastPage,
     setNextPageLink,
     setPreviousPageLink,
     setParamsList,
@@ -41,9 +39,7 @@ export default function ProjectsFilters() {
       setNavigationLinks(navLinks);
       setNextPageLink(data.next_page_url);
       setPreviousPageLink(data.prev_page_url);
-      setCurrentPage(1);
       setProjectList(data.data);
-      setLastPage(data.last_page);
     } catch (error) {
       console.error('Erro ao buscar projetos:', error);
     }
@@ -66,15 +62,11 @@ export default function ProjectsFilters() {
         filterInfo.filterName,
         selectedCategoryId
         );
-      
-      console.log('FILTER INFO:', filterInfo);
 
       setNavigationLinks(response.links.slice(1, -1));
       setNextPageLink(response.next_page_url);
       setPreviousPageLink(response.prev_page_url);
-      setCurrentPage(1);
       setProjectList(response.data);
-      setLastPage(response.last_page_url);
 
     } catch (error) {
       console.error('Erro ao buscar projetos:', error);

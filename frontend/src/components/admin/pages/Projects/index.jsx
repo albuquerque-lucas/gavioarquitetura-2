@@ -15,8 +15,6 @@ export default function Projects() {
   const {
     setProjectList,
     projectList,
-    currentPage,
-    setLastPage,
     setNavigationLinks,
     selectedCategoryId,
     setNextPageLink,
@@ -49,7 +47,6 @@ export default function Projects() {
         setNavigationLinks(navLinks);
         setNextPageLink(data.next_page_url);
         setPreviousPageLink(data.prev_page_url);
-        setLastPage(data.last_page);
         setProjectList(data.data);
       } catch (error) {
         console.error('Erro ao buscar projetos:', error);
@@ -73,9 +70,8 @@ export default function Projects() {
           error: 'Erro ao deletar projeto.',
         }
       );
-      const { data } = await fetchProjects(`http://localhost/api/projects?page=${currentPage}`);
+      const { data } = await fetchProjects('http://localhost/api/projects');
       setProjectList(data);
-      setIsLoading(false);
     } catch (error) {
       console.error('Erro ao deletar projeto:', error);
     } finally {
@@ -111,7 +107,7 @@ export default function Projects() {
                 <th className='col-1' >Editar / Excluir</th>
               </tr>
             </thead>
-        {isLoading && currentPage === 1 ? (
+        {isLoading ? (
             <Loading />
         ) : (
             <tbody>
