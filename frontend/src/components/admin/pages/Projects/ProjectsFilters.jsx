@@ -134,7 +134,7 @@ export default function ProjectsFilters() {
   
 
   return (
-    <>
+    <div className='project-filters'>
       <div className="request-filter-container">
         <select
           name="select-filter"
@@ -183,6 +183,6 @@ export default function ProjectsFilters() {
           ))
         }
       </div>
-    </>
+    </div>
   );
 }

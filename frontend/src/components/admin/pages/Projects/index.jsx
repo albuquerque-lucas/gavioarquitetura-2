@@ -66,8 +66,8 @@ export default function Projects() {
         deleteProject(id),
         {
           pending: 'Deletando projeto...',
-          success: 'Projeto deletado com sucesso! 👌',
-          error: 'Erro ao deletar projeto.',
+          success: 'Projeto deletado com sucesso.',
+          error: (error) => `Erro ao deletar o projeto: ${error.message}`,
         }
       );
       const { data } = await fetchProjects('http://localhost/api/projects');
@@ -90,6 +90,7 @@ export default function Projects() {
           <Link to="/projects/new-project" className="btn btn-dark">
             Novo projeto
           </Link>
+          <button>Filtros</button>
         </InnerOptionsNavbar>
       </div>
       <ProjectsFilters />
