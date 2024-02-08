@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { mapUpdateField } from '../../../../utils/mappers';
+import ImagesTable from './ImagesTable';
 
 
 export default function ProjectShow() {
@@ -34,7 +35,6 @@ export default function ProjectShow() {
       value = event.target.files[0];
       console.log(value);
     } else {
-      // Se o campo for um select e o valor for um objeto, extrai o valor correto
       value = event.target.value;
       if (typeof value === 'object' && value !== null) {
         value = value.id;
@@ -395,7 +395,9 @@ export default function ProjectShow() {
               <input type="file" name="images" id="images" />
             </div>
             <div className="images-container">
-              
+              <ImagesTable
+                images={ projectDetails.images }
+              />
             </div>
           </div>
         </div>

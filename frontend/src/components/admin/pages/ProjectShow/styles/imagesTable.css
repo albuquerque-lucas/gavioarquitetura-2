@@ -2,6 +2,16 @@
   display: flex;
 }
 
+.table-images-container table {
+  width: 100%;
+  margin: 1rem;
+
+}
+
+.table-images-container table th {
+  text-align: center;
+}
+
 .table-images-container table td {
   min-width: 10rem;
   text-align: center;

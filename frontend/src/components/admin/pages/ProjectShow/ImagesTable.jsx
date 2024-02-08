@@ -8,11 +8,11 @@ const deleteSVG = <FontAwesomeIcon icon={faTrash} />;
 const updateSVG = <FontAwesomeIcon icon={faPenSquare} />;
 
 export default function ImagesTable({ images }) {
-  console.log(images);
+  console.log('IMAGEM DO PROJETO', images);
 
   return (
     <div className="table-images-container d-flex flex-column align-items-center">
-      <table className="table table-hover table-bordered mt-3 bg-primary w-50">
+      <table className="table table-hover table-bordered bg-primary project-images-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -25,11 +25,11 @@ export default function ImagesTable({ images }) {
             <tr key={ index }>
               <td className="images-id-cell">{ image.id }</td>
               <td>
-                <img src={ image.image_url !== null ? `http://localhost/storage/${image.image_url}` : noImage } alt="" />
+                <img src={ image.image_path !== null ? `http://localhost/storage/projects/${ image.image_path }` : noImage } alt="" />
               </td>
               <td className="images-btn-cell">
-                <button className="btn btn-dark">{ updateSVG }</button>
-                <button className="btn btn-dark">{ deleteSVG }</button>
+                <button className="btn btn-dark btn-sm">{ updateSVG }</button>
+                <button className="btn btn-dark btn-sm">{ deleteSVG }</button>
               </td>
             </tr>
           )) }
