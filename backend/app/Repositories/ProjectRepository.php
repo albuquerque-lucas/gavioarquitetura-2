@@ -20,7 +20,7 @@ class ProjectRepository implements IReadAndWrite
 
     public function getAll(
         string $order = 'desc',
-        bool $hasAttribute = false,
+        bool $hasAttribute = true,
         string $attribute = 'id',
         int $categoryId = null
     ): ServiceResponse {
