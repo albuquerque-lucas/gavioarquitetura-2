@@ -8,7 +8,10 @@ const deleteSVG = <FontAwesomeIcon icon={faTrash} />;
 const updateSVG = <FontAwesomeIcon icon={faPenSquare} />;
 
 export default function ImagesTable({ images }) {
-  console.log('IMAGEM DO PROJETO', images);
+
+  const handleDelete = () => {
+    console.log('Oi');
+  }
 
   return (
     <div className="table-images-container d-flex flex-column align-items-center">
@@ -29,7 +32,9 @@ export default function ImagesTable({ images }) {
               </td>
               <td className="images-btn-cell">
                 <button className="btn btn-dark btn-sm">{ updateSVG }</button>
-                <button className="btn btn-dark btn-sm">{ deleteSVG }</button>
+                <button 
+                  onClick={ () => handleDelete(image.id) }
+                  className="btn btn-dark btn-sm">{ deleteSVG }</button>
               </td>
             </tr>
           )) }
