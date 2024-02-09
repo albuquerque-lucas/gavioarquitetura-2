@@ -56,6 +56,7 @@ export default function ImagesTable({ images, projectId }) {
           <option value="desc">Mais recentes</option>
         </select>
         <button
+        className='btn btn-light btn-hover'
           onClick={() => handleSort(projectId, imagesSearchSort) }
         >
           Buscar
