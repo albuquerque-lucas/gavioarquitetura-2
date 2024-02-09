@@ -28,3 +28,4 @@ Route::post('/admin/login', [UserController::class, 'login']);
 Route::get("projects/category/{id}", [ProjectsController::class, "getByCategory"]);
 Route::get("projects/images/{id}", [ProjectsController::class, "getImages"]);
 Route::delete("projects/images/delete/{id}", [ProjectsController::class, "deleteImage"]);
+Route::delete("projects/images/delete-multiple", [ProjectsController::class, "deleteMultipleImages"]);
