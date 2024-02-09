@@ -285,13 +285,13 @@ class ProjectRepository
     public function deleteImage($imageId): ServiceResponse
     {
         $imageArray = [
-            "images/imagem_projeto45_1.jpg",
-            "images/imagem_projeto45_2.jpg",
-            "images/imagem_projeto45_3.jpg",
-            "images/imagem_projeto45_4.jpg",
-            "images/imagem_projeto45_5.jpg",
-            "images/imagem_projeto45_6.jpg",
-            "images/imagem_projeto45_7.jpg"
+            "images/imagem_projeto90_1.jpg",
+            "images/imagem_projeto90_2.jpg",
+            "images/imagem_projeto90_3.jpg",
+            "images/imagem_projeto90_4.jpg",
+            "images/imagem_projeto90_5.jpg",
+            "images/imagem_projeto90_6.jpg",
+            "images/imagem_projeto90_7.jpg"
         ];
         try {
             $image = ProjectImage::find($imageId);
@@ -328,13 +328,13 @@ class ProjectRepository
     try {
         return DB::transaction(function () use ($imageIds) {
             $imageArray = [
-                "images/imagem_projeto45_1.jpg",
-                "images/imagem_projeto45_2.jpg",
-                "images/imagem_projeto45_3.jpg",
-                "images/imagem_projeto45_4.jpg",
-                "images/imagem_projeto45_5.jpg",
-                "images/imagem_projeto45_6.jpg",
-                "images/imagem_projeto45_7.jpg"
+                "images/imagem_projeto90_1.jpg",
+                "images/imagem_projeto90_2.jpg",
+                "images/imagem_projeto90_3.jpg",
+                "images/imagem_projeto90_4.jpg",
+                "images/imagem_projeto90_5.jpg",
+                "images/imagem_projeto90_6.jpg",
+                "images/imagem_projeto90_7.jpg"
             ];
 
             foreach ($imageIds as $imageId) {
