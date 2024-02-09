@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import noImage from '../../../../images/projects/no-image.jpg';
-import { deleteImage, fetchProjectImages } from '../../../../utils/ProjectsFetch';
+import { deleteImage, fetchProjectImages, deleteSelectedImages } from '../../../../utils/ProjectsFetch';
 import { toast } from 'react-toastify';
 import './styles/imagesTable.css';
 
@@ -67,9 +67,13 @@ export default function ImagesTable({ images, projectId }) {
     const selectedImages = projectImages.filter((image) => image.selected);
 
     if (selectedImages.length > 0) {
-      
+      const result = await deleteSelectedImages(projectImages);
+      console.log('IMAGENS DELETADAS COM SUCESSO');
+      console.log('RESULT DELETE', result);
+      const list = await fetchProjectImages(projectId);
+      setProjectImages(list);
     } else {
-      
+
       console.log('Nenhuma imagem selecionada para deletar.');
     }
   };
@@ -111,7 +115,7 @@ export default function ImagesTable({ images, projectId }) {
             </button>)
         }
 
-        {projectImages.some((image) => image.selected) && (
+        { projectImages && projectImages.some((image) => image.selected) && (
           <button className="btn btn-light btn-hover" onClick={() => handleDeleteSelected()}>
             Apagar selecionados
           </button>
