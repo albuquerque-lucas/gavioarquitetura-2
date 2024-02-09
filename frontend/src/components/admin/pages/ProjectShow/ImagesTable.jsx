@@ -68,6 +68,7 @@ export default function ImagesTable({ images, projectId }) {
             <th>ID</th>
             <th>Imagem</th>
             <th>Excluir</th>
+            <th>Selecionar</th>
           </tr>
         </thead>
         <tbody>
@@ -81,6 +82,9 @@ export default function ImagesTable({ images, projectId }) {
                 <button 
                   onClick={ () => handleDelete(image.id, image.project_id) }
                   className="btn btn-dark btn-sm">{ deleteSVG }</button>
+              </td>
+              <td>
+                <input type="checkbox" id="select-image"/>
               </td>
             </tr>
           )) }
