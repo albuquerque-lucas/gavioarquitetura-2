@@ -109,7 +109,7 @@ class ProjectsController extends Controller
                 return response()->json(['message' => 'Nenhum ID de imagem fornecido.'], 400);
             }
             
-            $res = $this->repository->deleteMultipleImages();
+            $res = $this->repository->deleteMultipleImages($imageIds);
             return response()->json($res->data(), $res->status());
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao deletar imagens.', 'error' => $e->getMessage()], 500);
