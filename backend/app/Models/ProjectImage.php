@@ -10,7 +10,8 @@ class ProjectImage extends Model
     use HasFactory;
     protected $table = 'project_images';
     protected $fillable = [
-        'image_url',
+        'filename',
+        'image_path',
         'project_id',
     ];
     public function project()

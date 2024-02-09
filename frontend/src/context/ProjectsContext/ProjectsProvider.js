@@ -3,6 +3,8 @@ import { useMemo, useState } from "react";
 import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
+  const [projectImages, setProjectImages] = useState([]);
+  const [imagesSearchSort, setImagesSearchSort] = useState('desc');
   const [paramsList, setParamsList] = useState({
     attribute: 'id',
     hasAttribute: true,
@@ -103,6 +105,10 @@ export default function ProjectsProvider({ children }) {
       setPreviousPageLink,
       paramsList,
       setParamsList,
+      projectImages,
+      setProjectImages,
+      imagesSearchSort,
+      setImagesSearchSort,
     };
   }, [
     projectList,
@@ -131,6 +137,10 @@ export default function ProjectsProvider({ children }) {
     setPreviousPageLink,
     paramsList,
     setParamsList,
+    projectImages,
+    setProjectImages,
+    imagesSearchSort,
+    setImagesSearchSort,
   ]);
 
   return (

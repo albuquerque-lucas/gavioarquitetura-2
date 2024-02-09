@@ -18,11 +18,12 @@ class ProjectImagesSeeder extends Seeder
         $projects = Project::all();
 
         foreach ($projects as $project) {
-            if ($project->id <= 2) {
-                for ($i = 1; $i <= 2; $i++) {
+            if ($project->id <= 45) {
+                for ($i = 1; $i <= 7; $i++) {
                     ProjectImage::create([
                         'project_id' => $project->id,
-                        'image_url' => "imagem_projeto{$project->id}_{$i}.jpg",
+                        'image_path' => "images/imagem_projeto{$project->id}_{$i}.jpg",
+                        'filename' => 'Nome inicial do arquivo',
                     ]);
                 }
             } else {

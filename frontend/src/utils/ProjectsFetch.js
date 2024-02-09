@@ -32,7 +32,6 @@ export const fetchProjects = async (
 };
 
 export const deleteProject = async (id) => {
-  ('chegou aqui');
   try {
     const response = await axios.delete(`http://localhost/api/projects/${id}`);
     return response.data;
@@ -68,11 +67,29 @@ export const saveProject = async (projectFormData, id = null) => {
 export const fetchByCategory = async (id) => {
   try {
     const response = await axios.get(`http://localhost/api/projects/category/${id}`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Erro ao buscar projetos por categoria:', error);
     throw error;
+  }
+}
+
+export const fetchProjectImages = async (id, order = 'desc') => {
+  try {
+    const response = await axios.get(`http://localhost/api/projects/images/${id}?order=${order}`);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar as imagens do projeto:', error);
+  }
+}
+
+export const deleteImage = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost/api/projects/images/delete/${id}`);
+    return response.data;
+
+  } catch (error) {
+    console.error('Erro ao deletar imagem,', error);
   }
 }
 

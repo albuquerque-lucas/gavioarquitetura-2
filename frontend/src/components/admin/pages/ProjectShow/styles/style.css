@@ -146,20 +146,23 @@
 }
 
 .project-show-images-list {
-  border: 2px solid #212529;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 3rem 0;
-  height: 5rem;
-  width: 75%;
+  width: 80%;
 }
 
 .images-input-container {
+  margin: 1rem;
   height: 4.5rem;
   padding: 1rem;
   text-align: center;
   width: 50%;
 }
 
-/* Restante do seu CSS */
+.images-container {
+  margin: 1rem;
+  width: 75%;
+}

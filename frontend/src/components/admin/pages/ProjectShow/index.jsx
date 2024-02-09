@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import CategoriesContext from '../../../../context/CategoriesContext/CategoriesContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
-import { fetchById, saveProject } from '../../../../utils/ProjectsFetch';
+import { fetchById, saveProject, fetchProjectImages } from '../../../../utils/ProjectsFetch';
 import noImage from '../../../../images/projects/no-image.jpg';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import { Link } from 'react-router-dom';
@@ -13,11 +13,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { mapUpdateField } from '../../../../utils/mappers';
+import ImagesTable from './ImagesTable';
 
 
 export default function ProjectShow() {
   const { id } = useParams();
-  const { setProjectDetails, projectDetails, setEditedDetails, editedDetails, editMode, setEditMode } = useContext(ProjectsContext);
+  const {
+    setProjectDetails,
+    projectDetails,
+    setEditedDetails,
+    editedDetails,
+    editMode,
+    setEditMode,
+    projectImages,
+    setProjectImages,
+  } = useContext(ProjectsContext);
   const { isLoading, setIsLoading } = useContext(GeneralDataContext);
   const { categoriesList } = useContext(CategoriesContext);
   
@@ -34,7 +44,6 @@ export default function ProjectShow() {
       value = event.target.files[0];
       console.log(value);
     } else {
-      // Se o campo for um select e o valor for um objeto, extrai o valor correto
       value = event.target.value;
       if (typeof value === 'object' && value !== null) {
         value = value.id;
@@ -69,18 +78,32 @@ export default function ProjectShow() {
   }, [setProjectDetails, id, setIsLoading]);
   
   useEffect(() => {
-    fetchProjectDetails();
-    setEditMode({
-      name: false,
-      description: false,
-      area: false,
-      year: false,
-      address: false,
-      image_url: false,
-      category_id: false,
-      active_carousel: false,
-    });
+    const fetchData = async () => {
+      try {
+        await fetchProjectDetails();
+        setEditMode({
+          name: false,
+          description: false,
+          area: false,
+          year: false,
+          address: false,
+          image_url: false,
+          category_id: false,
+          active_carousel: false,
+        });
+  
+        const projectImages = await fetchProjectImages(id);
+        setProjectImages(projectImages);
+        console.log('INDEX PROJECT IMAGES', projectImages);
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
   }, [fetchProjectDetails]);
+  
   
   const handleUpdate = async (event, field) => {
     event.preventDefault();
@@ -381,21 +404,24 @@ export default function ProjectShow() {
                 { editSVG }
               </button>
             </div>
-            { renderFileCell('Imagem de capa', 'image_url') }
+            { renderFileCell('Capa', 'image_url') }
             { renderCategoryCell('Categoria', 'category_id') }
             { renderDefaultCell('Nome', 'name') }
-            { renderDefaultCell('Area', 'area') }
-            { renderDefaultCell('Localizacao', 'address') }
+            { renderDefaultCell('Área', 'area') }
+            { renderDefaultCell('Localização', 'address') }
             { renderDefaultCell('Data', 'year') }
-            { renderTextCell('Descricao', 'description') }
-            { renderCarouselCell('Exibir na pagina inicial', 'active_carousel') }
+            { renderTextCell('Descrição', 'description') }
+            { renderCarouselCell('Exibir na página inicial', 'active_carousel') }
           </div>
           <div className="project-show-images-list">
             <div className="images-input-container">
               <input type="file" name="images" id="images" />
             </div>
             <div className="images-container">
-              
+              <ImagesTable
+                images={ projectImages }
+                projectId={ projectDetails.id }
+              />
             </div>
           </div>
         </div>
