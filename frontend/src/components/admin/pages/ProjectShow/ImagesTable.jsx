@@ -65,18 +65,28 @@ export default function ImagesTable({ images, projectId }) {
 
   const handleDeleteSelected = async () => {
     const selectedImages = projectImages.filter((image) => image.selected);
-
+  
     if (selectedImages.length > 0) {
-      const result = await deleteSelectedImages(projectImages);
-      console.log('IMAGENS DELETADAS COM SUCESSO');
-      console.log('RESULT DELETE', result);
-      const list = await fetchProjectImages(projectId);
-      setProjectImages(list);
+      try {
+        await toast.promise(
+          deleteSelectedImages(selectedImages),
+          {
+            pending: 'Deletando imagens selecionadas...',
+            success: 'Imagens selecionadas excluídas com sucesso.',
+            error: (error) => `Erro ao deletar imagens selecionadas: ${error.message}`,
+          }
+        );
+  
+        const updatedList = await fetchProjectImages(projectId);
+        setProjectImages(updatedList);
+      } catch (error) {
+        console.error('Erro ao deletar imagens selecionadas:', error);
+      }
     } else {
-
       console.log('Nenhuma imagem selecionada para deletar.');
     }
   };
+  
 
   return (
     <div className="table-images-container d-flex flex-column align-items-center">
