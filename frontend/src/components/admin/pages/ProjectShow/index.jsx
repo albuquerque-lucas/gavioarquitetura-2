@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import CategoriesContext from '../../../../context/CategoriesContext/CategoriesContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
-import { fetchById, saveProject, fetchProjectImages } from '../../../../utils/ProjectsFetch';
+import { fetchById, saveProject, fetchProjectImages, saveProjectImages } from '../../../../utils/ProjectsFetch';
 import noImage from '../../../../images/projects/no-image.jpg';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import { Link } from 'react-router-dom';
@@ -27,6 +27,8 @@ export default function ProjectShow() {
     setEditMode,
     projectImages,
     setProjectImages,
+    selectedImageFiles,
+    setSelectedImageFiles,
   } = useContext(ProjectsContext);
   const { isLoading, setIsLoading } = useContext(GeneralDataContext);
   const { categoriesList } = useContext(CategoriesContext);
@@ -373,6 +375,23 @@ export default function ProjectShow() {
     setEditMode(updatedEditModes);
   };
 
+  const handleMultipleFileChange = (event) => {
+    console.log(event.target.files);
+    setSelectedImageFiles((prevFiles) => [...prevFiles, ...event.target.files]);
+    console.log(selectedImageFiles);
+  }
+
+  const saveImages =  async (projectId, imageFiles) => {
+    try {
+      const response = await saveProjectImages(projectId, imageFiles);
+      console.log('RESPOSTA', response);
+      const list = await fetchProjectImages(projectId);
+      console.log(list);
+    } catch (error) {
+      console.error('Ocorreu um erro ao tentar adicionar as imagens.', error);
+    }
+  }
+
 
   return (
     <>
@@ -422,8 +441,23 @@ export default function ProjectShow() {
           </div>
           <div className="project-show-images-list">
             <div className="images-input-container">
-              <input type="file" name="images" id="images" />
-            </div>
+
+              </div>
+              <div>
+                <input
+                type="file"
+                name="images"
+                id="images"
+                onChange={(e) => handleMultipleFileChange(e)}
+                multiple
+                />
+                <button
+                className='btn btn-dark btn-hover'
+                onClick={() => saveImages(projectDetails.id, selectedImageFiles) }
+                >
+                  Adicionar
+                </button>
+              </div>
             <div className="images-container">
               <ImagesTable
                 images={ projectImages }

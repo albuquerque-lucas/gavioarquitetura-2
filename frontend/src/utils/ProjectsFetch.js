@@ -42,10 +42,6 @@ export const deleteProject = async (id) => {
 };
 
 export const saveProject = async (projectFormData, id = null) => {
-  for (let pair of projectFormData.entries()) {
-    console.log('LOG DE SAVEPROJECT');
-    console.log(pair[0] + ', ' + pair[1]);
-  }
   try {
     const method = id ? 'PATCH' : 'POST';
     const url = id ? `http://localhost/api/projects/${id}` : 'http://localhost/api/projects';
@@ -108,6 +104,28 @@ export const deleteSelectedImages = async (imageList) => {
     console.error('Erro ao tentar deletar as imagens.', error);
   }
 }
+
+export const saveProjectImages = async (projectId, imageFiles) => {
+  try {
+    const url = `http://localhost/api/projects/images/${projectId}`;
+    const formData = new FormData();
+
+    for (let i = 0; i < imageFiles.length; i++) {
+      formData.append('images[]', imageFiles[i]);
+    }
+
+    const response = await axios.post(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao salvar as imagens do projeto:', error);
+    throw error;
+  }
+};
 
 
 
