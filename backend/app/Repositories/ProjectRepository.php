@@ -324,48 +324,83 @@ class ProjectRepository
     }
 
     public function deleteMultipleImages(array $imageIds): ServiceResponse
-{
-    try {
-        return DB::transaction(function () use ($imageIds) {
-            $imageArray = [
-                "images/imagem_projeto90_1.jpg",
-                "images/imagem_projeto90_2.jpg",
-                "images/imagem_projeto90_3.jpg",
-                "images/imagem_projeto90_4.jpg",
-                "images/imagem_projeto90_5.jpg",
-                "images/imagem_projeto90_6.jpg",
-                "images/imagem_projeto90_7.jpg"
-            ];
+    {
+        try {
+            return DB::transaction(function () use ($imageIds) {
+                $imageArray = [
+                    "images/imagem_projeto90_1.jpg",
+                    "images/imagem_projeto90_2.jpg",
+                    "images/imagem_projeto90_3.jpg",
+                    "images/imagem_projeto90_4.jpg",
+                    "images/imagem_projeto90_5.jpg",
+                    "images/imagem_projeto90_6.jpg",
+                    "images/imagem_projeto90_7.jpg"
+                ];
 
-            foreach ($imageIds as $imageId) {
-                $image = ProjectImage::find($imageId);
+                foreach ($imageIds as $imageId) {
+                    $image = ProjectImage::find($imageId);
 
-                if (!$image) {
-                    $this->response->setAttributes(404, (object)[
-                        'message' => "Image with ID $imageId not found."
-                    ]);
-                    return $this->response;
+                    if (!$image) {
+                        $this->response->setAttributes(404, (object)[
+                            'message' => "Image with ID $imageId not found."
+                        ]);
+                        return $this->response;
+                    }
+
+                    if (in_array($image->image_path, $imageArray)) {
+                        Storage::disk('public')->delete($image->image_path);
+                    }
+
+                    $image->delete();
                 }
 
-                if (in_array($image->image_path, $imageArray)) {
-                    Storage::disk('public')->delete($image->image_path);
-                }
-
-                $image->delete();
-            }
-
-            $this->response->setAttributes(200, (object)[
-                'message' => 'Images deleted successfully'
+                $this->response->setAttributes(200, (object)[
+                    'message' => 'Images deleted successfully'
+                ]);
+                return $this->response;
+            });
+        } catch (Exception $e) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'An error occurred while deleting images',
+                'error' => $e->getMessage()
             ]);
             return $this->response;
-        });
-    } catch (Exception $e) {
-        $this->response->setAttributes(500, (object)[
-            'message' => 'An error occurred while deleting images',
-            'error' => $e->getMessage()
-        ]);
-        return $this->response;
+        }
     }
-}
+
+    public function createMultipleImages(array $imageData): ServiceResponse
+    {
+        try {
+            return DB::transaction(function () use ($imageData) {
+                $createdImages = [];
     
+                foreach ($imageData as $image) {
+    
+                    $imagePath = $image['image']->store('projects/images', 'public');
+    
+                    $newImage = ProjectImage::create([
+                        'project_id' => $image['project_id'],
+                        'image_path' => $imagePath,
+                        'filename' => $image['image']->getClientOriginalName(),
+                    ]);
+    
+                    $createdImages[] = $newImage;
+                }
+    
+                $this->response->setAttributes(201, (object)[
+                    'message' => 'Images created successfully',
+                    'images' => $createdImages,
+                ]);
+                return $this->response;
+            });
+        } catch (Exception $e) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'An error occurred while creating images',
+                'error' => $e->getMessage(),
+            ]);
+            return $this->response;
+        }
+    }
+    
+        
 }
