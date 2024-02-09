@@ -102,7 +102,7 @@ export default function ProjectShow() {
     };
   
     fetchData();
-  }, [fetchProjectDetails, fetchProjectImages, id]);
+  }, [fetchProjectDetails]);
   
   
   const handleUpdate = async (event, field) => {

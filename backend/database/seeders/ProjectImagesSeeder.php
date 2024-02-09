@@ -22,7 +22,7 @@ class ProjectImagesSeeder extends Seeder
                 for ($i = 1; $i <= 7; $i++) {
                     ProjectImage::create([
                         'project_id' => $project->id,
-                        'image_path' => "imagem_projeto{$project->id}_{$i}.jpg",
+                        'image_path' => "images/imagem_projeto{$project->id}_{$i}.jpg",
                         'filename' => 'Nome inicial do arquivo',
                     ]);
                 }

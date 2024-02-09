@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import { faTrash, faPenSquare } from '@fortawesome/free-solid-svg-icons';
 import noImage from '../../../../images/projects/no-image.jpg';
-import { deleteImage } from '../../../../utils/ProjectsFetch';
+import { deleteImage, fetchProjectImages } from '../../../../utils/ProjectsFetch';
+import { toast } from 'react-toastify';
 import './styles/imagesTable.css';
 
 const deleteSVG = <FontAwesomeIcon icon={faTrash} />;
@@ -10,10 +12,24 @@ const updateSVG = <FontAwesomeIcon icon={faPenSquare} />;
 
 export default function ImagesTable({ images }) {
 
-  const handleDelete = async (id) => {
-    const data = await deleteImage(id);
-    console.log(data);
-    return data;
+  const { projectImages, setProjectImages } = useContext(ProjectsContext);
+
+  const handleDelete = async (id, project_id) => {
+    try {
+      await toast.promise(
+        deleteImage(id),
+        {
+          pending: 'Deletando imagem...',
+          success: 'Imagem excluida com sucesso.',
+          error: (error) => `Erro ao deletar imagem: ${error.message}`,
+        }
+      );
+      const data = await fetchProjectImages(project_id);
+      setProjectImages(data);
+      console.log('DADOS de DELETEIMAGE', data);
+    } catch (error) {
+      console.error('Erro ao deletar imagem:', error);
+    }
   }
 
   return (
@@ -45,7 +61,7 @@ export default function ImagesTable({ images }) {
               <td className="images-btn-cell">
                 <button className="btn btn-dark btn-sm">{ updateSVG }</button>
                 <button 
-                  onClick={ () => handleDelete(image.id) }
+                  onClick={ () => handleDelete(image.id, image.project_id) }
                   className="btn btn-dark btn-sm">{ deleteSVG }</button>
               </td>
             </tr>

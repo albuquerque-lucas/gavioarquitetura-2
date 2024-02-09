@@ -7,6 +7,7 @@ use App\Models\ServiceResponse;
 use DB;
 use Storage;
 use App\Models\ProjectImage;
+use Exception;
 
 class ProjectRepository
 {
@@ -44,7 +45,7 @@ class ProjectRepository
     
             $this->response->setAttributes(200, $list);
             return $this->response;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'An error occurred while fetching projects',
                 'error' => $e->getMessage(),
@@ -59,7 +60,7 @@ class ProjectRepository
         $validFilters = ['id', 'name', 'active_carousel', 'image_url'];
     
         if (!in_array($order, $validOrders) || !in_array($attribute, $validFilters)) {
-            throw new \Exception("Invalid order ($order) or filter attribute ($attribute) parameters.");
+            throw new Exception("Invalid order ($order) or filter attribute ($attribute) parameters.");
         }
     }
     
@@ -105,7 +106,7 @@ class ProjectRepository
                 $this->response->setAttributes(200, $project);
                 return $this->response;
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'An error occurred while fetching the project by ID',
                 'error' => $e->getMessage(),
@@ -140,7 +141,7 @@ class ProjectRepository
     
             $this->response->setAttributes(200, $projects);
             return $this->response;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'An error occurred while fetching projects by category',
                 'error' => $e->getMessage(),
@@ -163,7 +164,7 @@ class ProjectRepository
             }
             $this->response->setAttributes(201, $project);
             return $this->response;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'An error occurred while creating the project',
                 'error' => $e->getMessage(),
@@ -199,7 +200,7 @@ class ProjectRepository
                     'project' => $project
                 ]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'An error occurred while updating the project',
                 'error' => $e->getMessage(),
@@ -237,7 +238,7 @@ class ProjectRepository
                     'message' => 'Project deleted successfully',
                 ]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'An error occurred while deleting the project',
                 'error' => $e->getMessage(),
@@ -271,7 +272,7 @@ class ProjectRepository
             } else {
                 $this->response->setAttributes(200, $images);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'Error retrieving images',
                 'error' => $e->getMessage()
@@ -306,14 +307,13 @@ class ProjectRepository
                 Storage::disk('public')->delete($image->image_path);
 
             }
-
     
             $image->delete();
     
             $this->response->setAttributes(200, (object)[
                 'message' => 'Image deleted successfully'
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->response->setAttributes(500, (object)[
                 'message' => 'Error deleting image',
                 'error' => $e->getMessage()

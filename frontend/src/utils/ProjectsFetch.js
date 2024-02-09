@@ -32,7 +32,6 @@ export const fetchProjects = async (
 };
 
 export const deleteProject = async (id) => {
-  ('chegou aqui');
   try {
     const response = await axios.delete(`http://localhost/api/projects/${id}`);
     return response.data;
