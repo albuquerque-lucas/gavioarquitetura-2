@@ -1,20 +1,23 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
-import { faTrash, faPenSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import noImage from '../../../../images/projects/no-image.jpg';
 import { deleteImage, fetchProjectImages } from '../../../../utils/ProjectsFetch';
 import { toast } from 'react-toastify';
 import './styles/imagesTable.css';
 
 const deleteSVG = <FontAwesomeIcon icon={faTrash} />;
-const updateSVG = <FontAwesomeIcon icon={faPenSquare} />;
 
-export default function ImagesTable({ images }) {
+export default function ImagesTable({ images, projectId }) {
 
-  const { projectImages, setProjectImages } = useContext(ProjectsContext);
+  const {
+    setProjectImages,
+    imagesSearchSort,
+    setImagesSearchSort
+  } = useContext(ProjectsContext);
 
-  const handleDelete = async (id, project_id) => {
+  const handleDelete = async (id, projectId) => {
     try {
       await toast.promise(
         deleteImage(id),
@@ -24,22 +27,37 @@ export default function ImagesTable({ images }) {
           error: (error) => `Erro ao deletar imagem: ${error.message}`,
         }
       );
-      const data = await fetchProjectImages(project_id);
+      const data = await fetchProjectImages(projectId);
       setProjectImages(data);
-      console.log('DADOS de DELETEIMAGE', data);
     } catch (error) {
       console.error('Erro ao deletar imagem:', error);
+    }
+  }
+
+  const handleSort = async (projectId, order) => {
+    try {
+      const data = await fetchProjectImages(projectId, order);
+      console.log(data);
+      setProjectImages(data);
+    } catch( error) {
+      console.error('Erro ao buscar imagens.', error);
     }
   }
 
   return (
     <div className="table-images-container d-flex flex-column align-items-center">
       <div className="images-search-control bg-dark w-100">
-        <select name="" id="">
+        <select
+          id=""
+          value={ imagesSearchSort }
+          onChange={(e) => setImagesSearchSort(e.target.value)}
+          >
           <option value="asc">Mais antigas</option>
           <option value="desc">Mais recentes</option>
         </select>
-        <button>
+        <button
+          onClick={() => handleSort(projectId, imagesSearchSort) }
+        >
           Buscar
         </button>
       </div>
@@ -48,7 +66,7 @@ export default function ImagesTable({ images }) {
           <tr>
             <th>ID</th>
             <th>Imagem</th>
-            <th>Editar / Excluir</th>
+            <th>Excluir</th>
           </tr>
         </thead>
         <tbody>
@@ -59,7 +77,6 @@ export default function ImagesTable({ images }) {
                 <img src={ image.image_path !== null ? `http://localhost/storage/projects/${ image.image_path }` : noImage } alt="" />
               </td>
               <td className="images-btn-cell">
-                <button className="btn btn-dark btn-sm">{ updateSVG }</button>
                 <button 
                   onClick={ () => handleDelete(image.id, image.project_id) }
                   className="btn btn-dark btn-sm">{ deleteSVG }</button>

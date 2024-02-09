@@ -420,6 +420,7 @@ export default function ProjectShow() {
             <div className="images-container">
               <ImagesTable
                 images={ projectImages }
+                projectId={ projectDetails.id }
               />
             </div>
           </div>
