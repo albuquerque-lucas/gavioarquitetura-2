@@ -377,14 +377,21 @@ export default function ProjectShow() {
 
   const handleMultipleFileChange = (event) => {
     console.log(event.target.files);
+    setSelectedImageFiles([]);
     setSelectedImageFiles((prevFiles) => [...prevFiles, ...event.target.files]);
     console.log(selectedImageFiles);
   }
 
   const saveImages =  async (projectId, imageFiles) => {
     try {
-      const response = await saveProjectImages(projectId, imageFiles);
-      console.log('RESPOSTA', response);
+      await toast.promise(
+        saveProjectImages(projectId, imageFiles),
+        {
+          pending: 'Salvando imagens...',
+          success: 'Imagens salvas com sucesso!',
+          error: (error) => `Erro ao salvar imagens: ${error.message}`,
+        }
+      );
       const list = await fetchProjectImages(projectId);
       console.log(list);
     } catch (error) {

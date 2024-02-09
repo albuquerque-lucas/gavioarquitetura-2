@@ -111,7 +111,7 @@ export const saveProjectImages = async (projectId, imageFiles) => {
     const formData = new FormData();
 
     for (let i = 0; i < imageFiles.length; i++) {
-      formData.append('images[]', imageFiles[i]);
+      formData.append('imageFiles[]', imageFiles[i]);
     }
 
     const response = await axios.post(url, formData, {
