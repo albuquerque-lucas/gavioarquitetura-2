@@ -322,5 +322,50 @@ class ProjectRepository
     
         return $this->response;
     }
+
+    public function deleteMultipleImages(array $imageIds): ServiceResponse
+{
+    try {
+        return DB::transaction(function () use ($imageIds) {
+            $imageArray = [
+                "images/imagem_projeto45_1.jpg",
+                "images/imagem_projeto45_2.jpg",
+                "images/imagem_projeto45_3.jpg",
+                "images/imagem_projeto45_4.jpg",
+                "images/imagem_projeto45_5.jpg",
+                "images/imagem_projeto45_6.jpg",
+                "images/imagem_projeto45_7.jpg"
+            ];
+
+            foreach ($imageIds as $imageId) {
+                $image = ProjectImage::find($imageId);
+
+                if (!$image) {
+                    $this->response->setAttributes(404, (object)[
+                        'message' => "Image with ID $imageId not found."
+                    ]);
+                    return $this->response;
+                }
+
+                if (in_array($image->image_path, $imageArray)) {
+                    Storage::disk('public')->delete($image->image_path);
+                }
+
+                $image->delete();
+            }
+
+            $this->response->setAttributes(200, (object)[
+                'message' => 'Images deleted successfully'
+            ]);
+            return $this->response;
+        });
+    } catch (Exception $e) {
+        $this->response->setAttributes(500, (object)[
+            'message' => 'An error occurred while deleting images',
+            'error' => $e->getMessage()
+        ]);
+        return $this->response;
+    }
+}
     
 }

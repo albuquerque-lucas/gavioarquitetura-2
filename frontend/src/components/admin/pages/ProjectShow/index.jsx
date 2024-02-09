@@ -91,9 +91,16 @@ export default function ProjectShow() {
           category_id: false,
           active_carousel: false,
         });
-  
+        
         const projectImages = await fetchProjectImages(id);
-        setProjectImages(projectImages);
+        const imagesDTO = projectImages.map((item) => {
+          return {
+            id: item.id,
+            image_path: item.image_path,
+            selected: false,
+          }
+        });
+        setProjectImages(imagesDTO);
         console.log('INDEX PROJECT IMAGES', projectImages);
 
       } catch (error) {

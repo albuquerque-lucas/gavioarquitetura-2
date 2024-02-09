@@ -3,8 +3,10 @@ import { useMemo, useState } from "react";
 import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
+  const [selectAllImages, setSelectAllImages] = useState(false);
   const [projectImages, setProjectImages] = useState([]);
   const [imagesSearchSort, setImagesSearchSort] = useState('desc');
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [paramsList, setParamsList] = useState({
     attribute: 'id',
     hasAttribute: true,
@@ -109,6 +111,10 @@ export default function ProjectsProvider({ children }) {
       setProjectImages,
       imagesSearchSort,
       setImagesSearchSort,
+      selectAllImages,
+      setSelectAllImages,
+      selectedCheckboxes,
+      setSelectedCheckboxes,
     };
   }, [
     projectList,
@@ -141,6 +147,10 @@ export default function ProjectsProvider({ children }) {
     setProjectImages,
     imagesSearchSort,
     setImagesSearchSort,
+    selectAllImages,
+    setSelectAllImages,
+    selectedCheckboxes,
+    setSelectedCheckboxes,
   ]);
 
   return (

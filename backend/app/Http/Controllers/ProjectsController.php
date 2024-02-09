@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\ProjectRepository;
 use App\Http\Requests\ProjectRequest;
 use Illuminate\Http\Request;
+use Exception;
 
 class ProjectsController extends Controller
 {
@@ -97,5 +98,21 @@ class ProjectsController extends Controller
     {
         $res = $this->repository->deleteImage($imageId);
         return response()->json($res->data(), $res->status());
+    }
+
+    public function deleteMultipleImages(Request $request)
+    {
+        try {
+            $imageIds = $request->input('image_ids');
+            
+            if (empty($imageIds)) {
+                return response()->json(['message' => 'Nenhum ID de imagem fornecido.'], 400);
+            }
+            
+            $res = $this->repository->deleteMultipleImages($imageIds);
+            return response()->json($res->data(), $res->status());
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Erro ao deletar imagens.', 'error' => $e->getMessage()], 500);
+        }
     }
 }

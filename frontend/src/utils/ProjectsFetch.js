@@ -93,5 +93,21 @@ export const deleteImage = async (id) => {
   }
 }
 
+export const deleteSelectedImages = async (imageList) => {
+  try {
+    const selectedImageIds = imageList
+    .filter((image) => image.selected)
+    .map((image) => image.id);
+
+  const response = await axios.delete('http://localhost/api/projects/images/delete-multiple', {
+    data: { image_ids: selectedImageIds },
+  });
+  console.log('Imagens deletadas com sucesso.');
+  return response.data;
+  } catch (error) {
+    console.error('Erro ao tentar deletar as imagens.', error);
+  }
+}
+
 
 

@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import noImage from '../../../../images/projects/no-image.jpg';
-import { deleteImage, fetchProjectImages } from '../../../../utils/ProjectsFetch';
+import { deleteImage, fetchProjectImages, deleteSelectedImages } from '../../../../utils/ProjectsFetch';
 import { toast } from 'react-toastify';
 import './styles/imagesTable.css';
 
@@ -14,7 +14,10 @@ export default function ImagesTable({ images, projectId }) {
   const {
     setProjectImages,
     imagesSearchSort,
-    setImagesSearchSort
+    setImagesSearchSort,
+    selectAllImages,
+    setSelectAllImages,
+    projectImages,
   } = useContext(ProjectsContext);
 
   const handleDelete = async (id, projectId) => {
@@ -44,6 +47,37 @@ export default function ImagesTable({ images, projectId }) {
     }
   }
 
+  const onCheckboxChange = (image) => {
+    setProjectImages((prevImages) =>
+      prevImages.map((prevImage) =>
+        prevImage.id === image.id ? { ...prevImage, selected: !prevImage.selected } : prevImage
+      )
+    );
+    console.log(image);
+  };
+
+  const setSelectAllImagesAndSelected = (value) => {
+    setSelectAllImages(value);
+    setProjectImages((prevImages) =>
+      prevImages.map((prevImage) => ({ ...prevImage, selected: value }))
+    );
+  };
+
+  const handleDeleteSelected = async () => {
+    const selectedImages = projectImages.filter((image) => image.selected);
+
+    if (selectedImages.length > 0) {
+      const result = await deleteSelectedImages(projectImages);
+      console.log('IMAGENS DELETADAS COM SUCESSO');
+      console.log('RESULT DELETE', result);
+      const list = await fetchProjectImages(projectId);
+      setProjectImages(list);
+    } else {
+
+      console.log('Nenhuma imagem selecionada para deletar.');
+    }
+  };
+
   return (
     <div className="table-images-container d-flex flex-column align-items-center">
       <div className="images-search-control bg-dark w-100">
@@ -61,6 +95,31 @@ export default function ImagesTable({ images, projectId }) {
         >
           Buscar
         </button>
+        {
+          selectAllImages === false ?
+          (
+            <button
+              className="btn btn-light btn-hover mx-3"
+              onClick={ () => setSelectAllImagesAndSelected(true) }
+            >
+              Selecionar tudo
+            </button>
+          )
+          :
+          (
+            <button
+              className="btn btn-light btn-hover mx-3"
+              onClick={ () => setSelectAllImagesAndSelected(false) }
+            >
+              Desmarcar tudo
+            </button>)
+        }
+
+        { projectImages && projectImages.some((image) => image.selected) && (
+          <button className="btn btn-light btn-hover" onClick={() => handleDeleteSelected()}>
+            Apagar selecionados
+          </button>
+        )}
       </div>
       <table className="table table-hover table-bordered bg-primary project-images-table">
         <thead>
@@ -84,7 +143,12 @@ export default function ImagesTable({ images, projectId }) {
                   className="btn btn-dark btn-sm">{ deleteSVG }</button>
               </td>
               <td>
-                <input type="checkbox" id="select-image"/>
+                <input
+                  type="checkbox"
+                  id={`select-image-${index}`}
+                  checked={image.selected}
+                  onChange={() => onCheckboxChange(image)}
+                />
               </td>
             </tr>
           )) }
