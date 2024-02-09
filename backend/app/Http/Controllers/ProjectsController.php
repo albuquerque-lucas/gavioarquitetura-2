@@ -85,4 +85,17 @@ class ProjectsController extends Controller
         $res = $this->repository->getByCategory($categoryId);
         return response()->json($res->data(), $res->status());
     }
+
+    public function getImages(int $projectId, Request $request)
+    {
+        $order = $request->input('order', 'desc');
+        $res = $this->repository->getImages($projectId, $order);
+        return response()->json($res->data(), $res->status());
+    }
+
+    public function deleteImage(int $imageId)
+    {
+        $res = $this->repository->deleteImage($imageId);
+        return response()->json($res->data(), $res->status());
+    }
 }

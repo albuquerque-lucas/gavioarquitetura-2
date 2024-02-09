@@ -2,14 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\IReadAndWrite;
-use App\Models\Category;
 use App\Models\Project;
 use App\Models\ServiceResponse;
 use DB;
 use Storage;
+use App\Models\ProjectImage;
 
-class ProjectRepository implements IReadAndWrite
+class ProjectRepository
 {
     private ServiceResponse $response;
 
@@ -24,60 +23,160 @@ class ProjectRepository implements IReadAndWrite
         string $attribute = 'id',
         int $categoryId = null
     ): ServiceResponse {
+        try {
+            $this->validateParameters($order, $attribute);
+    
+            $checkedAttribute = $this->normalizeAttribute($attribute);
+    
+            $query = Project::orderBy($checkedAttribute, $order);
+    
+            $this->applyCategoryFilter($query, $categoryId);
+            $this->applyAttributeFilter($query, $attribute, $hasAttribute);
+    
+            $list = $query->paginate();
+    
+            if ($list->isEmpty()) {
+                $this->response->setAttributes(404, (object)[
+                    'message' => 'Projects not found'
+                ]);
+                return $this->response;
+            }
+    
+            $this->response->setAttributes(200, $list);
+            return $this->response;
+        } catch (\Exception $e) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'An error occurred while fetching projects',
+                'error' => $e->getMessage(),
+            ]);
+            return $this->response;
+        }
+    }
+    
+    private function validateParameters(string $order, string $attribute): void
+    {
         $validOrders = ['asc', 'desc'];
         $validFilters = ['id', 'name', 'active_carousel', 'image_url'];
     
         if (!in_array($order, $validOrders) || !in_array($attribute, $validFilters)) {
-            $this->response->setAttributes(400, (object)[
-                'message' => "Invalid order ($order) or filter attribute ($attribute) parameters."
-            ]);
-            return $this->response;
+            throw new \Exception("Invalid order ($order) or filter attribute ($attribute) parameters.");
         }
-        $checkedAttribute = $attribute;
-
-        if ($checkedAttribute === 'active_carousel' || $checkedAttribute === 'image_url') {
-            $checkedAttribute = 'id';
-        }
+    }
     
-        $query = Project::orderBy($checkedAttribute, $order);
+    private function normalizeAttribute(string $attribute): string
+    {
+        return ($attribute === 'active_carousel' || $attribute === 'image_url') ? 'id' : $attribute;
+    }
     
+    private function applyCategoryFilter($query, $categoryId): void
+    {
         if ($categoryId !== null) {
             $query->where('category_id', $categoryId);
         }
-
+    }
+    
+    private function applyAttributeFilter($query, $attribute, $hasAttribute): void
+    {
         if ($attribute === 'active_carousel') {
-            if ($hasAttribute) {
-                $query->where($attribute, 1);
-            } else {
-                $query->where($attribute, 0);
-            }
+            $query->where($attribute, $hasAttribute ? 1 : 0);
         }
-
+    
         if ($attribute === 'image_url' && $hasAttribute) {
             $query->where($attribute, '!=', 'projects/cover/no-image.jpg');
         } elseif ($attribute === 'image_url' && !$hasAttribute) {
             $query->where($attribute, '=', 'projects/cover/no-image.jpg');
         }
-
-        $list = $query->paginate();
-    
-        if ($list->isEmpty()) {
-            $this->response->setAttributes(404, (object)[
-                'message' => 'Projects not found'
-            ]);
-            return $this->response;
-        }
-    
-        $this->response->setAttributes(200, $list);
-        return $this->response;
     }
     
     
 
     public function getById(int $id): ServiceResponse
     {
-        return DB::transaction(function () use ($id) {
-            $project = Project::with('category', 'images')->find($id);
+        try {
+            return DB::transaction(function () use ($id) {
+                $project = Project::with('category', 'images')->find($id);
+                if (!$project) {
+                    $this->response->setAttributes(404, (object)[
+                        'message' => 'Project not found'
+                    ]);
+                    return $this->response;
+                }
+    
+                $this->response->setAttributes(200, $project);
+                return $this->response;
+            });
+        } catch (\Exception $e) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'An error occurred while fetching the project by ID',
+                'error' => $e->getMessage(),
+            ]);
+            return $this->response;
+        }
+    }
+    
+
+    public function getByCategory(int $categoryId, string $order = "desc"): ServiceResponse
+    {
+        try {
+            $validOrders = ['asc', 'desc'];
+    
+            if (!in_array($order, $validOrders)) {
+                $this->response->setAttributes(400, (object)[
+                    'message' => 'Invalid order parameter. Use "asc" or "desc".'
+                ]);
+                return $this->response;
+            }
+    
+            $projects = Project::where('category_id', $categoryId)
+                ->orderBy('id', $order)
+                ->paginate();
+    
+            if ($projects->isEmpty()) {
+                $this->response->setAttributes(404, (object)[
+                    'message' => 'Projects not found for the specified category'
+                ]);
+                return $this->response;
+            }
+    
+            $this->response->setAttributes(200, $projects);
+            return $this->response;
+        } catch (\Exception $e) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'An error occurred while fetching projects by category',
+                'error' => $e->getMessage(),
+            ]);
+            return $this->response;
+        }
+    }
+    
+    
+
+    public function create(array $data): ServiceResponse
+    {
+        try {
+            $project = Project::create($data);
+            if (!$project) {
+                $this->response->setAttributes(500, (object)[
+                    'message' => 'Error creating project'
+                ]);
+                return $this->response;
+            }
+            $this->response->setAttributes(201, $project);
+            return $this->response;
+        } catch (\Exception $e) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'An error occurred while creating the project',
+                'error' => $e->getMessage(),
+            ]);
+            return $this->response;
+        }
+    }
+    
+    public function update(int $id, array $data, bool $hasImage = false): ServiceResponse
+    {
+        try {
+            $project = Project::find($id);
+    
             if (!$project) {
                 $this->response->setAttributes(404, (object)[
                     'message' => 'Project not found'
@@ -85,12 +184,71 @@ class ProjectRepository implements IReadAndWrite
                 return $this->response;
             }
     
-            $this->response->setAttributes(200, $project);
-            return $this->response;
-        });
+            if ($hasImage && $project->image_url != 'projects/cover/no-image.jpg' && Storage::disk('public')->exists($project->image_url)) {
+                Storage::disk('public')->delete($project->image_url);
+            }
+    
+            $project->fill($data);
+    
+            if ($project->isDirty()) {
+                $project->save();
+                $this->response->setAttributes(200, $project);
+            } else {
+                $this->response->setAttributes(200, (object)[
+                    'message' => 'No changes to apply',
+                    'project' => $project
+                ]);
+            }
+        } catch (\Exception $e) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'An error occurred while updating the project',
+                'error' => $e->getMessage(),
+            ]);
+        }
+    
+        return $this->response;
     }
 
-    public function getByCategory(int $categoryId, string $order = "desc"): ServiceResponse
+    public function delete(int $id): ServiceResponse
+    {
+        try {
+            $project = Project::find($id);
+    
+            if (!$project) {
+                $this->response->setAttributes(404, (object)[
+                    'message' => 'Project not found',
+                    'deleted' => null,
+                ]);
+                return $this->response;
+            }
+    
+            if ($project->image_url) {
+                Storage::disk('public')->delete($project->image_url);
+            }
+    
+            $isDeleted = $project->delete();
+    
+            if (!$isDeleted) {
+                $this->response->setAttributes(500, (object)[
+                    'message' => 'Error deleting project',
+                ]);
+            } else {
+                $this->response->setAttributes(200, (object)[
+                    'message' => 'Project deleted successfully',
+                ]);
+            }
+        } catch (\Exception $e) {
+            $this->response->setAttributes(500, (object)[
+                'message' => 'An error occurred while deleting the project',
+                'error' => $e->getMessage(),
+            ]);
+        }
+    
+        return $this->response;
+    }
+    
+
+    public function getImages(int $projectId, string $order = 'desc'): ServiceResponse
     {
         $validOrders = ['asc', 'desc'];
     
@@ -101,91 +259,68 @@ class ProjectRepository implements IReadAndWrite
             return $this->response;
         }
     
-        $projects = Project::where('category_id', $categoryId)
-            ->orderBy('id', $order)
-            ->paginate();
+        try {
+            $images = ProjectImage::where('project_id', $projectId)
+                ->orderBy('id', $order)
+                ->get();
     
-        if ($projects->isEmpty()) {
-            $this->response->setAttributes(404, (object)[
-                'message' => 'Projects not found for the specified category'
-            ]);
-            return $this->response;
-        }
-    
-        $this->response->setAttributes(200, $projects);
-        return $this->response;
-    }
-    
-
-    public function create(array $data): ServiceResponse
-    {
-        $project = Project::create($data);
-        if (!$project) {
+            if ($images->isEmpty()) {
+                $this->response->setAttributes(404, (object)[
+                    'message' => 'Images not found for the specified project'
+                ]);
+            } else {
+                $this->response->setAttributes(200, $images);
+            }
+        } catch (\Exception $e) {
             $this->response->setAttributes(500, (object)[
-                'message' => 'Error creating project'
+                'message' => 'Error retrieving images',
+                'error' => $e->getMessage()
             ]);
-            return $this->response;
         }
-        $this->response->setAttributes(201, $project);
+    
         return $this->response;
     }
 
-    public function update(int $id, array $data, bool $hasImage = false): ServiceResponse
+    public function deleteImage($imageId): ServiceResponse
     {
-        $project = Project::find($id);
-        
-        if (!$project) {
-            $this->response->setAttributes(404, (object)[
-                'message' => 'Project not found'
-            ]);
-            return $this->response;
-        }
-        
-        if ($hasImage && $project->image_url != 'projects/cover/no-image.jpg' && Storage::disk('public')->exists($project->image_url)) {
-            Storage::disk('public')->delete($project->image_url);
-        }
+        $imageArray = [
+            "images/imagem_projeto45_1.jpg",
+            "images/imagem_projeto45_2.jpg",
+            "images/imagem_projeto45_3.jpg",
+            "images/imagem_projeto45_4.jpg",
+            "images/imagem_projeto45_5.jpg",
+            "images/imagem_projeto45_6.jpg",
+            "images/imagem_projeto45_7.jpg"
+        ];
+        try {
+            $image = ProjectImage::find($imageId);
     
-        $project->fill($data);
+            if (!$image) {
+                $this->response->setAttributes(404, (object)[
+                    'message' => 'Image not found'
+                ]);
+                return $this->response;
+            }
+
+            if (in_array($image->image_path, $imageArray)) {
+                Storage::disk('public')->delete($image->image_path);
+
+            }
+
     
-        if ($project->isDirty()) {
-            $project->save();
-            $this->response->setAttributes(200, $project);
-        } else {
+            $image->delete();
+    
             $this->response->setAttributes(200, (object)[
-                'message' => 'No changes to apply',
-                'project' => $project
+                'message' => 'Image deleted successfully'
             ]);
-        }
-    
-        return $this->response;
-    }
-
-    public function delete(int $id): ServiceResponse
-    {
-        $project = Project::find($id);
-        if (!$project) {
-            $this->response->setAttributes(404, (object)[
-                'message' => 'Project not found',
-                'deleted' => null,
-            ]);
-            return $this->response;
-        }
-
-        if ($project->image_url) {
-            Storage::disk('public')->delete($project->image_url);
-        }
-        
-        $isDeleted = $project->delete();
-        if (!$isDeleted) {
+        } catch (\Exception $e) {
             $this->response->setAttributes(500, (object)[
-                'message' => 'Error deleting project',
-            ]);
-        } else {
-            $this->response->setAttributes(200, (object)[
-                'message' => 'Project deleted successfully',
+                'message' => 'Error deleting image',
+                'error' => $e->getMessage()
             ]);
         }
-
+    
         return $this->response;
     }
+    
 }

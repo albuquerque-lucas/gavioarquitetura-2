@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import ProjectsContext from "./ProjectsContext";
 
 export default function ProjectsProvider({ children }) {
+  const [projectImages, setProjectImages] = useState([]);
   const [paramsList, setParamsList] = useState({
     attribute: 'id',
     hasAttribute: true,
@@ -103,6 +104,8 @@ export default function ProjectsProvider({ children }) {
       setPreviousPageLink,
       paramsList,
       setParamsList,
+      projectImages,
+      setProjectImages,
     };
   }, [
     projectList,
@@ -131,6 +134,8 @@ export default function ProjectsProvider({ children }) {
     setPreviousPageLink,
     paramsList,
     setParamsList,
+    projectImages,
+    setProjectImages,
   ]);
 
   return (
