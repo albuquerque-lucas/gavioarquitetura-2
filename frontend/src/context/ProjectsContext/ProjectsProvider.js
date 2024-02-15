@@ -7,6 +7,7 @@ export default function ProjectsProvider({ children }) {
   const [projectImages, setProjectImages] = useState([]);
   const [imagesSearchSort, setImagesSearchSort] = useState('desc');
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [selectedImageFiles, setSelectedImageFiles] = useState([]);
   const [paramsList, setParamsList] = useState({
     attribute: 'id',
     hasAttribute: true,
@@ -115,6 +116,8 @@ export default function ProjectsProvider({ children }) {
       setSelectAllImages,
       selectedCheckboxes,
       setSelectedCheckboxes,
+      selectedImageFiles,
+      setSelectedImageFiles,
     };
   }, [
     projectList,
@@ -151,6 +154,8 @@ export default function ProjectsProvider({ children }) {
     setSelectAllImages,
     selectedCheckboxes,
     setSelectedCheckboxes,
+    selectedImageFiles,
+    setSelectedImageFiles,
   ]);
 
   return (

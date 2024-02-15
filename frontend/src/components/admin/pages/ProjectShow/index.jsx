@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ProjectsContext from '../../../../context/ProjectsContext/ProjectsContext';
 import CategoriesContext from '../../../../context/CategoriesContext/CategoriesContext';
 import GeneralDataContext from '../../../../context/GeneralDataContext/GeneralDataContext';
-import { fetchById, saveProject, fetchProjectImages } from '../../../../utils/ProjectsFetch';
+import { fetchById, saveProject, fetchProjectImages, saveProjectImages } from '../../../../utils/ProjectsFetch';
 import noImage from '../../../../images/projects/no-image.jpg';
 import InnerOptionsNavbar from '../../assets/InnerOptionsNavbar';
 import { Link } from 'react-router-dom';
@@ -27,6 +27,8 @@ export default function ProjectShow() {
     setEditMode,
     projectImages,
     setProjectImages,
+    selectedImageFiles,
+    setSelectedImageFiles,
   } = useContext(ProjectsContext);
   const { isLoading, setIsLoading } = useContext(GeneralDataContext);
   const { categoriesList } = useContext(CategoriesContext);
@@ -92,8 +94,8 @@ export default function ProjectShow() {
           active_carousel: false,
         });
         
-        const projectImages = await fetchProjectImages(id);
-        const imagesDTO = projectImages.map((item) => {
+        const images = await fetchProjectImages(id);
+        const imagesDTO = images.map((item) => {
           return {
             id: item.id,
             image_path: item.image_path,
@@ -101,7 +103,7 @@ export default function ProjectShow() {
           }
         });
         setProjectImages(imagesDTO);
-        console.log('INDEX PROJECT IMAGES', projectImages);
+        console.log('INDEX PROJECT IMAGES', images);
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -373,6 +375,28 @@ export default function ProjectShow() {
     setEditMode(updatedEditModes);
   };
 
+  const handleMultipleFileChange = (event) => {
+    setSelectedImageFiles([...event.target.files]);
+  };
+
+  const saveImages =  async (projectId, imageFiles) => {
+    try {
+      await toast.promise(
+        saveProjectImages(projectId, imageFiles),
+        {
+          pending: 'Salvando imagens...',
+          success: 'Imagens salvas com sucesso!',
+          error: (error) => `Erro ao salvar imagens: ${error.message}`,
+        }
+      );
+      const list = await fetchProjectImages(projectId);
+      setProjectImages(list);
+      setSelectedImageFiles([]);
+    } catch (error) {
+      console.error('Ocorreu um erro ao tentar adicionar as imagens.', error);
+    }
+  }
+
 
   return (
     <>
@@ -422,8 +446,24 @@ export default function ProjectShow() {
           </div>
           <div className="project-show-images-list">
             <div className="images-input-container">
-              <input type="file" name="images" id="images" />
-            </div>
+
+              </div>
+              <div>
+                <input
+                type="file"
+                name="images"
+                id="images"
+                onChange={(e) => handleMultipleFileChange(e)}
+                multiple
+                />
+                <button
+                className='btn btn-dark btn-hover'
+                onClick={() => saveImages(projectDetails.id, selectedImageFiles) }
+                disabled={ selectedImageFiles.length === 0 }
+                >
+                  Adicionar
+                </button>
+              </div>
             <div className="images-container">
               <ImagesTable
                 images={ projectImages }

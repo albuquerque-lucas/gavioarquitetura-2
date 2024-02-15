@@ -17,10 +17,11 @@ export default function ImagesTable({ images, projectId }) {
     setImagesSearchSort,
     selectAllImages,
     setSelectAllImages,
-    projectImages,
   } = useContext(ProjectsContext);
 
   const handleDelete = async (id, projectId) => {
+    console.log('HANDLE DELETE ID', id);
+    console.log('HANDLE DELETE PROJECT ID', projectId);
     try {
       await toast.promise(
         deleteImage(id),
@@ -30,7 +31,9 @@ export default function ImagesTable({ images, projectId }) {
           error: (error) => `Erro ao deletar imagem: ${error.message}`,
         }
       );
+      console.log('PROJECT ID TO DELETE', projectId);
       const data = await fetchProjectImages(projectId);
+      console.log('DELETE DATA', data);
       setProjectImages(data);
     } catch (error) {
       console.error('Erro ao deletar imagem:', error);
@@ -64,19 +67,29 @@ export default function ImagesTable({ images, projectId }) {
   };
 
   const handleDeleteSelected = async () => {
-    const selectedImages = projectImages.filter((image) => image.selected);
-
+    const selectedImages = images.filter((image) => image.selected);
+  
     if (selectedImages.length > 0) {
-      const result = await deleteSelectedImages(projectImages);
-      console.log('IMAGENS DELETADAS COM SUCESSO');
-      console.log('RESULT DELETE', result);
-      const list = await fetchProjectImages(projectId);
-      setProjectImages(list);
+      try {
+        await toast.promise(
+          deleteSelectedImages(selectedImages),
+          {
+            pending: 'Deletando imagens selecionadas...',
+            success: 'Imagens selecionadas excluídas com sucesso.',
+            error: (error) => `Erro ao deletar imagens selecionadas: ${error.message}`,
+          }
+        );
+  
+        const updatedList = await fetchProjectImages(projectId);
+        setProjectImages(updatedList);
+      } catch (error) {
+        console.error('Erro ao deletar imagens selecionadas:', error);
+      }
     } else {
-
       console.log('Nenhuma imagem selecionada para deletar.');
     }
   };
+  
 
   return (
     <div className="table-images-container d-flex flex-column align-items-center">
@@ -115,7 +128,7 @@ export default function ImagesTable({ images, projectId }) {
             </button>)
         }
 
-        { projectImages && projectImages.some((image) => image.selected) && (
+        { images && images.some((image) => image.selected) && (
           <button className="btn btn-light btn-hover" onClick={() => handleDeleteSelected()}>
             Apagar selecionados
           </button>
@@ -135,11 +148,11 @@ export default function ImagesTable({ images, projectId }) {
             <tr key={ index }>
               <td className="images-id-cell">{ image.id }</td>
               <td>
-                <img src={ image.image_path !== null ? `http://localhost/storage/projects/${ image.image_path }` : noImage } alt="" />
+                <img src={ image.image_path !== null ? `http://localhost/storage/${ image.image_path }` : noImage } alt="" />
               </td>
               <td className="images-btn-cell">
                 <button 
-                  onClick={ () => handleDelete(image.id, image.project_id) }
+                  onClick={() => handleDelete(image.id, projectId)}
                   className="btn btn-dark btn-sm">{ deleteSVG }</button>
               </td>
               <td>

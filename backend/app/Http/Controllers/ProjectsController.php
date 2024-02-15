@@ -115,4 +115,41 @@ class ProjectsController extends Controller
             return response()->json(['message' => 'Erro ao deletar imagens.', 'error' => $e->getMessage()], 500);
         }
     }
+
+    public function saveImages(Request $request, int $projectId)
+    {
+        try {
+            $images = $request->file('imageFiles');
+    
+            if (empty($projectId) || empty($images)) {
+                return response()->json([
+                    'message' => 'Parâmetros inválidos.',
+                    'details' => [
+                        'projectId' => $projectId,
+                        'images' => $images,
+                    ],
+                ], 400);
+            }
+    
+            $imageData = [];
+    
+            foreach ($images as $image) {
+                $imageName = $image->getClientOriginalName();
+    
+                $imageData[] = [
+                    'image' => $image,
+                    'project_id' => $projectId,
+                    'image_name' => $imageName,
+                ];
+            }
+    
+            $res = $this->repository->createMultipleImages($imageData);
+    
+            return response()->json($res->data(), $res->status());
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Erro ao salvar imagens.', 'error' => $e->getMessage()], 500);
+        }
+    }
+    
+    
 }
