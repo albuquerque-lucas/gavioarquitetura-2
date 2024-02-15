@@ -376,18 +376,10 @@ export default function ProjectShow() {
   };
 
   const handleMultipleFileChange = (event) => {
-  
-    setSelectedImageFiles((prevSelectedFiles) => {
-      console.log('SELECTED IMAGE FILES', prevSelectedFiles);
-  
-      return [...event.target.files];
-    });
+    setSelectedImageFiles([...event.target.files]);
   };
 
   const saveImages =  async (projectId, imageFiles) => {
-
-    console.log('PROJECT ID', projectId);
-    console.log('IMAGE FILES', imageFiles);
     try {
       await toast.promise(
         saveProjectImages(projectId, imageFiles),
@@ -399,7 +391,7 @@ export default function ProjectShow() {
       );
       const list = await fetchProjectImages(projectId);
       setProjectImages(list);
-      console.log('LISTA DE RETORNO', list);
+      setSelectedImageFiles([]);
     } catch (error) {
       console.error('Ocorreu um erro ao tentar adicionar as imagens.', error);
     }
