@@ -145,7 +145,7 @@ export default function ImagesTable({ images, projectId }) {
             <tr key={ index }>
               <td className="images-id-cell">{ image.id }</td>
               <td>
-                <img src={ image.image_path !== null ? `http://localhost/storage/projects/${ image.image_path }` : noImage } alt="" />
+                <img src={ image.image_path !== null ? `http://localhost/storage/${ image.image_path }` : noImage } alt="" />
               </td>
               <td className="images-btn-cell">
                 <button 
