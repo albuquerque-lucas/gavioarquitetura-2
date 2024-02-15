@@ -106,6 +106,7 @@ export const deleteSelectedImages = async (imageList) => {
 }
 
 export const saveProjectImages = async (projectId, imageFiles) => {
+  console.log('ID DO PROJETO', projectId);
   try {
     const url = `http://localhost/api/projects/images/${projectId}`;
     const formData = new FormData();

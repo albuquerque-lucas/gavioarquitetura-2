@@ -373,7 +373,7 @@ class ProjectRepository
         try {
             return DB::transaction(function () use ($imageData) {
                 $createdImages = [];
-    
+                
                 foreach ($imageData as $image) {
     
                     $imagePath = $image['image']->store('projects/images', 'public');

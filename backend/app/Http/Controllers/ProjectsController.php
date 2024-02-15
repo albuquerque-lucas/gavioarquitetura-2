@@ -116,14 +116,20 @@ class ProjectsController extends Controller
         }
     }
 
-    public function saveImages(Request $request)
+    public function saveImages(Request $request, int $projectId)
     {
         try {
-            $projectId = $request->input('projectId');
+            // $projectId = $request->input('projectId');
             $images = $request->file('imageFiles');
     
             if (empty($projectId) || empty($images)) {
-                return response()->json(['message' => 'Parâmetros inválidos.'], 400);
+                return response()->json([
+                    'message' => 'Parâmetros inválidos.',
+                    'details' => [
+                        'projectId' => $projectId,
+                        'images' => $images,
+                    ],
+                ], 400);
             }
     
             $imageData = [];

@@ -377,12 +377,18 @@ export default function ProjectShow() {
 
   const handleMultipleFileChange = (event) => {
     console.log(event.target.files);
-    setSelectedImageFiles([]);
-    setSelectedImageFiles((prevFiles) => [...prevFiles, ...event.target.files]);
-    console.log(selectedImageFiles);
-  }
+  
+    setSelectedImageFiles((prevSelectedFiles) => {
+      console.log('SELECTED IMAGE FILES', prevSelectedFiles);
+  
+      return [...event.target.files];
+    });
+  };
 
   const saveImages =  async (projectId, imageFiles) => {
+
+    console.log('PROJECT ID', projectId);
+    console.log('IMAGE FILES', imageFiles);
     try {
       await toast.promise(
         saveProjectImages(projectId, imageFiles),
@@ -393,7 +399,7 @@ export default function ProjectShow() {
         }
       );
       const list = await fetchProjectImages(projectId);
-      console.log(list);
+      console.log('LISTA DE RETORNO', list);
     } catch (error) {
       console.error('Ocorreu um erro ao tentar adicionar as imagens.', error);
     }
@@ -461,6 +467,7 @@ export default function ProjectShow() {
                 <button
                 className='btn btn-dark btn-hover'
                 onClick={() => saveImages(projectDetails.id, selectedImageFiles) }
+                disabled={ selectedImageFiles.length === 0 }
                 >
                   Adicionar
                 </button>
