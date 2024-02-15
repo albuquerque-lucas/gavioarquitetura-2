@@ -119,7 +119,6 @@ class ProjectsController extends Controller
     public function saveImages(Request $request, int $projectId)
     {
         try {
-            // $projectId = $request->input('projectId');
             $images = $request->file('imageFiles');
     
             if (empty($projectId) || empty($images)) {

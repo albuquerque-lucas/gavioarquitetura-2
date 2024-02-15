@@ -94,8 +94,8 @@ export default function ProjectShow() {
           active_carousel: false,
         });
         
-        const projectImages = await fetchProjectImages(id);
-        const imagesDTO = projectImages.map((item) => {
+        const images = await fetchProjectImages(id);
+        const imagesDTO = images.map((item) => {
           return {
             id: item.id,
             image_path: item.image_path,
@@ -103,7 +103,7 @@ export default function ProjectShow() {
           }
         });
         setProjectImages(imagesDTO);
-        console.log('INDEX PROJECT IMAGES', projectImages);
+        console.log('INDEX PROJECT IMAGES', images);
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -376,7 +376,6 @@ export default function ProjectShow() {
   };
 
   const handleMultipleFileChange = (event) => {
-    console.log(event.target.files);
   
     setSelectedImageFiles((prevSelectedFiles) => {
       console.log('SELECTED IMAGE FILES', prevSelectedFiles);
@@ -399,6 +398,7 @@ export default function ProjectShow() {
         }
       );
       const list = await fetchProjectImages(projectId);
+      setProjectImages(list);
       console.log('LISTA DE RETORNO', list);
     } catch (error) {
       console.error('Ocorreu um erro ao tentar adicionar as imagens.', error);
